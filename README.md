@@ -24,6 +24,8 @@ http://primesieve.org/
 ### Example
 
 ```julia
+julia> using PrimeSieve
+
 julia> @time countprimes(10^17 + 10^10)
 elapsed time: 3.76604437 seconds (152 bytes allocated)
 2623557413135520
@@ -32,7 +34,7 @@ elapsed time: 3.76604437 seconds (152 bytes allocated)
 To see what happened, we can look in the tables:
 
 ```julia
-primelookup(10^17 + 10^10)
+julia> primelookup(10^17 + 10^10)
 (14,(2623557157654233,100000000000000000,10000000000))
 ```
 
@@ -40,7 +42,7 @@ The 14th table was used. The value of prime pi for ```10^17```,
 ```2623557157654233``` is in the table, and the primes in an
 interval of length ```10^10``` must be found with the sieves.
 
-See the description of ```primelookup`` below.
+See the description of ```primelookup``` below.
 
 
 ### countprimes
