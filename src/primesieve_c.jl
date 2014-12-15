@@ -23,7 +23,8 @@ for (ctype,typecode) in ((:Cshort, :SHORT_PRIMES),(:Cushort, :USHORT_PRIMES),
     end
 end
 
-const libname = "primesieve/.libs/libprimesieve.so.4"
+#const libname = "primesieve/.libs/libprimesieve.so.4"
+const libname = "libprimesieve.so.4"
 
 # Copy the returned array, and free C array
 function primescopy(res,n)
