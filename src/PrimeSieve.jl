@@ -3,14 +3,25 @@ module PrimeSieve
 include("../deps/deps.jl")
 import Base: convert, ccall
 
-export primes, nprimes, nthprime, pnthprime
-export countprimes, pcountprimes
-export countprimes2, pcountprimes2
-export countprimes3, pcountprimes3
-export countprimes4, pcountprimes4
-export countprimes5, pcountprimes5
-export countprimes6, pcountprimes6
-export primetest
+export primes, nprimes
+
+export nthprime, snthprime
+
+export countprimes, scountprimes
+export countprimes2, scountprimes2
+export countprimes3, scountprimes3
+export countprimes4, scountprimes4
+export countprimes5, scountprimes5
+export countprimes6, scountprimes6
+
+export printprimes
+export printprimes2
+export printprimes3
+export printprimes4
+export printprimes5
+export printprimes6
+
+export primesievesize, primetest, primenumthreads, primemaxstop
 
 ##
 
@@ -49,6 +60,7 @@ function primescopy(res,n)
     nretv
 end
 
+# return array of primes between start and stop
 function primes{T,V}(start::T,stop::V)
     checkstop(stop)
     n = Csize_t[0]
@@ -60,6 +72,7 @@ end
 
 primes(stop) = primes(one(typeof(stop)),stop)
 
+# return array of the first n primes >= start
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here
     res = ccall((:primesieve_generate_n_primes, libname),
@@ -70,12 +83,9 @@ end
 
 nprimes(n) = nprimes(n,one(typeof(n)))
 
-#  @param n  if n = 0 finds the 1st prime >= start,
-#            if n > 0 finds the nth prime > start,
-#            if n < 0 finds the nth prime < start (backwards).
-#  @pre   start <= 2^64 - 2^32 * 11.
-for (cname,jname) in ((:(:primesieve_nth_prime), :nthprime),
-                      (:(:primesieve_parallel_nth_prime), :pnthprime))
+# return the nth prime
+for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
+                      (:(:primesieve_parallel_nth_prime), :nthprime))
     @eval begin
         function ($jname){T}(n,start::T)
             checkstart(start)
@@ -89,19 +99,27 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :nthprime),
 end
 
 for (cname,jname) in (
-                      (:(:primesieve_count_primes), :countprimes),
-                      (:(:primesieve_count_twins), :countprimes2),
-                      (:(:primesieve_count_triplets), :countprimes3),
-                      (:(:primesieve_count_quadruplets), :countprimes4),
-                      (:(:primesieve_count_quintuplets), :countprimes5),
-                      (:(:primesieve_count_sextuplets), :countprimes6),
+                      (:(:primesieve_count_primes), :scountprimes),
+                      (:(:primesieve_count_twins), :scountprimes2),
+                      (:(:primesieve_count_triplets), :scountprimes3),
+                      (:(:primesieve_count_quadruplets), :scountprimes4),
+                      (:(:primesieve_count_quintuplets), :scountprimes5),
+                      (:(:primesieve_count_sextuplets), :scountprimes6),
 
-                      (:(:primesieve_parallel_count_primes), :pcountprimes),
-                      (:(:primesieve_parallel_count_twins), :pcountprimes2),
-                      (:(:primesieve_parallel_count_triplets), :pcountprimes3),
-                      (:(:primesieve_parallel_count_quadruplets), :pcountprimes4),
-                      (:(:primesieve_parallel_count_quintuplets), :pcountprimes5),
-                      (:(:primesieve_parallel_count_sextuplets), :pcountprimes6))
+                      (:(:primesieve_parallel_count_primes), :countprimes),
+                      (:(:primesieve_parallel_count_twins), :countprimes2),
+                      (:(:primesieve_parallel_count_triplets), :countprimes3),
+                      (:(:primesieve_parallel_count_quadruplets), :countprimes4),
+                      (:(:primesieve_parallel_count_quintuplets), :countprimes5),
+                      (:(:primesieve_parallel_count_sextuplets), :countprimes6),
+
+                      (:(:primesieve_print_primes), :printprimes),
+                      (:(:primesieve_print_twins), :printprimes2),
+                      (:(:primesieve_print_triplets), :printprimes3),
+                      (:(:primesieve_print_quadruplets), :printprimes4),
+                      (:(:primesieve_print_quintuplets), :printprimes5),
+                      (:(:primesieve_print_sextuplets), :printprimes6))
+                      
     @eval begin
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
@@ -115,6 +133,18 @@ for (cname,jname) in (
     end
 end
 
+primesievesize() = ccall((:primesieve_get_sieve_size, libname), Int, ())
+# following does not seem to work
+function primesievesize(sz)
+    isz = convert(Int,sz)
+    1 <= sz <= 2048 || error("Sieve size (in Kb) must be between 1 and 2048")
+    ccall((:primesieve_get_sieve_size, libname), Void, (Int,),isz)
+    isz
+end
+
+primenumthreads(n) = (ccall((:primesieve_set_num_threads, libname), Void, (Int,), convert(Int,n)); n)
+primenumthreads() = ccall((:primesieve_get_num_threads, libname), Int, ())
 primetest() = ccall((:primesieve_test, libname), Void, ())
+primemaxstop() = ccall((:primesieve_get_max_stop, libname), Uint, ())
 
 end # module PrimeSieve
