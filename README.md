@@ -132,8 +132,8 @@ See tables.jl for the format.
 
 # Other details
 
-The largest stop value that may be given is ```2^64 - 10 * s^32```.
-The largest start value that may be given is ```2^64 - 11 * s^32```.
+The largest stop value that may be given is ```2^64 - 10 * 2^32```.
+The largest start value that may be given is ```2^64 - 11 * 2^32```.
 The sieve works with the ```Uint64``` data type. But conversions are done depending
 on the types of start, stop, and n.
 
