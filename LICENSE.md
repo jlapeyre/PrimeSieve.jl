@@ -1,3 +1,13 @@
+The prime tables are compiled by Tomás Oliveira e Silva:
+
+# (c) 2007-2013, Tomás Oliveira e Silva
+#
+# See disclaimer in page
+#   http://www.ieeta.pt/~tos/hobbies.html
+
+The primesieve library is licensed under the BSD-license:
+http://primesieve.org/
+
 The PrimeSieve.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2014: John Lapeyre.
