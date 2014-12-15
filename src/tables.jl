@@ -1,11 +1,12 @@
 import Base: getindex, length
-export primetables, piandrem
+export primetables
 
+# A single table of π(x) with constant increment between values of x
 immutable PrimeTable
-    data::Array{Int128,1}
-    incr::Int128
-    maxn::Int128
-    expn::Int
+    data::Array{Int128,1}  # values of π(x)
+    incr::Int128           # increment to x for successive elements
+    maxn::Int128           # largest value in data. (The last element)
+    expn::Int              # log10(incr), an integer
 end    
 
 length(t::PrimeTable) = length(t.data)
@@ -19,7 +20,8 @@ function piandrem(t::PrimeTable, x)
    return ((t.data)[q], t.incr * q, rem)
 end
 
-# Find the table with finest increments and look up value for x
+# Find the table with finest increments such that
+# x falls on or between incrments and look up value for x
 function piandrem{T<:Real}(x::T)
     j = 0
     for i in 1:length(primetables)
@@ -29,7 +31,6 @@ function piandrem{T<:Real}(x::T)
             break
         end
     end
-#    println("Using table $j")
     j == 0 && error("x is too large!")
     piandrem(primetables[j],x)
 end
@@ -37,7 +38,6 @@ end
 # Look up prime pi in table, compute remaining primes
 function countprimes(stop)
     (count,i,rem) = piandrem(convert(Int128,stop))
-#    println("count $count, i $i, rem $rem")
     res = count + ntcountprimes(i,i+rem)
     convert(Int128,res)
 end
@@ -45,15 +45,15 @@ end
 function countprimes(start,stop)
     (count1,i1,rem1) = piandrem(convert(Int128,start))
     (count2,i2,rem2) = piandrem(convert(Int128,stop))
-#    println("count $count1, i $i1, rem $rem2")
-#    println("count $count2, i $i2, rem $rem2")    
     n1 = ntcountprimes(i1,i1+rem1)
     n2 = ntcountprimes(i2,i2+rem2)
     convert(Int128, count2 - count1 + n2 - n1)
 end    
 
-
-# Read the tables from a binary data file.
+# Read the tables from a binary data file.  First Int is number of
+# tables.  Second Int is number of elements in first table.  Next come
+# all the elements in the table, then the number of elements for the
+# next table, etc.
 function _readbintables()
     fn = Pkg.dir("PrimeSieve") * "/data/primetables128bin.dat"
     mystream = open(fn)

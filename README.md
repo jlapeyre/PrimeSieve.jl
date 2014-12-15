@@ -3,11 +3,23 @@
 [![Build Status](https://travis-ci.org/jlapeyre/PrimeSieve.jl.svg?branch=master)](https://travis-ci.org/jlapeyre/PrimeSieve.jl)
 
 This package provides an interface to tables of primes and a sieve library.
-It is very fast, in particular the prime pi function, which is complemented
+It is extremely fast, in particular the prime pi function, which is complemented
 by table lookup. There are multi-threaded and single-threaded versions of
 most functions.
 
-See LICENSE.md for links to the authors of the tables and the library
+See LICENSE.md for links to the authors of the tables and the library. All
+the credit for the utility of this package goes to them.
+
+I am unaware of binaries of libprimesieve for Windows and OSX, so these
+are not installed automatically.
+
+### Tables
+
+http://www.ieeta.pt/~tos/primes.html
+
+### Primesieve
+
+http://primesieve.org/
 
 ## countprimes
 
@@ -112,6 +124,11 @@ Usage
 ```julia
 primetest()
 ```
+
+## primetables
+
+The array of type ```julia Array{PrimeTable,1}``` containing the prime tables.
+See tables.jl for the format.
 
 # Other details
 
