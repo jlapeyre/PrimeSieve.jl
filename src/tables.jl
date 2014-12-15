@@ -1,5 +1,5 @@
 import Base: getindex, length
-export primetables
+export primetables, primelookup
 
 # A single table of π(x) with constant increment between values of x
 immutable PrimeTable
@@ -33,6 +33,19 @@ function piandrem{T<:Real}(x::T)
     end
     j == 0 && error("x is too large!")
     piandrem(primetables[j],x)
+end
+
+function primelookup(x)
+    j = 0
+    for i in 1:length(primetables)
+        t = primetables[i]
+        if x < t.maxn
+            j = i
+            break
+        end
+    end
+    j == 0 && error("x is too large!")
+   (j,piandrem(primetables[j],x))
 end
 
 # Look up prime pi in table, compute remaining primes

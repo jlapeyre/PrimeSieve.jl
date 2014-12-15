@@ -21,7 +21,29 @@ http://www.ieeta.pt/~tos/primes.html
 
 http://primesieve.org/
 
-## countprimes
+### Example
+
+```julia
+julia> @time countprimes(10^17 + 10^10)
+elapsed time: 3.76604437 seconds (152 bytes allocated)
+2623557413135520
+```
+
+To see what happend, we can look in the tables:
+
+```julia
+primelookup(10^17 + 10^10)
+(14,(2623557157654233,100000000000000000,10000000000))
+```
+
+The 14th table was used. The value of prime pi for ```10^7```,
+```2623557157654233``` is in the table, and the primes in an
+interval of lengh ```10^10``` must be found with the sieves.
+
+See the description of ```primelookup`` below.
+
+
+### countprimes
 
 Count the number of primes in an interval. This looks up the nearest tabulated
 value and computes the remaining values. This is the only function in the
@@ -34,7 +56,7 @@ countprimes(start,stop)      # count the number of primes >= start and <= stop
 ntcountprimes([start],stop)  # Do not use table lookup, only sieving
 ```
 
-## genprimes
+### genprimes
 
 Return an array of all primes ```>= start``` and ```<= stop```
 
@@ -43,7 +65,7 @@ Usage
 genprimes([start=1],stop)
 ```
 
-## nprimes
+### nprimes
 
 Return an array of the first ```n``` primes ```>= start```.
 
@@ -52,7 +74,7 @@ Usage
 nprimes(n,[start=1])
 ```
 
-## countprimes2, countprimes3, countprimes4, countprimes5, countprimes6
+### countprimes2, countprimes3, countprimes4, countprimes5, countprimes6
 
 Count the number of prime twins, triplets, quadruplets, quintuplets, and sextuplets
 that are ```>= start``` and ```<= stop```
@@ -62,7 +84,7 @@ Usage
 countprimes2([start=1],stop)
 ```
 
-## single threaded versions
+### single threaded versions
 
 Prepending 's' to the function name of any of the above routines
 calls a single-threaded version. There is no routine ```sntcountprimes```
@@ -73,7 +95,7 @@ Usage
 scountprimes([start=1],stop)
 ```
 
-## printprimes2, printprimes3, printprimes4, printprimes5, printprimes6
+### printprimes2, printprimes3, printprimes4, printprimes5, printprimes6
 
 Print all prime twins, triplets, quadruplets, quintuplets, and sextuplets
 that are ```>= start``` and ```<= stop```
@@ -83,8 +105,28 @@ Usage
 printprimes2([start=1],stop)
 ```
 
+### primelookup
 
-## primesievesize
+Look up a value of the prime pi function in the tables. This is only provided
+to aid in understanding the behavior of ```countprimes```.
+
+Usage
+```julia
+primelookup(x)
+```
+
+A tuple of a single element and another tuple of three elements is returned:
+
+```julia
+(j,(p,y,rem))
+```
+* ```j``` is the number of the best table found
+* ```y``` is the largest index satisfying ```y<x``` found.
+* ```p``` is the value of prime pi at ```y```
+* ```rem``` is ```x-y```
+
+
+### primesievesize
 
 Get, set the sieve size in kilobytes. (setting does not seem to work)
 ```sz``` must satisfy  ```1 <= sz <= 2048```
@@ -95,7 +137,7 @@ primesievesize()
 primesievesize(sz)
 ```
 
-## primenumthreads
+### primenumthreads
 
 Get, set the number of threads used in parallel routines. By default, the
 OMP default is used.
@@ -106,7 +148,7 @@ primenumthreads()
 primenumthreads(numthreads)
 ```
 
-## primemaxstop
+### primemaxstop
 
 Return the largest value (as a ```Uint64```) that can be passed as the parameter
 stop.
@@ -116,7 +158,7 @@ Usage
 primemaxstop()
 ```
 
-## primetest
+### primetest
 
 Run a test of the algorithms
 
@@ -125,12 +167,12 @@ Usage
 primetest()
 ```
 
-## primetables
+### primetables
 
 The array of type ```Array{PrimeTable,1}``` containing the prime tables.
 See tables.jl for the format.
 
-# Other details
+## Other details
 
 The largest stop value that may be given is ```2^64 - 10 * 2^32```.
 The largest start value that may be given is ```2^64 - 11 * 2^32```.
