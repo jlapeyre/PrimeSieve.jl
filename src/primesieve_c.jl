@@ -37,9 +37,13 @@ end
 function primes{T,V}(start::T,stop::V)
     checkstop(stop)
     n = Csize_t[0]
-    res = ccall((:primesieve_generate_primes, libname),
+    res = try 
+        ccall((:primesieve_generate_primes, libname),
                 Ptr{T}, (Uint64, Uint64, Ptr{Csize_t}, Int),
                 convert(Uint64,start),convert(Uint64,stop),n,primetype(T))
+    catch
+        throw(InterruptException())
+    end      
     primescopy(res,n[1])
 end
 
@@ -52,10 +56,14 @@ primes(stop) = primes(one(typeof(stop)),stop)
 
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)
-    checkstop(start) # not sure what he means here
-    res = ccall((:primesieve_generate_n_primes, libname),
-                Ptr{T}, (Uint64, Uint64, Int),
-                convert(Uint64,n),convert(Uint64,start),primetype(T))
+    checkstop(start) # not sure what he means here    
+    res = try
+        res = ccall((:primesieve_generate_n_primes, libname),
+                    Ptr{T}, (Uint64, Uint64, Int),
+                    convert(Uint64,n),convert(Uint64,start),primetype(T))
+    catch
+        throw(InterruptException())        
+    end        
     primescopy(res,n)
 end
 
