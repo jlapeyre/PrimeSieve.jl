@@ -70,6 +70,11 @@ function primes{T,V}(start::T,stop::V)
     primescopy(res,n[1])
 end
 
+# not really the Julia way...
+primes{T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = primes(int64(start),int64(stop))        
+primes{T<:FloatingPoint}(stop::T) = primes(int64(1),int64(stop))
+primes{T<:FloatingPoint}(start,stop::T) = primes(start,int64(stop))
+primes{T<:FloatingPoint}(start::T,stop) = primes(int64(start),stop)
 primes(stop) = primes(one(typeof(stop)),stop)
 
 # return array of the first n primes >= start
@@ -81,6 +86,11 @@ function nprimes{T}(n::T,start)
     primescopy(res,n)
 end
 
+nprimes{T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = nprimes(int64(n),int64(start))        
+nprimes{T<:FloatingPoint}(start::T) = nprimes(int64(start),1)
+nprimes{T<:FloatingPoint}(n,start::T) = nprimes(n,int64(start))
+nprimes{T<:FloatingPoint}(n::T,start) = nprimes(int64(n),start)
+nprimes(start) = nprimes(one(typeof(start)),start)        
 nprimes(n) = nprimes(n,one(typeof(n)))
 
 # return the nth prime
@@ -94,6 +104,11 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
                         convert(Int64,n),convert(Uint64,start))
             convert(T,res)
         end
+        ($jname){T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = ($jname)(int64(n),int64(start))        
+        ($jname){T<:FloatingPoint}(start::T) = ($jname)(int64(start),1)
+        ($jname){T<:FloatingPoint}(n,start::T) = ($jname)(n,int64(start))
+        ($jname){T<:FloatingPoint}(n::T,start) = ($jname)(int64(n),start)
+        ($jname)(start) = ($jname)(one(typeof(start)),start)        
         ($jname)(n) = ($jname)(n,1)
     end
 end
@@ -119,7 +134,6 @@ for (cname,jname) in (
                       (:(:primesieve_print_quadruplets), :printprimes4),
                       (:(:primesieve_print_quintuplets), :printprimes5),
                       (:(:primesieve_print_sextuplets), :printprimes6))
-                      
     @eval begin
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
@@ -129,6 +143,10 @@ for (cname,jname) in (
                         convert(Uint64,start), convert(Uint64,stop))
             convert(typeof(start),res)
         end
+        ($jname){T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = ($jname)(int64(start),int64(stop))        
+        ($jname){T<:FloatingPoint}(stop::T) = ($jname)(int64(1),int64(stop))
+        ($jname){T<:FloatingPoint}(start,stop::T) = ($jname)(start,int64(stop))
+        ($jname){T<:FloatingPoint}(start::T,stop) = ($jname)(int64(start),stop)
         ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
     end
 end
