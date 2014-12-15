@@ -36,7 +36,7 @@ primelookup(10^17 + 10^10)
 (14,(2623557157654233,100000000000000000,10000000000))
 ```
 
-The 14th table was used. The value of prime pi for ```10^7```,
+The 14th table was used. The value of prime pi for ```10^17```,
 ```2623557157654233``` is in the table, and the primes in an
 interval of length ```10^10``` must be found with the sieves.
 
