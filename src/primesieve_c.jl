@@ -94,7 +94,7 @@ for (cname,jname) in (
                       (:(:primesieve_count_quintuplets), :scountprimes5),
                       (:(:primesieve_count_sextuplets), :scountprimes6),
 
-                      (:(:primesieve_parallel_count_primes), :countprimes),
+                      (:(:primesieve_parallel_count_primes), :ntcountprimes),
                       (:(:primesieve_parallel_count_twins), :countprimes2),
                       (:(:primesieve_parallel_count_triplets), :countprimes3),
                       (:(:primesieve_parallel_count_quadruplets), :countprimes4),
@@ -137,5 +137,3 @@ primenumthreads(n) = (ccall((:primesieve_set_num_threads, libname), Void, (Int,)
 primenumthreads() = ccall((:primesieve_get_num_threads, libname), Int, ())
 primetest() = ccall((:primesieve_test, libname), Void, ())
 primemaxstop() = ccall((:primesieve_get_max_stop, libname), Uint, ())
-
-end # module PrimeSieve
