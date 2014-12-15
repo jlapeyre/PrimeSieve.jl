@@ -36,7 +36,7 @@ ntcountprimes([start],stop)  # Do not use table lookup, only sieving
 
 ## primes
 
-Return an array of all primes >= start and <= stop
+Return an array of all primes ```>= start``` and ```<= stop```
 
 Usage
 ```julia
@@ -45,7 +45,7 @@ primes([start=1],stop)
 
 ## nprimes
 
-Return an array of the first n primes >= start.
+Return an array of the first ```n``` primes ```>= start```.
 
 Usage
 ```julia
@@ -55,7 +55,7 @@ nprimes(n,[start=1])
 ## countprimes2, countprimes3, countprimes4, countprimes5, countprimes6
 
 Count the number of prime twins, triplets, quadruplets, quintuplets, and sextuplets
-that are >= start and <= stop
+that are ```>= start``` and ```<= stop```
 
 Usage
 ```julia
@@ -65,8 +65,8 @@ countprimes2([start=1],stop)
 ## single threaded versions
 
 Prepending 's' to the function name of any of the above routines
-calls a single-threaded version. There is no routine 'sntcountprimes'
-and 'scountprimes' does not use tables.
+calls a single-threaded version. There is no routine ```sntcountprimes```
+and ```scountprimes``` does not use tables.
 
 Usage
 ```julia
@@ -76,7 +76,7 @@ scountprimes([start=1],stop)
 ## printprimes2, printprimes3, printprimes4, printprimes5, printprimes6
 
 Print all prime twins, triplets, quadruplets, quintuplets, and sextuplets
-that are >= start and <= stop
+that are ```>= start``` and ```<= stop```
 
 Usage
 ```julia
@@ -87,7 +87,7 @@ printprimes2([start=1],stop)
 ## primesievesize
 
 Get, set the sieve size in kilobytes. (setting does not seem to work)
-sz must satisfy  1 <= sz <= 2048
+```sz``` must satisfy  ```1 <= sz <= 2048```
 
 Usage
 ```julia
@@ -108,7 +108,7 @@ primenumthreads(numthreads)
 
 ## primemaxstop
 
-Return the largest value (as a Uint64) that can be passed as the parameter
+Return the largest value (as a ```Uint64```) that can be passed as the parameter
 stop.
 
 Usage
@@ -127,14 +127,14 @@ primetest()
 
 ## primetables
 
-The array of type ```julia Array{PrimeTable,1}``` containing the prime tables.
+The array of type ```Array{PrimeTable,1}``` containing the prime tables.
 See tables.jl for the format.
 
 # Other details
 
-The largest stop value that may be given is 2^64 - 10 * s^32.
-The largest start value that may be given is 2^64 - 11 * s^32.
-The sieve works with the Uint64 data type. But conversions are done depending
+The largest stop value that may be given is ```2^64 - 10 * s^32```.
+The largest start value that may be given is ```2^64 - 11 * s^32```.
+The sieve works with the ```Uint64``` data type. But conversions are done depending
 on the types of start, stop, and n.
 
-'countprimes' returns Int128. The other routines only support smaller data types.
+```countprimes``` returns ```Int128``. The other routines only support smaller data types.
