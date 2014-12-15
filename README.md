@@ -179,4 +179,4 @@ The largest start value that may be given is ```2^64 - 11 * 2^32```.
 The sieve works with the ```Uint64``` data type. But conversions are done depending
 on the types of start, stop, and n.
 
-```countprimes``` returns ```Int128``. The other routines only support smaller data types.
+```countprimes``` returns ```Int128```. The other routines only support smaller data types.
