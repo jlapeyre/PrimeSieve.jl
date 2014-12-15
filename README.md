@@ -34,13 +34,13 @@ countprimes(start,stop)      # count the number of primes >= start and <= stop
 ntcountprimes([start],stop)  # Do not use table lookup, only sieving
 ```
 
-## primes
+## genprimes
 
 Return an array of all primes ```>= start``` and ```<= stop```
 
 Usage
 ```julia
-primes([start=1],stop)
+genprimes([start=1],stop)
 ```
 
 ## nprimes

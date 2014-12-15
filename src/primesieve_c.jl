@@ -35,7 +35,7 @@ function primescopy(res,n)
 end
 
 # return array of primes between start and stop
-function primes{T,V}(start::T,stop::V)
+function genprimes{T,V}(start::T,stop::V)
     checkstop(stop)
     n = Csize_t[0]
     res = try 
@@ -49,11 +49,11 @@ function primes{T,V}(start::T,stop::V)
 end
 
 # not really the Julia way...
-primes{T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = primes(int64(start),int64(stop))        
-primes{T<:FloatingPoint}(stop::T) = primes(int64(1),int64(stop))
-primes{T<:FloatingPoint}(start,stop::T) = primes(start,int64(stop))
-primes{T<:FloatingPoint}(start::T,stop) = primes(int64(start),stop)
-primes(stop) = primes(one(typeof(stop)),stop)
+genprimes{T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = genprimes(int64(start),int64(stop))        
+genprimes{T<:FloatingPoint}(stop::T) = genprimes(int64(1),int64(stop))
+genprimes{T<:FloatingPoint}(start,stop::T) = genprimes(start,int64(stop))
+genprimes{T<:FloatingPoint}(start::T,stop) = genprimes(int64(start),stop)
+genprimes(stop) = genprimes(one(typeof(stop)),stop)
 
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)

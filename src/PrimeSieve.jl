@@ -3,7 +3,7 @@ module PrimeSieve
 include("../deps/deps.jl")
 import Base: convert, ccall
 
-export primes, nprimes
+export genprimes, nprimes
 
 export nthprime, snthprime
 
