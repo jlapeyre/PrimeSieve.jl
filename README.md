@@ -29,7 +29,7 @@ elapsed time: 3.76604437 seconds (152 bytes allocated)
 2623557413135520
 ```
 
-To see what happend, we can look in the tables:
+To see what happened, we can look in the tables:
 
 ```julia
 primelookup(10^17 + 10^10)
@@ -38,7 +38,7 @@ primelookup(10^17 + 10^10)
 
 The 14th table was used. The value of prime pi for ```10^7```,
 ```2623557157654233``` is in the table, and the primes in an
-interval of lengh ```10^10``` must be found with the sieves.
+interval of length ```10^10``` must be found with the sieves.
 
 See the description of ```primelookup`` below.
 
