@@ -141,6 +141,34 @@ for (cname,jname) in (
     end
 end
 
+for (cname,jname) in (
+                      (:(:primesieve_print_primes), :printprimes),
+                      (:(:primesieve_print_twins), :printprimes2),
+                      (:(:primesieve_print_triplets), :printprimes3),
+                      (:(:primesieve_print_quadruplets), :printprimes4),
+                      (:(:primesieve_print_quintuplets), :printprimes5),
+                      (:(:primesieve_print_sextuplets), :printprimes6))
+    @eval begin
+        function ($jname){T,V}(start::T, stop::V)
+            checkstop(stop)
+            (start,stop) = promote(start,stop)
+            try
+                ccall(($cname,libname),
+                      Void, (Uint64, Uint64),
+                      convert(Uint64,start), convert(Uint64,stop))
+            catch
+                throw(InterruptException())
+            end                
+        end
+        ($jname){T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = ($jname)(int64(start),int64(stop))        
+        ($jname){T<:FloatingPoint}(stop::T) = ($jname)(int64(1),int64(stop))
+        ($jname){T<:FloatingPoint}(start,stop::T) = ($jname)(start,int64(stop))
+        ($jname){T<:FloatingPoint}(start::T,stop) = ($jname)(int64(start),stop)
+        ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
+    end
+end
+                      
+
 primesievesize() = ccall((:primesieve_get_sieve_size, libname), Int, ())
 # following does not seem to work
 function primesievesize(sz)
