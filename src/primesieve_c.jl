@@ -59,7 +59,7 @@ genprimes(stop) = genprimes(one(typeof(stop)),stop)
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here    
     res = try
-        res = ccall((:primesieve_generate_n_primes, libname),
+        ccall((:primesieve_generate_n_primes, libname),
                     Ptr{T}, (Uint64, Uint64, Int),
                     convert(Uint64,n),convert(Uint64,start),primetype(T))
     catch
@@ -81,9 +81,13 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
     @eval begin
         function ($jname){T}(n,start::T)
             checkstart(start)
-            res = ccall(( $cname, libname),
+            res = try
+                ccall(( $cname, libname),
                          Ptr{Uint64}, (Int64, Uint64),
-                        convert(Int64,n),convert(Uint64,start))
+                      convert(Int64,n),convert(Uint64,start))
+            catch
+                throw(InterruptException())
+            end
             convert(T,res)
         end
         ($jname){T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = ($jname)(int64(n),int64(start))        
@@ -120,9 +124,13 @@ for (cname,jname) in (
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
             (start,stop) = promote(start,stop)
-            res = ccall(($cname,libname),
+            res = try
+                ccall(($cname,libname),
                         Ptr{Uint64}, (Uint64, Uint64),
-                        convert(Uint64,start), convert(Uint64,stop))
+                      convert(Uint64,start), convert(Uint64,stop))
+            catch
+                throw(InterruptException())
+            end                
             convert(typeof(start),res)
         end
         ($jname){T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = ($jname)(int64(start),int64(stop))        
