@@ -48,8 +48,9 @@ See the description of ```primelookup``` below.
 ### countprimes
 
 Count the number of primes (or prime tuplets) in an interval. This
-looks up the nearest tabulated value and computes the remaining
-values. This is the only function in the package that uses tables.
+looks up the largest value in the table that is smaller than the
+requested value and computes the remaining values. This is the only
+function in the package that uses tables.
 
 Usage:
 ```julia
