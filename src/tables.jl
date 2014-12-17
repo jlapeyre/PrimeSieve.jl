@@ -1,5 +1,6 @@
-import Base: getindex, length
+import Base: getindex, length, eltype
 export primetables, primelookup, primetableinfo, primetablefilename
+export primetabletype, primesievetype
 
 # A single table of π(x) with constant increment between values of x
 immutable PrimeTable
@@ -11,6 +12,10 @@ end
 
 length(t::PrimeTable) = length(t.data)
 getindex(t::PrimeTable,i) = (t.data)[i]
+eltype(t::PrimeTable) = eltype(t.data)
+getindex(t::Array{PrimeTable}, i,j) = t[i][j]
+primetabletype() = eltype(primetables[1])
+primesievetype() = Uint64
 
 #  Return a list (pi-tab, min, rem), where `pi-tab' is
 #  the value of prime pi function at argument `min',
@@ -109,7 +114,8 @@ function loadprimetables()
 end
 
 function primetableinfo()
-    println("Tables of π(x). Listed are: table number, increment in x (and first value of x),")
+    dtype = eltype(primetables[1])
+    println("Tables of π(x). element type: $dtype. Listed are: table number, increment in x (and first value of x),")
     println("number of entries in the table, largest x in table.\n")
     println("table  incr    tab len  max x")
     for i in 1:length(primetables)

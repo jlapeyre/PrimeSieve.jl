@@ -235,7 +235,30 @@ The largest start value that may be given is ```2^64 - 11 * 2^32```.
 The sieve works with the ```Uint64``` data type. But conversions are done depending
 on the types of start, stop, and n.
 
-```countprimes``` returns ```Int128```. The other routines only support smaller data types.
+```countprimes``` returns ```Int128```, because it uses tables and sieves
+The other routines only support smaller data types.
+
+### primetabletype()
+
+Return data type of tables. This should be Int128. The largest values cannot
+be used together with the sieve.
+
+### primesievetype()
+
+Return the native prime sieve type. This should be Uint64. libprimesieve
+returns the data in various integer formats. These are chosen by the Julia
+interface by the type of the ```start``` parameter.
+
+### eltype(t::PrimeTable)
+
+Return element type of values in table
+
+## Bugs
+
+Interrupting a call to the sieves usually does not cause a memory error.
+But, libprimesieve apparently has some static state, such that,
+after the interrupt, subsequent sieving runs much slower, and may not
+give correct results.
 
 <!--  LocalWords:  PrimeSieve lookup multi md libprimesieve OSX julia
  -->
@@ -247,5 +270,7 @@ on the types of start, stop, and n.
  -->
 <!--  LocalWords:  primesievesize primenumthreads numthreads Uint jl
  -->
-<!--  LocalWords:  primemaxstop primetest primetables PrimeTable
+<!--  LocalWords:  primemaxstop primetest primetables PrimeTable incr
  -->
+LocalWords:  Oliveira primetableinfo len primetablefilename eltype
+LocalWords:  primetabletype primesievetype
