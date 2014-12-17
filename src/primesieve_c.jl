@@ -2,6 +2,7 @@ const stoplimit = uint64(2)^64 - uint64(2)^32 * uint64(10)
 const startlimit = uint64(2)^64 - uint64(2)^32 * uint64(11)
 
 checkstop(val) = val <= stoplimit ? true : error("stop value ", val, " is greater than limit: ", val)
+
 checkstart(val) = val <= startlimit ? true : error("start value ", val, " is greater than limit: ", val)
 
 # Returned primes have this data type
@@ -23,7 +24,6 @@ for (ctype,typecode) in ((:Cshort, :SHORT_PRIMES),(:Cushort, :USHORT_PRIMES),
     end
 end
 
-#const libname = "primesieve/.libs/libprimesieve.so.4"
 const libname = "libprimesieve.so.4"
 
 # Copy the returned array, and free C array
@@ -68,7 +68,7 @@ function nprimes{T}(n::T,start)
     primescopy(res,n)
 end
 
-nprimes{T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = nprimes(int64(n),int64(start))        
+nprimes{T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = nprimes(int64(n),int64(start))
 nprimes{T<:FloatingPoint}(start::T) = nprimes(int64(start),1)
 nprimes{T<:FloatingPoint}(n,start::T) = nprimes(n,int64(start))
 nprimes{T<:FloatingPoint}(n::T,start) = nprimes(int64(n),start)
@@ -162,41 +162,6 @@ for (cname,jname) in (
     end
 end
 
-function printprimes(stop; tuplet::Int = 1)
-    if tuplet == 1
-        _printprimes(stop)
-    elseif tuplet == 2
-        printprimes2(stop)
-    elseif tuplet == 3
-        printprimes3(stop)
-    elseif tuplet == 4
-        printprimes4(stop)
-    elseif tuplet == 5
-        printprimes5(stop)
-    elseif tuplet == 6
-        printprimes6(stop)
-    else
-        error("tuplet must be between 1 and 6")
-    end
-end
-
-function printprimes(stop,start; tuplet::Int = 1)
-    if tuplet == 1
-        _printprimes(stop,start)
-    elseif tuplet == 2
-        printprimes2(stop,start)
-    elseif tuplet == 3
-        printprimes3(stop,start)
-    elseif tuplet == 4
-        printprimes4(stop,start)
-    elseif tuplet == 5
-        printprimes5(stop,start)
-    elseif tuplet == 6
-        printprimes6(stop,start)
-    else
-        error("tuplet must be between 1 and 6")
-    end
-end
 
 primesievesize() = ccall((:primesieve_get_sieve_size, libname), Int, ())
 # following does not seem to work

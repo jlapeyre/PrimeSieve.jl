@@ -28,6 +28,6 @@ export primesievesize, primetest, primenumthreads, primemaxstop
 
 include("primesieve_c.jl")
 include("tables.jl")
-
+include("wrappers.jl")
 
 end # module PrimeSieve
