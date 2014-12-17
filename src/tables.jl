@@ -63,7 +63,7 @@ function _countprimes(start,stop)
     convert(Int128, count2 - count1 + n2 - n1)
 end    
 
-function countprimes(stop; tuplet=1)
+function countprimes(stop; tuplet::Int = 1)
     if tuplet == 1
         _countprimes(stop)
     elseif tuplet == 2
@@ -81,7 +81,7 @@ function countprimes(stop; tuplet=1)
     end
 end
 
-function countprimes(stop,start; tuplet=1)
+function countprimes(stop,start; tuplet::Int = 1)
     if tuplet == 1
         _countprimes(stop,start)
     elseif tuplet == 2
@@ -99,7 +99,7 @@ function countprimes(stop,start; tuplet=1)
     end
 end
 
-function scountprimes(stop; tuplet=1)
+function scountprimes(stop; tuplet::Int = 1)
     if tuplet == 1
         _scountprimes(stop)
     elseif tuplet == 2
@@ -117,7 +117,7 @@ function scountprimes(stop; tuplet=1)
     end
 end
 
-function scountprimes(stop,start; tuplet=1)
+function scountprimes(stop,start; tuplet::Int = 1)
     if tuplet == 1
         _scountprimes(stop,start)
     elseif tuplet == 2

@@ -162,7 +162,7 @@ for (cname,jname) in (
     end
 end
 
-function printprimes(stop; tuplet=1)
+function printprimes(stop; tuplet::Int = 1)
     if tuplet == 1
         _printprimes(stop)
     elseif tuplet == 2
@@ -180,7 +180,7 @@ function printprimes(stop; tuplet=1)
     end
 end
 
-function printprimes(stop,start; tuplet=1)
+function printprimes(stop,start; tuplet::Int = 1)
     if tuplet == 1
         _printprimes(stop,start)
     elseif tuplet == 2
