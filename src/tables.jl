@@ -49,19 +49,91 @@ function primelookup(x)
 end
 
 # Look up prime pi in table, compute remaining primes
-function countprimes(stop)
+function _countprimes(stop)
     (count,i,rem) = piandrem(convert(Int128,stop))
     res = count + ntcountprimes(i,i+rem)
     convert(Int128,res)
 end
 
-function countprimes(start,stop)
+function _countprimes(start,stop)
     (count1,i1,rem1) = piandrem(convert(Int128,start))
     (count2,i2,rem2) = piandrem(convert(Int128,stop))
     n1 = ntcountprimes(i1,i1+rem1)
     n2 = ntcountprimes(i2,i2+rem2)
     convert(Int128, count2 - count1 + n2 - n1)
 end    
+
+function countprimes(stop; tuplet=1)
+    if tuplet == 1
+        _countprimes(stop)
+    elseif tuplet == 2
+        countprimes2(stop)
+    elseif tuplet == 3
+        countprimes3(stop)
+    elseif tuplet == 4
+        countprimes4(stop)
+    elseif tuplet == 5
+        countprimes5(stop)
+    elseif tuplet == 6
+        countprimes6(stop)
+    else
+        error("tuplet must be between 1 and 6")
+    end
+end
+
+function countprimes(stop,start; tuplet=1)
+    if tuplet == 1
+        _countprimes(stop,start)
+    elseif tuplet == 2
+        countprimes2(stop,start)
+    elseif tuplet == 3
+        countprimes3(stop,start)
+    elseif tuplet == 4
+        countprimes4(stop,start)
+    elseif tuplet == 5
+        countprimes5(stop,start)
+    elseif tuplet == 6
+        countprimes6(stop,start)
+    else
+        error("tuplet must be between 1 and 6")
+    end
+end
+
+function scountprimes(stop; tuplet=1)
+    if tuplet == 1
+        _scountprimes(stop)
+    elseif tuplet == 2
+        scountprimes2(stop)
+    elseif tuplet == 3
+        scountprimes3(stop)
+    elseif tuplet == 4
+        scountprimes4(stop)
+    elseif tuplet == 5
+        scountprimes5(stop)
+    elseif tuplet == 6
+        scountprimes6(stop)
+    else
+        error("tuplet must be between 1 and 6")
+    end
+end
+
+function scountprimes(stop,start; tuplet=1)
+    if tuplet == 1
+        _scountprimes(stop,start)
+    elseif tuplet == 2
+        scountprimes2(stop,start)
+    elseif tuplet == 3
+        scountprimes3(stop,start)
+    elseif tuplet == 4
+        scountprimes4(stop,start)
+    elseif tuplet == 5
+        scountprimes5(stop,start)
+    elseif tuplet == 6
+        scountprimes6(stop,start)
+    else
+        error("tuplet must be between 1 and 6")
+    end
+end
 
 # Read the tables from a binary data file.  First Int is number of
 # tables.  Second Int is number of elements in first table.  Next come

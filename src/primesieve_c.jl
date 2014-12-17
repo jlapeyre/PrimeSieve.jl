@@ -100,7 +100,7 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
 end
 
 for (cname,jname) in (
-                      (:(:primesieve_count_primes), :scountprimes),
+                      (:(:primesieve_count_primes), :_scountprimes),
                       (:(:primesieve_count_twins), :scountprimes2),
                       (:(:primesieve_count_triplets), :scountprimes3),
                       (:(:primesieve_count_quadruplets), :scountprimes4),
@@ -112,14 +112,8 @@ for (cname,jname) in (
                       (:(:primesieve_parallel_count_triplets), :countprimes3),
                       (:(:primesieve_parallel_count_quadruplets), :countprimes4),
                       (:(:primesieve_parallel_count_quintuplets), :countprimes5),
-                      (:(:primesieve_parallel_count_sextuplets), :countprimes6),
+                      (:(:primesieve_parallel_count_sextuplets), :countprimes6))
 
-                      (:(:primesieve_print_primes), :printprimes),
-                      (:(:primesieve_print_twins), :printprimes2),
-                      (:(:primesieve_print_triplets), :printprimes3),
-                      (:(:primesieve_print_quadruplets), :printprimes4),
-                      (:(:primesieve_print_quintuplets), :printprimes5),
-                      (:(:primesieve_print_sextuplets), :printprimes6))
     @eval begin
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
@@ -142,7 +136,7 @@ for (cname,jname) in (
 end
 
 for (cname,jname) in (
-                      (:(:primesieve_print_primes), :printprimes),
+                      (:(:primesieve_print_primes), :_printprimes),
                       (:(:primesieve_print_twins), :printprimes2),
                       (:(:primesieve_print_triplets), :printprimes3),
                       (:(:primesieve_print_quadruplets), :printprimes4),
@@ -167,7 +161,42 @@ for (cname,jname) in (
         ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
     end
 end
-                      
+
+function printprimes(stop; tuplet=1)
+    if tuplet == 1
+        _printprimes(stop)
+    elseif tuplet == 2
+        printprimes2(stop)
+    elseif tuplet == 3
+        printprimes3(stop)
+    elseif tuplet == 4
+        printprimes4(stop)
+    elseif tuplet == 5
+        printprimes5(stop)
+    elseif tuplet == 6
+        printprimes6(stop)
+    else
+        error("tuplet must be between 1 and 6")
+    end
+end
+
+function printprimes(stop,start; tuplet=1)
+    if tuplet == 1
+        _printprimes(stop,start)
+    elseif tuplet == 2
+        printprimes2(stop,start)
+    elseif tuplet == 3
+        printprimes3(stop,start)
+    elseif tuplet == 4
+        printprimes4(stop,start)
+    elseif tuplet == 5
+        printprimes5(stop,start)
+    elseif tuplet == 6
+        printprimes6(stop,start)
+    else
+        error("tuplet must be between 1 and 6")
+    end
+end
 
 primesievesize() = ccall((:primesieve_get_sieve_size, libname), Int, ())
 # following does not seem to work

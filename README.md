@@ -47,15 +47,30 @@ See the description of ```primelookup``` below.
 
 ### countprimes
 
-Count the number of primes in an interval. This looks up the nearest tabulated
-value and computes the remaining values. This is the only function in the
-package that uses tables.
+Count the number of primes (or prime tuplets) in an interval. This
+looks up the nearest tabulated value and computes the remaining
+values. This is the only function in the package that uses tables.
 
 Usage:
 ```julia
 countprimes(stop)            # count the number of primes less than or equal to stop
 countprimes(start,stop)      # count the number of primes >= start and <= stop
 ntcountprimes([start],stop)  # Do not use table lookup, only sieving
+countprimes([start], stop, tuplet=n) # Count prime n-tuplets
+```
+
+The default value of start is 1.
+The optional keyword argument 'tuplet' may take values between 1 and 6, that is
+primes, through prime sextuplets.
+
+Examples
+```julia
+countprimes(100)  # the number of primes x such that  1 <= x <= 100
+25
+countprimes(100,tuplet=3)  # the number of prime triplets between 1 and 100
+8
+countprimes(10,1000,tuplet=6)  # the number of prime sextuplets between 100 and 1000
+1     
 ```
 
 ### genprimes
@@ -75,37 +90,28 @@ Usage
 ```julia
 nprimes(n,[start=1])
 ```
-
-### countprimes2, countprimes3, countprimes4, countprimes5, countprimes6
-
-Count the number of prime twins, triplets, quadruplets, quintuplets, and sextuplets
-that are ```>= start``` and ```<= stop```
-
-Usage
-```julia
-countprimes2([start=1],stop)
-```
-
 ### single threaded versions
 
-Prepending 's' to the function name of any of the above routines
+Prepending 's' to the function name of any of the above functions
 calls a single-threaded version. There is no routine ```sntcountprimes```
 and ```scountprimes``` does not use tables.
 
 Usage
 ```julia
-scountprimes([start=1],stop)
+scountprimes([start],stop, tuplets=1)
 ```
 
-### printprimes2, printprimes3, printprimes4, printprimes5, printprimes6
+### printprimes
 
-Print all prime twins, triplets, quadruplets, quintuplets, and sextuplets
-that are ```>= start``` and ```<= stop```
+Print all primes (or prime n-tuplets) that are ```>= start``` and ```<= stop```
 
 Usage
 ```julia
-printprimes2([start=1],stop)
+printprimes([start],stop, [tuplet=1])
 ```
+
+The default value of 'start' is 1.
+The optional keyword argument 'tuplet' may take values between 1 and 6.
 
 ### primelookup
 
@@ -182,3 +188,16 @@ The sieve works with the ```Uint64``` data type. But conversions are done depend
 on the types of start, stop, and n.
 
 ```countprimes``` returns ```Int128```. The other routines only support smaller data types.
+
+<!--  LocalWords:  PrimeSieve lookup multi md libprimesieve OSX julia
+ -->
+<!--  LocalWords:  Primesieve countprimes primelookup th tuplets sz
+ -->
+<!--  LocalWords:  ntcountprimes tuplet genprimes nprimes Prepending
+ -->
+<!--  LocalWords:  sntcountprimes scountprimes printprimes tuple OMP
+ -->
+<!--  LocalWords:  primesievesize primenumthreads numthreads Uint jl
+ -->
+<!--  LocalWords:  primemaxstop primetest primetables PrimeTable
+ -->
