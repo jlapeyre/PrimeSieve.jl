@@ -62,7 +62,9 @@ countprimes([start], stop, tuplet=n) # Count prime n-tuplets
 
 The default value of start is 1.
 The optional keyword argument 'tuplet' may take values between 1 and 6, that is
-primes, through prime sextuplets.
+primes, through prime sextuplets. Tables are implemented only for
+'tuplet' equal to one, although Oliveira e Silva has compiled tables for
+twin primes.
 
 Examples
 ```julia
