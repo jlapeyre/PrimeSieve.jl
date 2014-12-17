@@ -1,5 +1,5 @@
 import Base: getindex, length
-export primetables, primelookup
+export primetables, primelookup, primetableinfo, primetablefilename
 
 # A single table of π(x) with constant increment between values of x
 immutable PrimeTable
@@ -63,13 +63,19 @@ function _countprimes(start,stop)
     convert(Int128, count2 - count1 + n2 - n1)
 end    
 
+const _primetablefilename = Pkg.dir("PrimeSieve") * "/data/primetables128bin.dat"
+primetablefilename() = _primetablefilename
 
 # Read the tables from a binary data file.  First Int is number of
 # tables.  Second Int is number of elements in first table.  Next come
 # all the elements in the table, then the number of elements for the
 # next table, etc.
 function _readbintables()
-    fn = Pkg.dir("PrimeSieve") * "/data/primetables128bin.dat"
+    fn = primetablefilename()
+    if stat(fn).inode == 0
+        error("Can't find file containing prime tables, $fn\n"
+              * "Maybe your package installation is corrupt.")
+    end
     mystream = open(fn)
     buf = zeros(Int,1)
     read!(mystream,buf)
@@ -100,6 +106,22 @@ function loadprimetables()
         tables[i] = pt
     end
     tables
+end
+
+function primetableinfo()
+    println("Tables of π(x). Listed are: table number, increment in x (and first value of x),")
+    println("number of entries in the table, largest x in table.\n")
+    println("table  incr    tab len  max x")
+    for i in 1:length(primetables)
+        t = primetables[i]
+        l = length(t)
+        ip = rpad("$i",6)
+        incr = rpad("10^$i",7)
+        ll = int(log10(l))
+        len = rpad("10^$ll",8)
+        maxn = "10^$(ll+i)"
+        println("$ip $incr $len $maxn")    
+    end
 end
 
 # Read the tables now.

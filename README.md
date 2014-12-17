@@ -113,27 +113,6 @@ printprimes([start],stop, [tuplet=1])
 The default value of 'start' is 1.
 The optional keyword argument 'tuplet' may take values between 1 and 6.
 
-### primelookup
-
-Look up a value of the prime pi function in the tables. This is only provided
-to aid in understanding the behavior of ```countprimes```.
-
-Usage
-```julia
-primelookup(x)
-```
-
-A tuple of a single element and another tuple of three elements is returned:
-
-```julia
-(j,(p,y,rem))
-```
-* ```j``` is the number of the best table found
-* ```y``` is the largest index satisfying ```y<x``` found.
-* ```p``` is the value of prime pi at ```y```
-* ```rem``` is ```x-y```
-
-
 ### primesievesize
 
 Get, set the sieve size in kilobytes. (setting does not seem to work)
@@ -175,10 +154,76 @@ Usage
 primetest()
 ```
 
+## Tables of prime pi function
+
+### primetableinfo
+
+Print information about the prime pi tables.
+
+```julia
+julia> primetableinfo()
+Tables of π(x). Listed are: table number, increment in x (and first value of x),
+number of entries in the table, largest x in table.
+
+table  incr    tab len  max x
+1      10^1    10^4     10^5
+2      10^2    10^4     10^6
+3      10^3    10^4     10^7
+4      10^4    10^4     10^8
+5      10^5    10^4     10^9
+6      10^6    10^4     10^10
+7      10^7    10^4     10^11
+8      10^8    10^4     10^12
+9      10^9    10^4     10^13
+10     10^10   10^4     10^14
+11     10^11   10^4     10^15
+12     10^12   10^4     10^16
+13     10^13   10^4     10^17
+14     10^14   10^4     10^18
+15     10^15   10^4     10^19
+16     10^16   10^4     10^20
+17     10^17   10^3     10^20
+18     10^18   10^2     10^20
+19     10^19   10^2     10^21
+20     10^20   10^2     10^22
+21     10^21   10^2     10^23
+22     10^22   10^1     10^23
+```
+
+### primelookup
+
+Look up a value of the prime pi function in the tables. This is only provided
+to aid in understanding the behavior of ```countprimes```.
+
+Usage
+```julia
+primelookup(x)
+```
+
+A tuple of a single element and another tuple of three elements is returned:
+
+```julia
+(j,(p,y,rem))
+```
+* ```j``` is the number of the best table found
+* ```y``` is the largest index satisfying ```y<x``` found.
+* ```p``` is the value of prime pi at ```y```
+* ```rem``` is ```x-y```
+
 ### primetables
 
 The array of type ```Array{PrimeTable,1}``` containing the prime tables.
 See tables.jl for the format.
+
+Example
+```julia
+show(map(length,primetables)) # see the number of tables and their lengths
+```
+
+### primetablefilename
+
+Function returning the path to the file containing the prime pi tables.
+The tables are loaded when the package is loaded.
 
 ## Other details
 
