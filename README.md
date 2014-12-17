@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/jlapeyre/PrimeSieve.jl.svg?branch=master)](https://travis-ci.org/jlapeyre/PrimeSieve.jl)
 
-This package provides an interface to tables of primes and a sieve library.
-It is extremely fast, in particular the prime pi function, which is complemented
-by table lookup. There are multi-threaded and single-threaded versions of
-most functions.
+This package provides an interface to tables of primes and a sieve
+library.  It is extremely fast, in particular the prime pi function,
+which combines sieving with table lookup. There are multi-threaded and
+single-threaded versions of most functions.
 
 See LICENSE.md for links to the authors of the tables and the library. All
 the credit for the utility of this package goes to them.
@@ -25,25 +25,25 @@ http://primesieve.org/
 
 ```julia
 julia> using PrimeSieve
-
-julia> @time countprimes(10^17 + 10^10)
-elapsed time: 3.76604437 seconds (152 bytes allocated)
-2623557413135520
+julia> @time countprimes(10^17 + 10^14 + 10^10)
+elapsed time: 3.729049749 seconds (168 bytes allocated)
+2626112053757377
 ```
 
 To see what happened, we can look in the tables:
 
 ```julia
-julia> primelookup(10^17 + 10^10)
-(14,(2623557157654233,100000000000000000,10000000000))
+julia> primelookup(10^17 + 10^14 + 10^10)
+(14,(2626111798288135,100100000000000000,10000000000))
 ```
 
-The 14th table was used. The value of prime pi for ```10^17```,
-```2623557157654233``` is in the table, and the primes in an
+The 14th table was used. The value of prime pi for ```10^17+10^14```,
+```2626111798288135``` is in the table, and the primes in an
 interval of length ```10^10``` must be found with the sieves.
 
 See the description of ```primelookup``` below.
 
+## Functions
 
 ### countprimes
 
