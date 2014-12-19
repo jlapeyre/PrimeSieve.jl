@@ -24,7 +24,7 @@ http://primesieve.org/
 ### Data types
 
 There is a risk of overflow when contstructing and giving arguments to
-funcions in this package. The easiest way to avoid this is to put arguments in
+functions in this package. The easiest way to avoid this is to put arguments in
 quotes: eg ```countprimes("10^19", "10^19+100")```.
 
 ### Example
