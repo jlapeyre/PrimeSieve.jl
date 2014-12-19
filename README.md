@@ -23,7 +23,7 @@ http://primesieve.org/
 
 ### Data types
 
-There is a risk of overflow when contstructing and giving arguments to
+There is a risk of overflow when constructing and giving arguments to
 functions in this package. The easiest way to avoid this is to put arguments in
 quotes: eg ```countprimes("10^19", "10^19+100")```.
 
@@ -255,13 +255,13 @@ This example returned a value from the table.
 The argument was larger than than primemaxstop().
 
 
-With any of the routines, you can quote the arguements and they will be converted
+With any of the routines, you can quote the arguments and they will be converted
 to the appropriate type.
 
 ```julia
 julia> countprimes(:(10^23))
 1925320391606803968923
-julia> countprimes(:(10^19 + 10^9))
+julia> countprimes("10^19 + 10^9")
 234057667299198865
 ```
 
@@ -313,5 +313,5 @@ give correct results.
  -->
 <!--  LocalWords:  primemaxstop primetest primetables PrimeTable incr
  -->
-LocalWords:  Oliveira primetableinfo len primetablefilename eltype
-LocalWords:  primetabletype primesievetype
+LocalWords:  Oliveira primetableinfo len primetablefilename eltype eg
+LocalWords:  primetabletype primesievetype typemax
