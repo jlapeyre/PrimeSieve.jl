@@ -33,6 +33,7 @@ http://primesieve.org/
 
 ### Data types
 
+The tables are encoded in Int128. The native type of the sieve is Uint64.
 There is a risk of overflow when constructing and giving arguments to
 functions in this package. The easiest way to avoid this is to put arguments in
 quotes: eg ```countprimes("10^19", "10^19+100")```.
