@@ -47,6 +47,7 @@ end
 # return array of primes between start and stop
 genprimes{T<:FloatingPoint}(start::Expr, stop::T) = genprimes(convu64(start),stop)
 genprimes{T<:FloatingPoint}(start::T, stop::Expr) = genprimes(start,convu64(stop))
+genprimes(start::Expr, stop::Expr) = genprimes(convu64(start),convu64(stop))
 
 function genprimes{T,V}(start::T,stop::V)
     checkstop(stop)

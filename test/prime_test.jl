@@ -20,3 +20,5 @@ c = 100000
 
 @test countprimes(:(10^19)) == 234057667276344607
 @test countprimes(:(10^19 + 10^9)) == 234057667299198865
+
+@test length(genprimes(genprimes(:(10^19) , :(10^19+10^3)))) == 28
