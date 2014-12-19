@@ -3,13 +3,8 @@
 # Unquoted expressions pass through
 @mkdeepconvert(conv128,int128)
 @mkdeepconvert(convu64,uint64)
-# for (f, xtype) in ( (:conv128, :int128), (:convu64, :uint64))
-#     @eval begin
-#         ($f)(ex::Expr) = eval(Expr(ex.head, map((x)->(typeof(x) == Expr ?
-#               ($f)(x) : typeof(x) <: Real ? ($xtype)(x) : x), ex.args)...))
-#     ($f)(x) = x
-#     end
-# end
+
+typealias ConvT Union(Expr,String)
 
 const stoplimit = convu64( :(2^64 - 2^32 * 10) )
 const startlimit = convu64( :(2^64 - 2^32 * 11) )
@@ -47,7 +42,7 @@ function primescopy(res,n)
 end
 
 # return array of primes between start and stop
-genprimes(start::Expr, stop::Expr) = genprimes(convu64(start),convu64(stop))
+genprimes(start::ConvT, stop::ConvT) = genprimes(convu64(start),convu64(stop))
 
 function genprimes{T,V}(start::T,stop::V)
     checkstop(stop)
@@ -62,7 +57,7 @@ function genprimes{T,V}(start::T,stop::V)
     primescopy(res,n[1])
 end
 
-genprimes(stop::Expr) = genprimes(one(typeof(convu64(stop))),convu64(stop))
+genprimes(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
 genprimes(stop) = genprimes(one(typeof(stop)),stop)
 
 # return array of the first n primes >= start

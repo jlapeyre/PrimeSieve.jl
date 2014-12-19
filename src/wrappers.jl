@@ -1,5 +1,5 @@
-countprimes(stop::Expr; tuplet::Int = 1) = countprimes(conv128(stop),tuplet)
-countprimes(stop::Expr) = countprimes(conv128(stop))
+countprimes(stop::ConvT; tuplet::Int = 1) = countprimes(conv128(stop),tuplet)
+countprimes(stop::ConvT) = countprimes(conv128(stop))
 function countprimes(stop; tuplet::Int = 1)
     if tuplet == 1
         _countprimes(stop)
@@ -18,8 +18,8 @@ function countprimes(stop; tuplet::Int = 1)
     end
 end
 
-countprimes(start::Expr, stop::Expr; tuplet::Int = 1) = countprimes(conv128(start),conv128(stop),tuplet)
-countprimes(start::Expr, stop::Expr) = countprimes(conv128(start),conv128(stop))
+countprimes(start::ConvT, stop::ConvT; tuplet::Int = 1) = countprimes(conv128(start),conv128(stop),tuplet)
+countprimes(start::ConvT, stop::ConvT) = countprimes(conv128(start),conv128(stop))
 function countprimes(start,stop; tuplet::Int = 1)
     if tuplet == 1
         _countprimes(start,stop)
@@ -38,8 +38,8 @@ function countprimes(start,stop; tuplet::Int = 1)
     end
 end
 
-scountprimes(stop::Expr; tuplet::Int = 1) = scountprimes(conv128(stop),tuplet)
-scountprimes(stop::Expr) = scountprimes(conv128(stop))
+scountprimes(stop::ConvT; tuplet::Int = 1) = scountprimes(conv128(stop),tuplet)
+scountprimes(stop::ConvT) = scountprimes(conv128(stop))
 function scountprimes(stop; tuplet::Int = 1)
     if tuplet == 1
         _scountprimes(stop)
@@ -58,8 +58,8 @@ function scountprimes(stop; tuplet::Int = 1)
     end
 end
 
-scountprimes(start::Expr, stop::Expr; tuplet::Int = 1) = scountprimes(conv128(start),conv128(stop),tuplet)
-scountprimes(start::Expr, stop::Expr) = scountprimes(conv128(start),conv128(stop))
+scountprimes(start::ConvT, stop::ConvT; tuplet::Int = 1) = scountprimes(conv128(start),conv128(stop),tuplet)
+scountprimes(start::ConvT, stop::ConvT) = scountprimes(conv128(start),conv128(stop))
 function scountprimes(start,stop; tuplet::Int = 1)
     if tuplet == 1
         _scountprimes(start,stop)
@@ -78,8 +78,8 @@ function scountprimes(start,stop; tuplet::Int = 1)
     end
 end
 
-printprimes(stop::Expr; tuplet::Int = 1) = printprimes(conv128(stop),tuplet)
-printprimes(stop::Expr) = printprimes(conv128(stop))
+printprimes(stop::ConvT; tuplet::Int = 1) = printprimes(conv128(stop),tuplet)
+printprimes(stop::ConvT) = printprimes(conv128(stop))
 function printprimes(stop; tuplet::Int = 1)
     if tuplet == 1
         _printprimes(stop)
@@ -98,8 +98,8 @@ function printprimes(stop; tuplet::Int = 1)
     end
 end
 
-printprimes(start::Expr, stop::Expr; tuplet::Int = 1) = printprimes(conv128(start),conv128(stop),tuplet)
-printprimes(start::Expr, stop::Expr) = printprimes(conv128(start),conv128(stop))
+printprimes(start::ConvT, stop::ConvT; tuplet::Int = 1) = printprimes(conv128(start),conv128(stop),tuplet)
+printprimes(start::ConvT, stop::ConvT) = printprimes(conv128(start),conv128(stop))
 function printprimes(start,stop; tuplet::Int = 1)
     if tuplet == 1
         _printprimes(start,stop)
