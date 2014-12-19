@@ -18,10 +18,10 @@ function countprimes(stop; tuplet::Int = 1)
     end
 end
 
-countprimes{T<:FloatingPoint}(start::Expr, stop::T; tuplet::Int = 1) = countprimes(conv128(start),stop,tuplet)
-countprimes{T<:FloatingPoint}(start::T, stop::Expr; tuplet::Int = 1) = countprimes(start,conv128(stop),tuplet)
-countprimes{T<:FloatingPoint}(start::Expr, stop::T) = countprimes(conv128(start),stop)
-countprimes{T<:FloatingPoint}(start::T, stop::Expr) = countprimes(start,conv128(stop))
+# countprimes{T<:FloatingPoint}(start::Expr, stop::T; tuplet::Int = 1) = countprimes(conv128(start),stop,tuplet)
+# countprimes{T<:FloatingPoint}(start::T, stop::Expr; tuplet::Int = 1) = countprimes(start,conv128(stop),tuplet)
+# countprimes{T<:FloatingPoint}(start::Expr, stop::T) = countprimes(conv128(start),stop)
+# countprimes{T<:FloatingPoint}(start::T, stop::Expr) = countprimes(start,conv128(stop))
 countprimes(start::Expr, stop::Expr; tuplet::Int = 1) = countprimes(conv128(start),conv128(stop),tuplet)
 countprimes(start::Expr, stop::Expr) = countprimes(conv128(start),conv128(stop))
 function countprimes(start,stop; tuplet::Int = 1)
@@ -62,10 +62,10 @@ function scountprimes(stop; tuplet::Int = 1)
     end
 end
 
-scountprimes{T<:FloatingPoint}(start::Expr, stop::T; tuplet::Int = 1) = scountprimes(start,conv128(stop),tuplet)
-scountprimes{T<:FloatingPoint}(start::T, stop::Expr; tuplet::Int = 1) = scountprimes(start,conv128(stop),tuplet)
-scountprimes{T<:FloatingPoint}(start::Expr, stop::T) = scountprimes(conv128(start),stop)
-scountprimes{T<:FloatingPoint}(start::T, stop::Expr) = scountprimes(start,conv128(stop))
+# scountprimes{T<:FloatingPoint}(start::Expr, stop::T; tuplet::Int = 1) = scountprimes(start,conv128(stop),tuplet)
+# scountprimes{T<:FloatingPoint}(start::T, stop::Expr; tuplet::Int = 1) = scountprimes(start,conv128(stop),tuplet)
+# scountprimes{T<:FloatingPoint}(start::Expr, stop::T) = scountprimes(conv128(start),stop)
+# scountprimes{T<:FloatingPoint}(start::T, stop::Expr) = scountprimes(start,conv128(stop))
 scountprimes(start::Expr, stop::Expr; tuplet::Int = 1) = scountprimes(conv128(start),conv128(stop),tuplet)
 scountprimes(start::Expr, stop::Expr) = scountprimes(conv128(start),conv128(stop))
 function scountprimes(start,stop; tuplet::Int = 1)
@@ -106,10 +106,10 @@ function printprimes(stop; tuplet::Int = 1)
     end
 end
 
-printprimes{T<:FloatingPoint}(start::Expr, stop::T; tuplet::Int = 1) = printprimes(start,conv128(stop),tuplet)
-printprimes{T<:FloatingPoint}(start::T, stop::Expr; tuplet::Int = 1) = printprimes(start,conv128(stop),tuplet)
-printprimes{T<:FloatingPoint}(start::Expr, stop::T) = printprimes(conv128(start),stop)
-printprimes{T<:FloatingPoint}(start::T, stop::Expr) = printprimes(start,conv128(stop))
+# printprimes{T<:FloatingPoint}(start::Expr, stop::T; tuplet::Int = 1) = printprimes(start,conv128(stop),tuplet)
+# printprimes{T<:FloatingPoint}(start::T, stop::Expr; tuplet::Int = 1) = printprimes(start,conv128(stop),tuplet)
+# printprimes{T<:FloatingPoint}(start::Expr, stop::T) = printprimes(conv128(start),stop)
+# printprimes{T<:FloatingPoint}(start::T, stop::Expr) = printprimes(start,conv128(stop))
 printprimes(start::Expr, stop::Expr; tuplet::Int = 1) = printprimes(conv128(start),conv128(stop),tuplet)
 printprimes(start::Expr, stop::Expr) = printprimes(conv128(start),conv128(stop))
 function printprimes(start,stop; tuplet::Int = 1)
