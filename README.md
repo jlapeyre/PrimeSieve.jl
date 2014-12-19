@@ -21,6 +21,12 @@ http://www.ieeta.pt/~tos/primes.html
 
 http://primesieve.org/
 
+### Data types
+
+There is a risk of overflow when contstructing and giving arguments to
+funcions in this package. The easiest way to avoid this is to put arguments in
+quotes: eg ```countprimes("10^19", "10^19+100")```.
+
 ### Example
 
 ```julia
@@ -76,12 +82,12 @@ countprimes(10,1000,tuplet=6)  # the number of prime sextuplets between 100 and 
 1     
 ```
 
-If you quote the arguments, they will be converted to Int128. This prevents overflow.
+If you quote the arguments (either as an expression or a string),
+they will be converted to Int128. This prevents overflow.
 ```
-countprimes(:(10^19+10^9))
+countprimes("10^19+10^9")
 234057667299198865
 ```
-
 
 ### genprimes
 

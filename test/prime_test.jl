@@ -14,10 +14,15 @@ c = 100000
 @test countprimes(a,b) == ntcountprimes(a,b)
 @test genprimes(c) == Base.primes(c)
 
+@test typeof(genprimes("10")[1]) == Uint64
+@test typeof(nprimes("10")[1]) == Uint64
+
 # fixed overflow bugs
 @test countprimes(int128(10)^19,int128(10)^19+10^3) == 28
 @test countprimes(int128(10)^19+10^9) == int128(234057667299198865)
 
 @test countprimes(:(10^19)) == 234057667276344607
 @test countprimes("10^19 + 10^9") == 234057667299198865
-@test countprimes("10^20")
+@test countprimes("10^20") == 2220819602560918840
+
+@test typeof(primelookup("2^63")) == (Int64,(Int128,Int128,Int128))

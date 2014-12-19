@@ -43,6 +43,7 @@ function piandrem{T<:Real}(x::T)
 end
 
 function primelookup(x)
+    x = conv128(x)
     j = 0
     for i in 1:length(primetables)
         t = primetables[i]

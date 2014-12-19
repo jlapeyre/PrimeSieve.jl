@@ -3,6 +3,7 @@
 # Unquoted expressions pass through
 @mkdeepconvert(conv128,int128)
 @mkdeepconvert(convu64,uint64)
+@mkdeepconvert(convint,int64)
 
 typealias ConvT Union(Expr,String)
 
@@ -43,6 +44,8 @@ end
 
 # return array of primes between start and stop
 genprimes(start::ConvT, stop::ConvT) = genprimes(convu64(start),convu64(stop))
+genprimes(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
+genprimes(stop) = genprimes(one(typeof(stop)),stop)
 
 function genprimes{T,V}(start::T,stop::V)
     checkstop(stop)
@@ -57,9 +60,10 @@ function genprimes{T,V}(start::T,stop::V)
     primescopy(res,n[1])
 end
 
-genprimes(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
-genprimes(stop) = genprimes(one(typeof(stop)),stop)
-
+nprimes(n::ConvT,start::ConvT) = nprimes(convu64(n),convu64(start))
+nprimes(n,start::ConvT) = nprimes(n,convu64(start))
+nprimes(n::ConvT,start) = nprimes(convu64(n),start)
+nprimes(n::ConvT) = nprimes(convu64(n),one(Uint64))
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here    
@@ -72,7 +76,6 @@ function nprimes{T}(n::T,start)
     end        
     primescopy(res,n)
 end
-
 nprimes(start) = nprimes(one(typeof(start)),start)        
 nprimes(n) = nprimes(n,one(typeof(n)))
 
