@@ -6,7 +6,6 @@ for (typef, ptype) in ((:int32, :Int32), (:int64 ,:Int64), (:uint64 ,:Uint64))
     end
 end
 
-
 a = 2423842346
 b = 7392340328
 c = 100000
@@ -21,4 +20,4 @@ c = 100000
 @test countprimes(:(10^19)) == 234057667276344607
 @test countprimes(:(10^19 + 10^9)) == 234057667299198865
 
-@test length(genprimes(genprimes(:(10^19) , :(10^19+10^3)))) == 28
+@test length(genprimes(:(10^19) , :(10^19+10^3))) == 28
