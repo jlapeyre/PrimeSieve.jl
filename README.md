@@ -76,7 +76,7 @@ countprimes(10,1000,tuplet=6)  # the number of prime sextuplets between 100 and 
 1     
 ```
 
-If you quote the arguments, they will be converted to Int128.
+If you quote the arguments, they will be converted to Int128. This prevents overflow.
 ```
 countprimes(:(10^19+10^9))
 234057667299198865
