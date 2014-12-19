@@ -65,8 +65,6 @@ end
 genprimes(stop::Expr) = genprimes(one(typeof(convu64(stop))),convu64(stop))
 genprimes(stop) = genprimes(one(typeof(stop)),stop)
 
-#nprimes{T<:FloatingPoint}(n::Expr, stop::T) = nprimes(convu64(n),stop)
-#nprimes{T<:FloatingPoint}(n::T, stop::Expr) = nprimes(n,convu64(stop))
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here    
@@ -80,10 +78,6 @@ function nprimes{T}(n::T,start)
     primescopy(res,n)
 end
 
-#nprimes{T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = nprimes(int64(n),int64(start))
-#nprimes{T<:FloatingPoint}(start::T) = nprimes(int64(start),1)
-#nprimes{T<:FloatingPoint}(n,start::T) = nprimes(n,int64(start))
-#nprimes{T<:FloatingPoint}(n::T,start) = nprimes(int64(n),start)
 nprimes(start) = nprimes(one(typeof(start)),start)        
 nprimes(n) = nprimes(n,one(typeof(n)))
 
@@ -91,8 +85,6 @@ nprimes(n) = nprimes(n,one(typeof(n)))
 for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
                       (:(:primesieve_parallel_nth_prime), :nthprime))
     @eval begin
-#        ($jname){T<:FloatingPoint}(n::Expr, stop::T) = ($jname)(convu64(n),stop)
-#        ($jname){T<:FloatingPoint}(n::T, stop::Expr) = ($jname)(n,convu64(stop))        
         function ($jname){T}(n,start::T)
             checkstart(start)
             res = try
@@ -104,10 +96,6 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
             end
             convert(T,res)
         end
-        # ($jname){T<:FloatingPoint,V<:FloatingPoint}(n::T,start::V) = ($jname)(int64(n),int64(start))        
-        # ($jname){T<:FloatingPoint}(start::T) = ($jname)(int64(start),1)
-        # ($jname){T<:FloatingPoint}(n,start::T) = ($jname)(n,int64(start))
-        # ($jname){T<:FloatingPoint}(n::T,start) = ($jname)(int64(n),start)
         ($jname)(start) = ($jname)(one(typeof(start)),start)        
         ($jname)(n) = ($jname)(n,1)
     end
@@ -129,8 +117,6 @@ for (cname,jname) in (
                       (:(:primesieve_parallel_count_sextuplets), :countprimes6))
 
     @eval begin
-#        ($jname){T<:FloatingPoint}(n::Expr, stop::T) = ($jname)(convu64(n),stop)
-#        ($jname){T<:FloatingPoint}(n::T, stop::Expr) = ($jname)(n,convu64(stop))        
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
             (start,stop) = promote(start,stop)
@@ -143,10 +129,6 @@ for (cname,jname) in (
             end                
             convert(typeof(start),res)
         end
-        # ($jname){T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = ($jname)(int64(start),int64(stop))        
-        # ($jname){T<:FloatingPoint}(stop::T) = ($jname)(int64(1),int64(stop))
-        # ($jname){T<:FloatingPoint}(start,stop::T) = ($jname)(start,int64(stop))
-        # ($jname){T<:FloatingPoint}(start::T,stop) = ($jname)(int64(start),stop)
         ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
     end
 end
@@ -159,8 +141,6 @@ for (cname,jname) in (
                       (:(:primesieve_print_quintuplets), :printprimes5),
                       (:(:primesieve_print_sextuplets), :printprimes6))
     @eval begin
-#        ($jname){T<:FloatingPoint}(n::Expr, stop::T) = ($jname)(convu64(n),stop)
-#        ($jname){T<:FloatingPoint}(n::T, stop::Expr) = ($jname)(n,convu64(stop))        
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
             (start,stop) = promote(start,stop)
@@ -172,10 +152,6 @@ for (cname,jname) in (
                 throw(InterruptException())
             end                
         end
-        # ($jname){T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = ($jname)(int64(start),int64(stop))        
-        # ($jname){T<:FloatingPoint}(stop::T) = ($jname)(int64(1),int64(stop))
-        # ($jname){T<:FloatingPoint}(start,stop::T) = ($jname)(start,int64(stop))
-        # ($jname){T<:FloatingPoint}(start::T,stop) = ($jname)(int64(start),stop)
         ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
     end
 end
