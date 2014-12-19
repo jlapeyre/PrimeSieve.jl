@@ -10,6 +10,8 @@ immutable PrimeTable
     expn::Int              # log10(incr), an integer
 end    
 
+const Zero = zero(Int128)
+
 length(t::PrimeTable) = length(t.data)
 getindex(t::PrimeTable,i) = (t.data)[i]
 eltype(t::PrimeTable) = eltype(t.data)
@@ -31,7 +33,7 @@ function piandrem{T<:Real}(x::T)
     j = 0
     for i in 1:length(primetables)
         t = primetables[i]
-        if x < t.maxn
+        if x <= t.maxn
             j = i
             break
         end
@@ -55,16 +57,19 @@ end
 
 # Look up prime pi in table, compute remaining primes
 function _countprimes(stop)
-    (count,i,rem) = piandrem(convert(Int128,stop))
-    res = count + ntcountprimes(i,i+rem)
-    convert(Int128,res)
+    (count,i,rem) = piandrem(int128(stop))
+    if (rem == Zero)
+        return convert(Int128,count)
+    else
+        return convert(Int128,count+ntcountprimes(i,i+rem))
+    end
 end
 
 function _countprimes(start,stop)
-    (count1,i1,rem1) = piandrem(convert(Int128,start))
-    (count2,i2,rem2) = piandrem(convert(Int128,stop))
-    n1 = ntcountprimes(i1,i1+rem1)
-    n2 = ntcountprimes(i2,i2+rem2)
+    (count1,i1,rem1) = piandrem(int128(start))
+    (count2,i2,rem2) = piandrem(int128(stop))
+    n1 = rem1 == Zero ? Zero : ntcountprimes(i1,i1+rem1)
+    n2 = rem2 == Zero ? Zero : ntcountprimes(i2,i2+rem2)
     convert(Int128, count2 - count1 + n2 - n1)
 end    
 
@@ -101,11 +106,11 @@ end
 function loadprimetables()
     bintables = _readbintables()
     tables = Array(PrimeTable,length(bintables))
-    base = 10
+    base = int128(10)
     for i in 1:length(bintables)
         data = bintables[i]
         expn = i
-        incr = 10^expn
+        incr = base^expn
         maxn = incr * length(data)
         pt = PrimeTable(data,incr,maxn,expn)
         tables[i] = pt

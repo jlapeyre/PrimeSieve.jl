@@ -1,8 +1,18 @@
-const stoplimit = uint64(2)^64 - uint64(2)^32 * uint64(10)
-const startlimit = uint64(2)^64 - uint64(2)^32 * uint64(11)
+# Convert numbers to Int128 or Uint64, hopefully the subexpressions
+# have not overflowed.  Eg. 10^19.
+# Unquoted expressions pass through
+for (f, xtype) in ( (:conv128, :int128), (:convu64, :uint64))
+    @eval begin
+        ($f)(ex::Expr) = eval(Expr(ex.head, map((x)->(typeof(x) == Expr ?
+              ($f)(x) : typeof(x) <: Real ? ($xtype)(x) : x), ex.args)...))
+    ($f)(x) = x
+    end
+end
+
+const stoplimit = convu64( :(2^64 - 2^32 * 10) )
+const startlimit = convu64( :(2^64 - 2^32 * 11) )
 
 checkstop(val) = val <= stoplimit ? true : error("stop value ", val, " is greater than limit: ", val)
-
 checkstart(val) = val <= startlimit ? true : error("start value ", val, " is greater than limit: ", val)
 
 # Returned primes have this data type
@@ -35,6 +45,9 @@ function primescopy(res,n)
 end
 
 # return array of primes between start and stop
+genprimes{T<:FloatingPoint}(start::Expr, stop::T) = genprimes(convu64(start),stop)
+genprimes{T<:FloatingPoint}(start::T, stop::Expr) = genprimes(start,convu64(stop))
+
 function genprimes{T,V}(start::T,stop::V)
     checkstop(stop)
     n = Csize_t[0]
@@ -49,12 +62,17 @@ function genprimes{T,V}(start::T,stop::V)
 end
 
 # not really the Julia way...
+# we should discourage floating point, anyway.
 genprimes{T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = genprimes(int64(start),int64(stop))        
 genprimes{T<:FloatingPoint}(stop::T) = genprimes(int64(1),int64(stop))
 genprimes{T<:FloatingPoint}(start,stop::T) = genprimes(start,int64(stop))
 genprimes{T<:FloatingPoint}(start::T,stop) = genprimes(int64(start),stop)
+
+genprimes(stop::Expr) = genprimes(one(typeof(convu64(stop))),convu64(stop))
 genprimes(stop) = genprimes(one(typeof(stop)),stop)
 
+nprimes{T<:FloatingPoint}(n::Expr, stop::T) = nprimes(convu64(n),stop)
+nprimes{T<:FloatingPoint}(n::T, stop::Expr) = nprimes(n,convu64(stop))
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here    
@@ -79,6 +97,8 @@ nprimes(n) = nprimes(n,one(typeof(n)))
 for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
                       (:(:primesieve_parallel_nth_prime), :nthprime))
     @eval begin
+        ($jname){T<:FloatingPoint}(n::Expr, stop::T) = ($jname)(convu64(n),stop)
+        ($jname){T<:FloatingPoint}(n::T, stop::Expr) = ($jname)(n,convu64(stop))        
         function ($jname){T}(n,start::T)
             checkstart(start)
             res = try
@@ -115,6 +135,8 @@ for (cname,jname) in (
                       (:(:primesieve_parallel_count_sextuplets), :countprimes6))
 
     @eval begin
+        ($jname){T<:FloatingPoint}(n::Expr, stop::T) = ($jname)(convu64(n),stop)
+        ($jname){T<:FloatingPoint}(n::T, stop::Expr) = ($jname)(n,convu64(stop))        
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
             (start,stop) = promote(start,stop)
@@ -143,6 +165,8 @@ for (cname,jname) in (
                       (:(:primesieve_print_quintuplets), :printprimes5),
                       (:(:primesieve_print_sextuplets), :printprimes6))
     @eval begin
+        ($jname){T<:FloatingPoint}(n::Expr, stop::T) = ($jname)(convu64(n),stop)
+        ($jname){T<:FloatingPoint}(n::T, stop::Expr) = ($jname)(n,convu64(stop))        
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
             (start,stop) = promote(start,stop)

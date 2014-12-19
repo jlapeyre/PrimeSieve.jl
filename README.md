@@ -76,6 +76,13 @@ countprimes(10,1000,tuplet=6)  # the number of prime sextuplets between 100 and 
 1     
 ```
 
+If you quote the arguments, they will be converted to Int128.
+```
+countprimes(:(10^19+10^9))
+234057667299198865
+```
+
+
 ### genprimes
 
 Return an array of all primes ```>= start``` and ```<= stop```
@@ -229,6 +236,34 @@ Function returning the path to the file containing the prime pi tables.
 The tables are loaded when the package is loaded.
 
 ## Other details
+
+For ```x>typemax(Int)```, you need to explicitly ask for a bigger data type.
+For instance,
+
+```julia
+julia> countprimes(int128(10)^23)
+1925320391606803968923
+```
+
+This example returned a value from the table.
+The argument was larger than than primemaxstop().
+
+
+With any of the routines, you can quote the arguements and they will be converted
+to the appropriate type.
+
+```julia
+julia> countprimes(:(10^23))
+1925320391606803968923
+julia> countprimes(:(10^19 + 10^9))
+234057667299198865
+```
+
+Routines that use the tables will convert the arguments to Int128. This is because
+some indices in the tables are greater than ```typemax(Uint64)```.  Routines that
+only use the sieve will be converted to ```Uint64```, which is the data type that
+the sieve routines use.
+
 
 The largest stop value that may be given is ```2^64 - 10 * 2^32```.
 The largest start value that may be given is ```2^64 - 11 * 2^32```.
