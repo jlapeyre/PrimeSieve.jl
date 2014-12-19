@@ -4,8 +4,18 @@
 
 This package provides an interface to tables of primes and a sieve
 library.  It is extremely fast, in particular the prime pi function,
-which combines sieving with table lookup. There are multi-threaded and
-single-threaded versions of most functions.
+which combines sieving with table lookup. For instance, a particular Intel i7
+machine gives π(x) for any x<10^13 in the worst case in about
+150ms.
+
+```julia
+julia> @time countprimes("10^13-1")
+elapsed time: 0.15288837 seconds (1312 bytes allocated)
+346065536839
+```
+
+There are multi-threaded and single-threaded versions of most
+functions.
 
 See LICENSE.md for links to the authors of the tables and the library. All
 the credit for the utility of this package goes to them.
