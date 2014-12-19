@@ -26,6 +26,7 @@ export primesievesize, primetest, primenumthreads, primemaxstop
 
 ##
 
+include("deepconvert.jl")
 include("primesieve_c.jl")
 include("tables.jl")
 include("wrappers.jl")

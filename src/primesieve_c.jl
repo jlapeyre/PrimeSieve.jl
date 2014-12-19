@@ -1,13 +1,15 @@
 # Convert numbers to Int128 or Uint64, hopefully the subexpressions
 # have not overflowed.  Eg. 10^19.
 # Unquoted expressions pass through
-for (f, xtype) in ( (:conv128, :int128), (:convu64, :uint64))
-    @eval begin
-        ($f)(ex::Expr) = eval(Expr(ex.head, map((x)->(typeof(x) == Expr ?
-              ($f)(x) : typeof(x) <: Real ? ($xtype)(x) : x), ex.args)...))
-    ($f)(x) = x
-    end
-end
+@mkdeepconvert(conv128,int128)
+@mkdeepconvert(convu64,uint64)
+# for (f, xtype) in ( (:conv128, :int128), (:convu64, :uint64))
+#     @eval begin
+#         ($f)(ex::Expr) = eval(Expr(ex.head, map((x)->(typeof(x) == Expr ?
+#               ($f)(x) : typeof(x) <: Real ? ($xtype)(x) : x), ex.args)...))
+#     ($f)(x) = x
+#     end
+# end
 
 const stoplimit = convu64( :(2^64 - 2^32 * 10) )
 const startlimit = convu64( :(2^64 - 2^32 * 11) )
