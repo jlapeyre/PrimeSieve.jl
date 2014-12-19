@@ -47,8 +47,6 @@ function primescopy(res,n)
 end
 
 # return array of primes between start and stop
-#genprimes{T<:FloatingPoint}(start::Expr, stop::T) = genprimes(convu64(start),stop)
-#genprimes{T<:FloatingPoint}(start::T, stop::Expr) = genprimes(start,convu64(stop))
 genprimes(start::Expr, stop::Expr) = genprimes(convu64(start),convu64(stop))
 
 function genprimes{T,V}(start::T,stop::V)
@@ -64,18 +62,11 @@ function genprimes{T,V}(start::T,stop::V)
     primescopy(res,n[1])
 end
 
-# not really the Julia way...
-# we should discourage floating point, anyway.
-#genprimes{T<:FloatingPoint,V<:FloatingPoint}(start::T,stop::V) = genprimes(int64(start),int64(stop))        
-#genprimes{T<:FloatingPoint}(stop::T) = genprimes(int64(1),int64(stop))
-#genprimes{T<:FloatingPoint}(start,stop::T) = genprimes(start,int64(stop))
-#genprimes{T<:FloatingPoint}(start::T,stop) = genprimes(int64(start),stop)
-
 genprimes(stop::Expr) = genprimes(one(typeof(convu64(stop))),convu64(stop))
 genprimes(stop) = genprimes(one(typeof(stop)),stop)
 
-nprimes{T<:FloatingPoint}(n::Expr, stop::T) = nprimes(convu64(n),stop)
-nprimes{T<:FloatingPoint}(n::T, stop::Expr) = nprimes(n,convu64(stop))
+#nprimes{T<:FloatingPoint}(n::Expr, stop::T) = nprimes(convu64(n),stop)
+#nprimes{T<:FloatingPoint}(n::T, stop::Expr) = nprimes(n,convu64(stop))
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here    
