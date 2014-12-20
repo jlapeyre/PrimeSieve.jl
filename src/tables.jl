@@ -31,13 +31,7 @@ end
 # x falls on or between incrments and look up value for x
 function piandrem{T<:Real}(x::T)
     j = 0
-    for i in 1:length(primetables)
-        t = primetables[i]
-        if x <= t.maxn
-            j = i
-            break
-        end
-    end
+    for i in 1:length(primetables) x <= primetables[i].maxn && (j = i; break) end
     j == 0 && error("x is too large!")
     piandrem(primetables[j],x)
 end
@@ -45,13 +39,7 @@ end
 function primelookup(x)
     x = conv128(x)
     j = 0
-    for i in 1:length(primetables)
-        t = primetables[i]
-        if x < t.maxn
-            j = i
-            break
-        end
-    end
+    for i in 1:length(primetables) x < primetables[i].maxn && (j = i ; break) end
     j == 0 && error("x is too large!")
    (j,piandrem(primetables[j],x))
 end
@@ -59,11 +47,8 @@ end
 # Look up prime pi in table, compute remaining primes
 function _countprimes(stop)
     (count,i,rem) = piandrem(int128(stop))
-    if (rem == Zero)
-        return convert(Int128,count)
-    else
-        return convert(Int128,count+ntcountprimes(i,i+rem))
-    end
+    return (rem == Zero) ? convert(Int128,count) :
+    convert(Int128,count+ntcountprimes(i,i+rem))
 end
 
 function _countprimes(start,stop)
