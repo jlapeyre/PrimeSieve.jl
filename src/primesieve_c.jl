@@ -127,6 +127,8 @@ for (cname,jname) in (
             end                
             convert(typeof(start),res)
         end
+        ($jname)(stop::ConvT) = ($jname)(one(typeof(convu64(stop))),convu64(stop))
+        ($jname)(start::ConvT, stop::ConvT) = ($jname)(convu64(start),convu64(stop))
         ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
     end
 end
@@ -150,6 +152,8 @@ for (cname,jname) in (
                 throw(InterruptException())
             end                
         end
+        ($jname)(stop::ConvT) = ($jname)(one(typeof(convu64(stop))),convu64(stop))
+        ($jname)(start::ConvT, stop::ConvT) = ($jname)(convu64(start),convu64(stop))
         ($jname)(stop) = ($jname)(one(typeof(stop)),stop)
     end
 end
