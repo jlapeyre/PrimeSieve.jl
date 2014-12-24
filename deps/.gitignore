@@ -1,5 +1,6 @@
 builds/
 downloads/
-src/
+src/primecount-1.4
+src/primesieve-5.4.1
 usr/
 deps.jl
