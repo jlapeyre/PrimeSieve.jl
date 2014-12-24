@@ -1,0 +1,11 @@
+touch config.status
+cat <<EOF > Makefile
+CPLIB = libcprimecount.so
+all: \$(CPLIB)
+
+libcprimecount.so:
+	\$(CXX) -c -shared ../../localsrc/cprimecount/cprimecount.cpp -I../../usr/include -o \$(CPLIB)
+install: \$(CPLIB)
+	mkdir -p ../../usr/lib
+	cp \$(CPLIB) ../../usr/lib
+EOF

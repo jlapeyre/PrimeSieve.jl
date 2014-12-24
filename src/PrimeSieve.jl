@@ -1,5 +1,8 @@
 module PrimeSieve
 
+#using BinDeps
+#@BinDeps.load_dependencies
+
 include("../deps/deps.jl")
 import Base: convert, ccall
 
@@ -28,6 +31,7 @@ export primesievesize, primetest, primenumthreads, primemaxstop
 
 include("deepconvert.jl")
 include("primesieve_c.jl")
+include("primecount_c.jl")
 include("tables.jl")
 include("wrappers.jl")
 

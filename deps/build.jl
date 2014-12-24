@@ -1,23 +1,18 @@
 using BinDeps
-
 @BinDeps.setup
+include("../src/compatibility.jl")
 
 primesieve = library_dependency("primesieve", aliases = ["libprimesieve"])
+primecount = library_dependency("primecount", aliases = ["libprimecount"], depends = [primesieve])
+cprimecount = library_dependency("cprimecount", aliases = ["libcprimecount"], depends = [primecount])
 
-provides(Sources,URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.1.tar.gz"),primesieve)
-provides(BuildProcess,Autotools(libtarget = ".libs/libprimesieve."*BinDeps.shlib_ext),primesieve)
+provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.1.tar.gz"), primesieve)
+provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-1.4.tar.gz"), primecount)
 
-# The windows and osx binaries do not contain the library, only the executable.
+provides(BuildProcess, Autotools(libtarget = ".libs/libprimesieve."*BinDeps.shlib_ext), primesieve)
+provides(BuildProcess, Autotools(libtarget = ".libs/libprimecount."*BinDeps.shlib_ext), primecount)
+provides(BuildProcess, Autotools(libtarget = "libcprimecount."*BinDeps.shlib_ext), cprimecount)
 
-#@windows_only begin
-#    provides(Binaries, {URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4-win$WORD_SIZE.zip") => primesieve}, os = :Windows )
-#end
-
-#@osx_only begin
-#    if Pkg.installed("Homebrew") === nothing
-#        error("Homebrew package not installed, please run Pkg.add(\"Homebrew\")")  end
-#    using Homebrew
-#    provides( Homebrew.HB, "zeromq32", primesieve, os = :Darwin )
-#end
-
-@BinDeps.install [:primesieve => :primesieve]
+@BinDeps.install Dict([(:primecount, :primecount), (:primesieve, :primesieve),
+                       (:cprimecount, :cprimecount)
+                      ])
