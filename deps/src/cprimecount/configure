@@ -1,19 +1,20 @@
 touch config.status
 cat <<EOF > Makefile
 CPLIB = libcprimecount.so
-all: $(CPLIB)
+all: \$(CPLIB)
 
 
 cprimecount.o: cprimecount.cpp
-	$(CC) -Wall -c -fPIC cprimecount.cpp  -I../../usr/include
+	\$(CC) -Wall -c -fPIC cprimecount.cpp  -I../../usr/include
 
 libcprimecount.so:  cprimecount.o
-	gcc -Wall -shared -Wl,-soname,libcprimecount.so cprimecount.o -o $(CPLIB) -lc -lstdc++ -L../../usr/lib/ -lprimecount -Wl,-R../../usr/lib/
-#	gcc -Wall -shared -lstdc++ -Wl,-soname,libcprimecount.so cprimecount.o ../../usr/lib/libprimecount.so.1.1.3 -I../../usr/include -o $(CPLIB)
+	gcc -Wall -shared -Wl,-soname,libcprimecount.so cprimecount.o -o \$(CPLIB) -lc -lstdc++ -L../../usr/lib/ -lprimecount -Wl,-R../../usr/lib/
+#	gcc -Wall -shared -lstdc++ -Wl,-soname,libcprimecount.so cprimecount.o ../../usr/lib/libprimecount.so.1.1.3 -I../../usr/include -o \$(CPLIB)
 
-install: $(CPLIB)
+install: \$(CPLIB)
 	mkdir -p ../../usr/lib
-	cp $(CPLIB) ../../usr/lib
+	cp \$(CPLIB) ../../usr/lib
 
 clean:
 	-rm *.o *.so
+EOF
