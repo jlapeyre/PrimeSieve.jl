@@ -166,8 +166,9 @@ interval of length ```10^10``` must be found with the sieves.
 ```nextprime(n)``` returns the smallest prime greater than n.
 ```prevprime(n)``` returns the largest prime less than n.
 
-Several algorithms are used. Finding the optimal one is partially automated. nextprime1
-and prevprime1 use an alternate algorithm coded by H W Borcher.
+Several algorithms are used. Finding the optimal one (of the
+available) is partially automated. nextprime1 and prevprime1 use an
+alternate algorithm coded by H W Borcher.
 
 ### nprimes
 
