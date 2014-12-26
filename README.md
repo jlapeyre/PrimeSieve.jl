@@ -128,7 +128,7 @@ requested value and computes the remaining values. Note that ```primepi``` is
 logically equivalent to countprimes with ```start=1```. For ```start=1```,
 The function ```primepi``` is often much faster than, and is never slower than ```countprimes``` 
 
-```
+```julia
 countprimes(stop)            # count the number of primes less than or equal to stop
 countprimes(start,stop)      # count the number of primes >= start and <= stop
 countprimes([start], stop, tuplet=n) # Count prime n-tuplets
