@@ -172,10 +172,6 @@ nprimes(n,[start=1])
 ```
 ### single threaded versions
 
-Prepending 's' to the function name of countprimes or printprimes
-calls a single-threaded version. There is no routine ```sntcountprimes```
-and ```scountprimes``` does not use tables.
-
 Usage
 ```julia
 scountprimes([start],stop, tuplets=1)
