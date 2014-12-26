@@ -8,6 +8,8 @@ The prime tables are compiled by Tomás Oliveira e Silva:
 The primesieve library is licensed under the BSD-license:
 http://primesieve.org/
 
+The nexta and nextb functions are copyrighted by H W Borcher.
+
 The PrimeSieve.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2014: John Lapeyre.
