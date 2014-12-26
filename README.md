@@ -161,6 +161,13 @@ The 14th table was used. The value of prime pi for ```10^17+10^14```,
 ```2626111798288135``` is in the table, and the primes in an
 interval of length ```10^10``` must be found with the sieves.
 
+### nextprime, prevprime
+
+```nextprime(n)``` returns the smallest prime greater than n.
+```prevprime(n)``` returns the largest prime less than n.
+
+Several algorithms are used. Finding the optimal one is partially automated. nextprime1
+and prevprime1 use an alternate algorithm coded by H W Borcher.
 
 ### nprimes
 
