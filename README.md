@@ -210,7 +210,7 @@ legendre(x,a)
 
 ### nthprime()
 
-Returns the nth prime
+Returns the nth prime using a fast algorithm from libprimecount.
 
 ### primeLi
 
