@@ -1,3 +1,5 @@
+export @bi_str, @i128_str
+
 # Copied this from my private repo SomeUtils
 
 # Define a function that converts Reals in an expression
@@ -34,3 +36,13 @@ macro mkdeepconvert(ff, ccfunc)
         ($f)(x) = ($cfunc)(x)
     end
 end
+
+# Convert numbers to Int128 or Uint64, hopefully the subexpressions
+# have not overflowed.  Eg. 10^19.
+# Unquoted expressions pass through
+@mkdeepconvert(conv128,int128)
+@mkdeepconvert(convu64,uint64)
+@mkdeepconvert(convint,int64)
+@mkdeepconvert(deepbigint,BigInt)
+macro bi_str(s) deepbigint(s) end
+macro i128_str(s) conv128(s) end

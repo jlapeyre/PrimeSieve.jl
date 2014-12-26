@@ -20,9 +20,19 @@ end
 
 countprimes(start::ConvT, stop::ConvT; tuplet::Int = 1) = countprimes(conv128(start),conv128(stop),tuplet)
 countprimes(start::ConvT, stop::ConvT) = countprimes(conv128(start),conv128(stop))
-function countprimes(start,stop; tuplet::Int = 1)
+function countprimes(start,stop; tuplet::Int = 1, alg::Symbol = :tabsieve )
     if tuplet == 1
-        _countprimes(start,stop)
+        if alg == :next || stop > stoplimit
+            countprimesb(start,stop)
+        elseif alg == :nexta 
+            countprimesc(start,stop)
+        elseif alg == :tabsieve
+            _countprimes(start,stop)
+        elseif alg == :sieve
+            ntcountprimes(start,stop)            
+        else
+            error("algorithm must be one of :sieve, :next, :nexta, :tabsieve")
+        end
     elseif tuplet == 2
         countprimes2(start,stop)
     elseif tuplet == 3

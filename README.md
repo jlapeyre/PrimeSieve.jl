@@ -1,24 +1,12 @@
-# PrimeSieve
+# Primes
 
 [![Build Status](https://travis-ci.org/jlapeyre/PrimeSieve.jl.svg?branch=master)](https://travis-ci.org/jlapeyre/PrimeSieve.jl)
 
-This package provides an interface to tables of primes and a sieve
-library.  It is extremely fast, in particular the prime pi function,
-which combines sieving with table lookup. For instance, a particular Intel i7
-machine gives π(x) for any x<10^13 in the worst case in about
-150ms.
+This package provides functions related to generating and counting prime numbers.
 
-```julia
-julia> @time countprimes("10^13-1")
-elapsed time: 0.15288837 seconds (1312 bytes allocated)
-346065536839
-```
 
-There are multi-threaded and single-threaded versions of most
-functions.
-
-See LICENSE.md for links to the authors of the tables and the library. All
-the credit for the utility of this package goes to them.
+See LICENSE.md for links to the authors of the tables and the libraries
+used in this package.
 
 I am unaware of binaries of libprimesieve for Windows and OSX, so these
 are not installed automatically.
@@ -37,9 +25,11 @@ The tables are encoded in Int128. The native type of the sieve is
 Uint64.  There is a risk of overflow when constructing and giving
 arguments to functions in this package. The easiest way to avoid this
 is to put arguments in quotes: eg ```countprimes("10^19",
-"10^19+100")```.
+"10^19+100")```. Additionally, string macros bi and i128 are
+defined to convert literal numbers to BigInt and Int128 respectively.
 
 ### Example
+
 
 ```julia
 julia> using PrimeSieve
@@ -63,31 +53,101 @@ See the description of ```primelookup``` below.
 
 ## Functions
 
+### genprimes
+
+```julia
+genprimes(start,stop)
+```
+Return an array of all primes ```>= start``` and ```<= stop```
+
+```julia
+genprimes(stop)
+```
+Return an array of all primes between 1 and ```stop```
+
+```julia
+genprimes(start,stop; alg = algorithm)
+```
+Generate primes using a specified algorithm. The algorithm must be
+either ```:sieve``` (the default) or ```:next```.  Which algorithm is
+more efficient depends on the parameters. In general, ```:sieve``` is
+better for larger intervals, and ```:next``` is better for larger values
+of ```start```. The keyword ```:sieve``` uses a very fast sieve, and
+```:next``` uses the function ```nextprime```.
+
+If you exceed the upper limit for argument to the sieve, then ```:next```
+is chosen automatically.
+```julia
+julia> genprimes(bi"10^20", bi"10^20+1000")
+24-element Array{BigInt,1}:
+ 100000000000000000039 ...
+```
+
+### primepi
+
+Computes the prime counting function.
+
+```julia
+primepi(x; alg = algorithm)
+```
+
+The efficient algorithms (or methods) are :dr (the default) and
+:tabsieve.  The others are slower in all cases. They are: :legendre,
+:lehmer, :meissel, :lmo, :sieve.  The algorithm :dr uses an efficient
+parallel Delegise-Rivat method. The algorithm :tabsieve uses a combination
+of tables and a sieve and is more efficient when x is not too much greater
+than a table entry. For example
+
+```julia
+julia> @time primepi(10^14+10^10; alg = :tabsieve)
+elapsed time: 6.622672664 seconds (216 bytes allocated)
+3205251958942
+
+julia> @time primepi(10^14+10^10; alg = :dr)            # Deleglise-Rivat is faster
+elapsed time: 0.495413145 seconds (208 bytes allocated)
+3205251958942
+
+julia> @time primepi(10^14+10^8; alg = :dr)
+elapsed time: 0.505796298 seconds (208 bytes allocated)
+3204944853481
+
+julia> @time primepi(10^14+10^8; alg = :tabsieve)       # Table and sieve is faster
+elapsed time: 0.08235147 seconds (216 bytes allocated)
+3204944853481
+```
+
 ### countprimes
 
-Count the number of primes (or prime tuplets) in an interval. This
+Count the number of primes (or
+[prime tuplets](http://en.wikipedia.org/wiki/Prime_k-tuple) in an interval. This
 looks up the largest value in the table that is smaller than the
-requested value and computes the remaining values. This is the only
-function in the package that uses tables.
+requested value and computes the remaining values. Note that ```primepi``` is
+logically equivalent to countprimes with ```start=1```. For ```start=1```,
+The function ```primepi``` is often much faster than, and is never slower than
+```countprimes```.
 
 Usage:
 ```julia
 countprimes(stop)            # count the number of primes less than or equal to stop
 countprimes(start,stop)      # count the number of primes >= start and <= stop
-ntcountprimes([start],stop)  # Do not use table lookup, only sieving
 countprimes([start], stop, tuplet=n) # Count prime n-tuplets
+countprimes(start, stop, alg = algorithm) # Count prime n-tuplets
 ```
 
-The default value of start is 1.
-The optional keyword argument 'tuplet' may take values between 1 and 6, that is
-primes, through prime sextuplets. Tables are implemented only for
-'tuplet' equal to one, although Oliveira e Silva has compiled tables for
-twin primes.
+The default value of start is 1.  The optional keyword argument
+'tuplet' may take values between 1 and 6, that is primes, through
+prime sextuplets. Tables are implemented only for 'tuplet' equal to
+one, that is for primes, but not tuplets.
+
+The optional keyword argument alg may be one of :tabsieve (the default),
+:next, :nexta, or :sieve (:sieve will always be slower than :tabsieve).
+As above, ```:tabsieve``` uses a combination of tables and a fast sieve.
+:next and :nexta are two different variants of ```next_prime```.
 
 Examples
 ```julia
-countprimes(100)  # the number of primes x such that  1 <= x <= 100
-25
+countprimes(100,1000)  # the number of primes x satisfying  100 <= x <= 1000
+143
 countprimes(100,tuplet=3)  # the number of prime triplets between 1 and 100
 8
 countprimes(10,1000,tuplet=6)  # the number of prime sextuplets between 100 and 1000
@@ -101,14 +161,12 @@ countprimes("10^19+10^9")
 234057667299198865
 ```
 
-### genprimes
-
-Return an array of all primes ```>= start``` and ```<= stop```
-
-Usage
+If you use BigInt's, then the method :nexta will be chosen automatically. For example
 ```julia
-genprimes([start=1],stop)
+julia> countprimes(bi"10^50",bi"10^50+1000")
+7
 ```
+
 
 ### nprimes
 
@@ -141,6 +199,26 @@ printprimes([start],stop, [tuplet=1])
 The default value of 'start' is 1.
 The optional keyword argument 'tuplet' may take values between 1 and 6.
 
+### legendrephi
+
+The legendre sum or phi function
+
+```julia
+legendre(x,a)
+```
+
+### nthprime()
+
+Returns the nth prime
+
+### primeLi
+
+The Li function
+
+### PrimeLiinv
+
+The inverse Li function
+
 ### primesievesize
 
 Get, set the sieve size in kilobytes. (setting does not seem to work)
@@ -152,35 +230,58 @@ primesievesize()
 primesievesize(sz)
 ```
 
-### primenumthreads
+### prime_sieve_num_threads
 
-Get, set the number of threads used in parallel routines. By default, the
-OMP default is used.
+Get, set the number of threads used in the parallel sieve. By default, the
+number of cores is used.
 
 Usage
 ```julia
-primenumthreads()
-primenumthreads(numthreads)
+prime_sieve_num_threads()
+prime_sieve_num_threads(numthreads)
 ```
+
+### primepi_num_threads
+
+Get, set the number of threads used in the parallel primepi. By default, the
+number of cores is used.
+
+Usage
+```julia
+primepi_num_threads()
+primepi_num_threads(numthreads)
+```
+
+Note that ```primepi``` (in the c++ library) calls ```prime_sieve_num_threads(1)```
+So you have to call ```prime_sieve_num_threads(n)``` after calling primepi if
+you want to use any other functions that use sieving.
 
 ### primemaxstop
 
 Return the largest value (as a ```Uint64```) that can be passed as the parameter
-stop.
+stop in the sieve.
 
 Usage
 ```julia
 primemaxstop()
 ```
 
+### primepi_xmax()
+
+Function that returns the largest allowed argument to ```primepi``` when using the :dr algorithm.
+
 ### primetest
 
-Run a test of the algorithms
+Run a test of the sieve algorithm.
 
 Usage
 ```julia
 primetest()
 ```
+
+### primepi_test
+
+Run a test of the primepi algorithms
 
 ## Tables of prime pi function
 

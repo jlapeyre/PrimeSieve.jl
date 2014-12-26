@@ -1,4 +1,6 @@
 using PrimeSieve
 using Base.Test
 
-include("prime_test.jl")
+include("primesieve_test.jl")
+include("primecount_test.jl")
+include("tuples_test.jl")

@@ -1,10 +1,3 @@
-# Convert numbers to Int128 or Uint64, hopefully the subexpressions
-# have not overflowed.  Eg. 10^19.
-# Unquoted expressions pass through
-@mkdeepconvert(conv128,int128)
-@mkdeepconvert(convu64,uint64)
-@mkdeepconvert(convint,int64)
-
 typealias ConvT Union(Expr,String)
 
 const stoplimit = convu64( :(2^64 - 2^32 * 10) )
@@ -43,11 +36,11 @@ function primescopy(res,n)
 end
 
 # return array of primes between start and stop
-genprimes(start::ConvT, stop::ConvT) = genprimes(convu64(start),convu64(stop))
-genprimes(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
-genprimes(stop) = genprimes(one(typeof(stop)),stop)
+genprimesa(start::ConvT, stop::ConvT) = genprimes(convu64(start),convu64(stop))
+genprimesa(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
+genprimesa(stop) = genprimes(one(typeof(stop)),stop)
 
-function genprimes{T,V}(start::T,stop::V)
+function genprimesa{T,V}(start::T,stop::V)
     checkstop(stop)
     n = Csize_t[0]
     res = try 
@@ -58,6 +51,26 @@ function genprimes{T,V}(start::T,stop::V)
         throw(InterruptException())
     end      
     primescopy(res,n[1])
+end
+
+function genprimes(b; alg::Symbol = :sieve)
+    if alg == :sieve
+        return genprimesa(b)
+    elseif alg == :next
+        return genprimesb(one(b),b)
+    else
+        error("algorithm must be :sieve or :next")
+    end
+end
+
+function genprimes(a,b; alg::Symbol = :sieve)
+    if alg == :next || b >= stoplimit
+        return genprimesb(a,b)        
+    elseif alg == :sieve
+        return genprimesa(a,b)
+    else
+        error("algorithm must be :sieve or :next")
+    end
 end
 
 nprimes(n::ConvT,start::ConvT) = nprimes(convu64(n),convu64(start))
@@ -80,8 +93,8 @@ nprimes(start) = nprimes(one(typeof(start)),start)
 nprimes(n) = nprimes(n,one(typeof(n)))
 
 # return the nth prime
-for (cname,jname) in ((:(:primesieve_nth_prime), :snthprime),
-                      (:(:primesieve_parallel_nth_prime), :nthprime))
+for (cname,jname) in ((:(:primesieve_nth_prime), :snthprimea),
+                      (:(:primesieve_parallel_nth_prime), :nthprimea))
     @eval begin
         function ($jname){T}(n,start::T)
             checkstart(start)
@@ -106,7 +119,6 @@ for (cname,jname) in (
                       (:(:primesieve_count_quadruplets), :scountprimes4),
                       (:(:primesieve_count_quintuplets), :scountprimes5),
                       (:(:primesieve_count_sextuplets), :scountprimes6),
-
                       (:(:primesieve_parallel_count_primes), :ntcountprimes),
                       (:(:primesieve_parallel_count_twins), :countprimes2),
                       (:(:primesieve_parallel_count_triplets), :countprimes3),
@@ -168,7 +180,7 @@ function primesievesize(sz)
     isz
 end
 
-primenumthreads(n) = (ccall((:primesieve_set_num_threads, libname), Void, (Int,), convert(Int,n)); n)
-primenumthreads() = ccall((:primesieve_get_num_threads, libname), Int, ())
+primesieve_num_threads(n) = (ccall((:primesieve_set_num_threads, libname), Void, (Int,), convert(Int,n)); n)
+primesieve_num_threads() = ccall((:primesieve_get_num_threads, libname), Int, ())
 primetest() = ccall((:primesieve_test, libname), Void, ())
 primemaxstop() = ccall((:primesieve_get_max_stop, libname), Uint, ())
