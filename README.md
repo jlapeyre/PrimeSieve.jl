@@ -202,7 +202,7 @@ The optional keyword argument 'tuplet' may take values between 1 and 6.
 
 ### legendrephi
 
-The legendre sum or phi function
+The [legendre sum or phi function](http://mathworld.wolfram.com/LegendresFormula.html)
 
 ```julia
 legendre(x,a)
@@ -211,6 +211,9 @@ legendre(x,a)
 ### nthprime()
 
 Returns the nth prime using a fast algorithm from libprimecount.
+
+```nthprime(n; alg = :sieve)``` uses the older algorithm from
+libprimesieve, which is much slower.
 
 ### primeLi
 
