@@ -5,7 +5,7 @@
 This package provides functions related to generating and counting prime numbers.
 
 
-See [LICENSE.md](../blob/master/LICENSE.md) for links to the authors of the tables and the libraries
+See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.
 
 I am unaware of binaries of libprimesieve for Windows and OSX, so these
