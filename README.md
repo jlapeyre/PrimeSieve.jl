@@ -28,29 +28,6 @@ is to put arguments in quotes: eg ```countprimes("10^19",
 "10^19+100")```. Additionally, string macros bi and i128 are
 defined to convert literal numbers to BigInt and Int128 respectively.
 
-### Example
-
-
-```julia
-julia> using PrimeSieve
-julia> @time countprimes(10^17 + 10^14 + 10^10)
-elapsed time: 3.729049749 seconds (168 bytes allocated)
-2626112053757377
-```
-
-To see what happened, we can look in the tables:
-
-```julia
-julia> primelookup(10^17 + 10^14 + 10^10)
-(14,(2626111798288135,100100000000000000,10000000000))
-```
-
-The 14th table was used. The value of prime pi for ```10^17+10^14```,
-```2626111798288135``` is in the table, and the primes in an
-interval of length ```10^10``` must be found with the sieves.
-
-See the description of ```primelookup``` below.
-
 ## Functions
 
 ### genprimes
@@ -164,6 +141,25 @@ If you use BigInt's, then the method :nexta will be chosen automatically. For ex
 julia> countprimes(bi"10^50",bi"10^50+1000")
 7
 ```
+
+The tables work like this:
+
+```julia
+julia> @time countprimes(10^17 + 10^14 + 10^10)
+elapsed time: 3.729049749 seconds (168 bytes allocated)
+2626112053757377
+```
+
+To see what happened, we can look in the tables:
+
+```julia
+julia> primelookup(10^17 + 10^14 + 10^10)
+(14,(2626111798288135,100100000000000000,10000000000))
+```
+
+The 14th table was used. The value of prime pi for ```10^17+10^14```,
+```2626111798288135``` is in the table, and the primes in an
+interval of length ```10^10``` must be found with the sieves.
 
 
 ### nprimes
