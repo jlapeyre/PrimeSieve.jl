@@ -126,8 +126,7 @@ Count the number of primes (or
 looks up the largest value in the table that is smaller than the
 requested value and computes the remaining values. Note that ```primepi``` is
 logically equivalent to countprimes with ```start=1```. For ```start=1```,
-The function ```primepi``` is often much faster than, and is never slower than
-```countprimes```.
+The function ```primepi``` is often much faster than, and is never slower than ```countprimes``` 
 
 ```
 countprimes(stop)            # count the number of primes less than or equal to stop
