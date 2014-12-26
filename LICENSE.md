@@ -1,7 +1,9 @@
 The prime tables are compiled by Tomás Oliveira e Silva:
 
 (c) 2007-2013, Tomás Oliveira e Silva
+
 See disclaimer in page
+
 http://www.ieeta.pt/~tos/hobbies.html
 
 The primesieve library is licensed under the BSD-license:
