@@ -1,9 +1,6 @@
 # Primes
 
-[![Build Status](https://travis-ci.org/jlapeyre/PrimeSieve.jl.svg?branch=master)](https://travis-ci.org/jlapeyre/PrimeSieve.jl)
-
 This package provides functions related to generating and counting prime numbers.
-
 
 See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.
