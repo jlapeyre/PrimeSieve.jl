@@ -9,7 +9,8 @@ http://www.ieeta.pt/~tos/hobbies.html
 The primesieve library is licensed under the BSD-license:
 http://primesieve.org/
 
-The nexta and nextb functions are copyrighted by H W Borcher.
+The nexta and nextb functions are copyrighted by H W Borcher,
+https://github.com/hwborchers/Numbers.jl
 
 The PrimeSieve.jl package is licensed under the MIT "Expat" License:
 
