@@ -15,9 +15,11 @@ are not installed automatically.
 
 http://www.ieeta.pt/~tos/primes.html
 
-### Primesieve
+### libprimesieve and libprimecount
 
 http://primesieve.org/
+
+https://github.com/kimwalisch/primecount
 
 ### Data types
 
@@ -72,7 +74,7 @@ Generate primes using a specified algorithm. The algorithm must be
 either ```:sieve``` (the default) or ```:next```.  Which algorithm is
 more efficient depends on the parameters. In general, ```:sieve``` is
 better for larger intervals, and ```:next``` is better for larger values
-of ```start```. The keyword ```:sieve``` uses a very fast sieve, and
+of ```start```. The keyword ```:sieve``` uses a very fast sieve (libprimesieve), and
 ```:next``` uses the function ```nextprime```.
 
 If you exceed the upper limit for argument to the sieve, then ```:next```
@@ -85,7 +87,7 @@ julia> genprimes(bi"10^20", bi"10^20+1000")
 
 ### primepi
 
-Computes the prime counting function.
+Computes the [prime counting function](http://en.wikipedia.org/wiki/Prime-counting_function).
 
 ```julia
 primepi(x; alg = algorithm)
