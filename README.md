@@ -35,7 +35,7 @@ defined to convert literal numbers to BigInt and Int128 respectively.
 ```julia
 genprimes(start,stop)
 ```
-Return an array of all primes ```>= start``` and ```<= stop```
+Return an array of all primes ```>= start``` and ```<= stop```.
 
 ```julia
 genprimes(stop)
@@ -172,7 +172,7 @@ nprimes(n,[start=1])
 ```
 ### single threaded versions
 
-Prepending 's' to the function name of any of the above functions
+Prepending 's' to the function name of countprimes or printprimes
 calls a single-threaded version. There is no routine ```sntcountprimes```
 and ```scountprimes``` does not use tables.
 
