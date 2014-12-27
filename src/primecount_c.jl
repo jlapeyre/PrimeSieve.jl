@@ -18,6 +18,7 @@ for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
               (:piprimesieve, :(:pi_primesieve)), (:nthprimecount, :(:nth_prime)),
               (:primeLi, :(:prime_Li)), (:primeLiinv, :(:prime_Li_inverse)))
     @eval begin
+        # are c++ exceptions the culprit ?
         # function ($f){T<:Real}(n::T)   # try-catch not preventing segfaults
         #     res = try
         #         ccall(($c, libccountname), Ptr{Int64}, (Int64,), convert(Int64,n))
