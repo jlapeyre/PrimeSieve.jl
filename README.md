@@ -73,7 +73,8 @@ The efficient algorithms (or methods) are :dr (the default) and
 :lehmer, :meissel, :lmo, :sieve.  The algorithm :dr uses an efficient
 parallel Deleglise Rivat method. The algorithm :tabsieve uses a combination
 of tables and a sieve and is more efficient when x is not too much greater
-than a table entry. For example
+than a table entry. (But note below that 10^14+10^8 is not too much
+greater than 10^14.) For example
 
 ```julia
 julia> @time primepi(10^14+10^10; alg = :tabsieve)
