@@ -7,7 +7,7 @@ function tprimepi(n)
 end
 
 # Test function above m times with random numbers
-# between n and 2n. Report how many times one or
+# between n0 and n0+n1. Report how many times one or
 # the other is faster.
 # On 
 function tprimepia(n0,n1,m)
@@ -39,6 +39,29 @@ function print_tprimepia1()
         println("$n * 10^11: ", tprimepia(n*10^11,m))
     end
 end
+
+function print_sieve(n0)
+    x = 10^6
+    primesieve_num_threads(8)
+    while x <= n0/(10^4)
+        t = @elapsed ntcountprimes(n0,n0+x)
+        println("$(x+n0)  $t  $(log10(x))")
+        x *= 2
+    end
+end
+
+
+function print_dr()
+    x = 10^5
+    while true
+        t = @elapsed primepi(x, alg = :dr)
+        println("$x  $t")
+        x *= 2
+    end
+end
+
+
+###############################
 
 function ts0(n,n1)
     for i in 1:n1

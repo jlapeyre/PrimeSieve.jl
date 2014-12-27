@@ -6,6 +6,11 @@ const startlimit = convu64( :(2^64 - 2^32 * 11) )
 checkstop(val) = val <= stoplimit ? true : error("stop value ", val, " is greater than limit: ", val)
 checkstart(val) = val <= startlimit ? true : error("start value ", val, " is greater than limit: ", val)
 
+# libprimesieve also uses all cores by default.
+# We store the number of threads because libprimecount will always set
+# it to 1 and manage threads itself.
+PRIMESIEVENUMTHREADS = CPU_CORES
+
 # Returned primes have this data type
 const SHORT_PRIMES = 0
 const USHORT_PRIMES = 1
@@ -130,6 +135,7 @@ for (cname,jname) in (
         function ($jname){T,V}(start::T, stop::V)
             checkstop(stop)
             (start,stop) = promote(start,stop)
+            reset_primesieve_num_threads()
             res = try
                 ccall(($cname,libname),
                         Ptr{Uint64}, (Uint64, Uint64),
@@ -180,7 +186,17 @@ function primesievesize(sz)
     isz
 end
 
-primesieve_num_threads(n) = (ccall((:primesieve_set_num_threads, libname), Void, (Int,), convert(Int,n)); n)
+# libprimecount always sets this to 1. So we reset
+function reset_primesieve_num_threads()
+    ccall((:primesieve_set_num_threads, libname), Void, (Int,), convert(Int,PRIMESIEVENUMTHREADS))
+end
+
+function primesieve_num_threads(n)
+    ccall((:primesieve_set_num_threads, libname), Void, (Int,), convert(Int,n))
+    global PRIMESIEVENUMTHREADS = n
+    n
+end
+
 primesieve_num_threads() = ccall((:primesieve_get_num_threads, libname), Int, ())
 primetest() = ccall((:primesieve_test, libname), Void, ())
 primemaxstop() = ccall((:primesieve_get_max_stop, libname), Uint, ())
