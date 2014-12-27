@@ -1,6 +1,7 @@
 # Primes
 
-This package provides functions related to generating and counting prime numbers.
+This package provides functions related to prime numbers,
+mostly for efficiently generating and counting primes.
 
 See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.
@@ -35,8 +36,8 @@ The tables are encoded in Int128. The native type of the sieve (libprimesieve) i
 Uint64. The input/output type of the fastest primepi algorithm in libprimecount, the Deleglise Rivat
 algorithm is Int128. There is a risk of overflow when constructing and giving
 arguments to functions in this package. The easiest way to avoid this
-is to put arguments in quotes: eg ```countprimes("10^19",
-"10^19+100")```. Also available are ```@bigint``` and ```@int128``` from DeepConvert.
+is to put arguments in quotes: eg ```countprimes("10^19","10^19+100")```.
+Also available are ```@bigint``` and ```@int128``` from DeepConvert.
 
 ## Functions
 
