@@ -1,5 +1,6 @@
 #include "primecount.hpp"
 #include <stdio.h>
+#include <signal.h>
 
 /*
 namespace primecount {
@@ -25,6 +26,18 @@ namespace primecount {
 
 extern "C"
 {
+
+
+  /*
+  void cprimecount_SIGINT(int sig){
+    printf("Got sigint\n");
+  }
+
+  void cprimecount_register_sigint() {
+    signal(SIGINT, cprimecount_SIGINT);
+  }
+  */
+
   int64_t pi_int64(int64_t x) {
     return primecount::pi(x);
   }

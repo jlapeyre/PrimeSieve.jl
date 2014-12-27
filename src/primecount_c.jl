@@ -18,10 +18,10 @@ for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
               (:piprimesieve, :(:pi_primesieve)), (:nthprimecount, :(:nth_prime)),
               (:primeLi, :(:prime_Li)), (:primeLiinv, :(:prime_Li_inverse)))
     @eval begin
-        # are c++ exceptions the culprit ?
+        # are c++ exceptions the culprit ? Don't see it in the code
         # function ($f){T<:Real}(n::T)   # try-catch not preventing segfaults
         #     res = try
-        #         ccall(($c, libccountname), Ptr{Int64}, (Int64,), convert(Int64,n))
+        #         ccall(($c, libccountname), Int64, (Int64,), convert(Int64,n))
         #     catch
         #         throw(InterruptException())
         #     end
@@ -90,6 +90,8 @@ function primepi(x; alg::Symbol = :auto)
                ":lehmer, :meissel, :lmo, :sieve.")
     end
 end
+
+#register_sigint() = ccall((:cprimecount_register_sigint, libccountname), Void, ())
 
 primepi_xmax() = int128(bytestring(ccall((:pi_xmax, libccountname), Ptr{Uint8}, ())))
 const PRIMEPI_XMAX = primepi_xmax()
