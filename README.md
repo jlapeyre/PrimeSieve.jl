@@ -225,13 +225,17 @@ The [legendre sum or phi function](http://mathworld.wolfram.com/LegendresFormula
 legendre(x,a)
 ```
 
+The arguments are converted to Int64.
+
 ### primeLi
 
 The [offset logarithmic integral](http://en.wikipedia.org/wiki/Logarithmic_integral_function).
+The argument is converted to Int64.
 
 ### PrimeLiinv
 
-The inverse Li function
+The inverse Li function.
+The argument is converted to Int64.
 
 ### primesievesize
 
