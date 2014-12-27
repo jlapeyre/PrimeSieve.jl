@@ -272,10 +272,6 @@ primepi_num_threads()
 primepi_num_threads(numthreads)
 ```
 
-Note that ```primepi``` (in the c++ library) calls ```prime_sieve_num_threads(1)```
-So you have to call ```prime_sieve_num_threads(n)``` after calling primepi if
-you want to use any other functions that use sieving.
-
 ### primemaxstop
 
 Return the largest value (as a ```Uint64```) that can be passed as the parameter
