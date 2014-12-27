@@ -227,7 +227,7 @@ legendre(x,a)
 
 ### primeLi
 
-The Li function
+The [offset logarithmic integral](http://en.wikipedia.org/wiki/Logarithmic_integral_function).
 
 ### PrimeLiinv
 
