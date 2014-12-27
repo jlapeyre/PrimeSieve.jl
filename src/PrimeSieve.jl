@@ -1,18 +1,16 @@
+using DeepConvert
+
 module PrimeSieve
+
+import DeepConvert: @mkdeepconvert
 
 include("../deps/deps.jl")
 import Base: convert, ccall
 
 export genprimes, nprimes
 export snthprimea
-
 export ntcountprimes
 export countprimes, scountprimes
-# export countprimes2, scountprimes2
-# export countprimes3, scountprimes3
-# export countprimes4, scountprimes4
-# export countprimes5, scountprimes5
-# export countprimes6, scountprimes6
 
 export printprimes
 export printprimes2
@@ -25,7 +23,15 @@ export primesievesize, primetest, primesieve_num_threads
 
 ##
 
-include("deepconvert.jl")
+# Convert numbers to Int128 or Uint64, hopefully the subexpressions
+# have not overflowed.  Eg. 10^19.
+# Unquoted expressions pass through
+@mkdeepconvert(conv128,int128)
+@mkdeepconvert(convu64,uint64)
+@mkdeepconvert(convint,int64)
+macro i128_str(s) conv128(s) end
+
+#include("deepconvert.jl")
 include("nextprime.jl")
 include("primesieve_c.jl")
 include("primecount_c.jl")

@@ -8,6 +8,14 @@ used in this package.
 I am unaware of binaries of libprimesieve for Windows and OSX, so these
 are not installed automatically.
 
+This is not a registered package, and it has a non-registered dependency. You can install it with
+
+```julia
+Pkg.clone("https://github.com/jlapeyre/DeepConvert.jl")
+Pkg.clone("https://github.com/jlapeyre/PrimeSieve.jl")
+Pkg.build("PrimeSieve")
+```
+
 ### Tables
 
 http://www.ieeta.pt/~tos/primes.html
@@ -25,8 +33,7 @@ Uint64. The input/output type of the fastest primepi algorithm in libprimecount,
 algorithm is Int128. There is a risk of overflow when constructing and giving
 arguments to functions in this package. The easiest way to avoid this
 is to put arguments in quotes: eg ```countprimes("10^19",
-"10^19+100")```. Additionally, string macros bi and i128 are
-defined to convert literal numbers to BigInt and Int128 respectively.
+"10^19+100")```. Also available are ```@bigint``` and ```@int128``` from DeepConvert.
 
 ## Functions
 
@@ -55,10 +62,12 @@ of ```start```. The keyword ```:sieve``` uses a very fast sieve (libprimesieve),
 If you exceed the upper limit for argument to the sieve, then ```:next```
 is chosen automatically.
 ```julia
-julia> genprimes(bi"10^20", bi"10^20+1000")
+julia> @bigint genprimes(10^20, 10^20+1000)
 24-element Array{BigInt,1}:
  100000000000000000039 ...
 ```
+
+This could also have been written ```genprimes(bi"10^20", bi"10^20+1000")```
 
 ### primepi
 
@@ -139,28 +148,9 @@ countprimes("10^19+10^9")
 
 If you use BigInt's, then the method :nexta will be chosen automatically. For example
 ```julia
-julia> countprimes(bi"10^50",bi"10^50+1000")
+julia> @bigint countprimes(10^50, 10^50+1000)
 7
 ```
-
-The tables work like this:
-
-```julia
-julia> @time countprimes(10^17 + 10^14 + 10^10)
-elapsed time: 3.729049749 seconds (168 bytes allocated)
-2626112053757377
-```
-
-To see what happened, we can look in the tables:
-
-```julia
-julia> primelookup(10^17 + 10^14 + 10^10)
-(14,(2626111798288135,100100000000000000,10000000000))
-```
-
-The 14th table was used. The value of prime pi for ```10^17+10^14```,
-```2626111798288135``` is in the table, and the primes in an
-interval of length ```10^10``` must be found with the sieves.
 
 ### nextprime, prevprime
 
@@ -180,6 +170,14 @@ alternate algorithm coded by H W Borcher.
 ```allprimes(n1)``` All primes n, n > n1
 
 ```allprimes()``` All primes
+
+For example, here is the primorial function defined using an iterator:
+
+```julia
+julia> primorial(n) = prod(someprimes(n))
+julia> @bigint primorial(100)
+2305567963945518424753102147331756070
+```
 
 ### nprimes
 
@@ -296,6 +294,25 @@ primetest()
 Run a test of the primepi algorithms
 
 ## Tables of prime pi function
+
+The tables work like this:
+
+```julia
+julia> @time countprimes(10^17 + 10^14 + 10^10)
+elapsed time: 3.729049749 seconds (168 bytes allocated)
+2626112053757377
+```
+
+To see what happened, we can look in the tables:
+
+```julia
+julia> primelookup(10^17 + 10^14 + 10^10)
+(14,(2626111798288135,100100000000000000,10000000000))
+```
+
+The 14th table was used. The value of prime pi for ```10^17+10^14```,
+```2626111798288135``` is in the table, and the primes in an
+interval of length ```10^10``` must be found with the sieves.
 
 ### primetableinfo
 

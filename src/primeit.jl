@@ -1,3 +1,5 @@
+export someprimes, allprimes
+
 type PrimeIt{T<:Integer}
     n1::T
     n2::T
