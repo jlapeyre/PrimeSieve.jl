@@ -170,6 +170,13 @@ Several algorithms are used. Finding the optimal one (of the
 available) is partially automated. nextprime1 and prevprime1 use an
 alternate algorithm coded by H W Borcher.
 
+### Iterators
+
+```someprimes(n2)``` All primes n  , 2 <= n <= n2
+```someprimes(n1,n2)``` All primes n  , n1 <= n <= n2
+```allprimes(n1)``` All primes n  , n > n1
+```allprimes()``` All primes
+
 ### nprimes
 
 Return an array of the first ```n``` primes ```>= start```.
