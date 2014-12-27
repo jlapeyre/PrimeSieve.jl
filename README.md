@@ -17,6 +17,8 @@ Pkg.clone("https://github.com/jlapeyre/PrimeSieve.jl")
 Pkg.build("PrimeSieve")
 ```
 
+This package uses the following tables and libraries.
+
 ### Tables
 
 http://www.ieeta.pt/~tos/primes.html
