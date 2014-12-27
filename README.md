@@ -172,9 +172,12 @@ alternate algorithm coded by H W Borcher.
 
 ### Iterators
 
-```someprimes(n2)``` All primes n  , 2 <= n <= n2
-```someprimes(n1,n2)``` All primes n  , n1 <= n <= n2
-```allprimes(n1)``` All primes n  , n > n1
+```someprimes(n2)``` All primes n, 2 <= n <= n2
+
+```someprimes(n1,n2)``` All primes n, n1 <= n <= n2
+
+```allprimes(n1)``` All primes n, n > n1
+
 ```allprimes()``` All primes
 
 ### nprimes
