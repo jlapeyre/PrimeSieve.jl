@@ -32,5 +32,6 @@ include("primecount_c.jl")
 include("tables.jl")
 include("wrappers.jl")
 include("tuples.jl")
+include("primeit.jl")
 
 end # module PrimeSieve

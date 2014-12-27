@@ -48,13 +48,13 @@ const bigprimemultiple = makebigprimemultiple()
 
 # Deterministic. Only works up to a limit (see below)
 function next_prime_det(n, deltaprimes)
-    n += deltaprimes[(n % 210) + 1]
+    n += deltaprimes[mod(n,210) + 1]
     while true
         for p in small_primes
-            n % p == 0 && break
+            mod(n,p) == 0 && break
             p*p >= n  && return n
         end
-        n += deltaprimes[(n % 210) + 1]
+        n += deltaprimes[mod(n,210) + 1]
     end
     n
 end
@@ -62,9 +62,10 @@ end
 # Probabalistic. Used for larger primes
 # in Maxima, a single miller_rabin test is done. Maybe this is faster, on average
 # Choice of which gcd's to check could be more fine grained.
-# Can't find when the largest one is useful
+# Using bigprimemultiple only seems to slow down the algorithm
+# Should try to preserve type here ?
 function next_prime_prob(n, deltaprimes)
-    n += deltaprimes[(n % 210) + 1]
+    n += deltaprimes[mod1(n , 210) + 1]
     while true
         if
             gcd(n,955049953) == 1 &&
@@ -74,19 +75,20 @@ function next_prime_prob(n, deltaprimes)
             isprime(n)
             return n
         end
-        n += deltaprimes[(n % 210) + 1]             
+        n += deltaprimes[mod1(n,210) + 1]
     end
 end
 
 
 # Crossover point between deterministic and probabilistic algorithm
-const NEXTCROSSOVER = 10^7  # empirical approximate crossover in speed for generating 10^6 nextprimes
+const NEXTCROSSOVER = 10^6  # empirical approximate crossover in speed
 #const NEXTCROSSOVER = 99460722   # largest that gives correct results
 #const NEXTCROSSOVER = 10^4  # value from Maxima
 
-function nextprime(n)
-    n < 2 && return 2
-    n <= 6 && return next_prime_array[n+1]
+function nextprime{T<:Integer}(n::T)
+    mtwo = convert(T,2)
+    n < mtwo && return mtwo
+    n <= convert(T,6) && return convert(T,next_prime_array[n+1])
     n < NEXTCROSSOVER && return next_prime_det(n,deltaprimes_next)
     next_prime_prob(n,deltaprimes_next)
 end
