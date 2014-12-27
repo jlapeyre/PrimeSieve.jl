@@ -11,12 +11,21 @@ export primepi_test
 
 const libccountname = "libcprimecount.so"
 
-for (f,c) in ( (:primepi, :(:pi_int64)), (:pi_deleglise_rivat, :(:pi_deleglise_rivat)),
+for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
+               (:pi_deleglise_rivat, :(:pi_deleglise_rivat)),
               (:pi_legendre, :(:pi_legendre)), (:pi_lehmer, :(:pi_lehmer)),
               (:pi_meissel, :(:pi_meissel)), (:pi_lmo, :(:pi_lmo)),
               (:piprimesieve, :(:pi_primesieve)), (:nthprimecount, :(:nth_prime)),
               (:primeLi, :(:prime_Li)), (:primeLiinv, :(:prime_Li_inverse)))
     @eval begin
+        # function ($f){T<:Real}(n::T)   # try-catch not preventing segfaults
+        #     res = try
+        #         ccall(($c, libccountname), Ptr{Int64}, (Int64,), convert(Int64,n))
+        #     catch
+        #         throw(InterruptException())
+        #     end
+        #     return convert(T,res)
+        # end
         ($f){T<:Real}(n::T) = ccall(($c, libccountname), Int64, (Int64,), convert(Int64,n))
         ($f){T<:String}(n::T) = ($f)(conv128(n))
     end
@@ -28,9 +37,9 @@ end
 
 function nthprime(x; alg::Symbol = :count)
     if alg == :count
-        nthprimecount(x)
+        return nthprimecount(x)
     elseif alg == :sieve
-        nthprimea(x)
+        return nthprimea(x)
     else error("algorithm must be one of :count, :sieve")
     end
 end
@@ -45,23 +54,35 @@ end
 # Can't get access to Int128 routine, so we convert back and forth many times.
 pi_deleglise_rivat(x::Int128) = primepi(string(x))
 
-function primepi(x; alg::Symbol = :deleglise_rivat)
-    if alg == :deleglise_rivat || alg == :dr
+# :auto is not perfect, could use a little work
+function primepi(x; alg::Symbol = :auto)
+    if alg == :auto
+        if (x < 7*10^11)
+           return countprimes(x)
+        else
+            rem = piandrem(x)[3]
+            if rem <= 10^9
+                return countprimes(x)
+            else
+                return pi_deleglise_rivat(x)
+            end
+        end
+    elseif alg == :deleglise_rivat || alg == :dr
         pi_deleglise_rivat(x)
-    elseif alg == :legendre
-        pi_legendre(x)
+    elseif alg == :tabsieve
+        countprimes(x)    
     elseif alg == :lehmer
         pi_lehmer(x)
     elseif alg == :meissel
         pi_meissel(x)  
     elseif alg == :lmo
         pi_lmo(x)
+    elseif alg == :legendre
+        pi_legendre(x)
     elseif alg == :sieve
         piprimesieve(x)
-    elseif alg == :tabsieve
-        countprimes(x)
     else
-        error("Algorithm must be one of :deleglise_rivat (:dr), :legendre, " *
+        error("Algorithm must be one of :auto, :deleglise_rivat (:dr), :legendre, " *
                ":lehmer, :meissel, :lmo, :sieve, :tabsieve.")
     end
 end

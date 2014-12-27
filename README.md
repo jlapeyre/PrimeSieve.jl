@@ -81,8 +81,9 @@ Computes the [prime counting function](http://en.wikipedia.org/wiki/Prime-counti
 primepi(x; alg = algorithm)
 ```
 
-The efficient algorithms (or methods) are :dr (the default) and
-:tabsieve.  The others are slower in all cases. They are: :legendre,
+The efficient algorithms (or methods) are :auto (the default),
+:dr, and :tabsieve. The default, :auto, tries to choose the faster
+between :dr and :tabsieve. The other algorithms are slower in all cases. They are: :legendre,
 :lehmer, :meissel, :lmo, :sieve.  The algorithm :dr uses an efficient
 parallel Deleglise Rivat method. The algorithm :tabsieve uses a combination
 of tables and a sieve and is more efficient when x is not too much greater
@@ -186,6 +187,7 @@ julia> @bigint primorial(100)
 ### nthprime()
 
 Returns the nth prime using a fast algorithm from libprimecount.
+The argument is converted to Int64.
 
 ```nthprime(n; alg = :sieve)``` uses the older algorithm from
 libprimesieve, which is much slower.
