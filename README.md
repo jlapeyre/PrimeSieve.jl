@@ -183,6 +183,13 @@ julia> @bigint primorial(100)
 2305567963945518424753102147331756070
 ```
 
+### nthprime()
+
+Returns the nth prime using a fast algorithm from libprimecount.
+
+```nthprime(n; alg = :sieve)``` uses the older algorithm from
+libprimesieve, which is much slower.
+
 ### nprimes
 
 Return an array of the first ```n``` primes ```>= start```.
@@ -217,13 +224,6 @@ The [legendre sum or phi function](http://mathworld.wolfram.com/LegendresFormula
 ```julia
 legendre(x,a)
 ```
-
-### nthprime()
-
-Returns the nth prime using a fast algorithm from libprimecount.
-
-```nthprime(n; alg = :sieve)``` uses the older algorithm from
-libprimesieve, which is much slower.
 
 ### primeLi
 
