@@ -5,10 +5,11 @@ This package provides functions related to generating and counting prime numbers
 See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.
 
-I am unaware of binaries of libprimesieve for Windows and OSX, so these
+I am unaware of binaries of libprimesieve and libprimecount for Windows and OSX, so these
 are not installed automatically.
 
-This is not a registered package, and it has a non-registered dependency. You can install it with
+This is not a registered package, and it has a non-registered dependency. You can install it
+(at least on Unix) with
 
 ```julia
 Pkg.clone("https://github.com/jlapeyre/DeepConvert.jl")
