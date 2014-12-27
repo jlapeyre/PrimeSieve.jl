@@ -175,7 +175,7 @@ alternate algorithm coded by H W Borcher.
 
 ```allprimes()``` All primes
 
-For example, here is the primorial function defined using an iterator:
+For example, here is the [primorial](http://en.wikipedia.org/wiki/Primorial) function defined using an iterator:
 
 ```julia
 julia> primorial(n) = prod(someprimes(n))
