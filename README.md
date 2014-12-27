@@ -81,14 +81,15 @@ Computes the [prime counting function](http://en.wikipedia.org/wiki/Prime-counti
 primepi(x; alg = algorithm)
 ```
 
-The efficient algorithms (or methods) are :auto (the default),
-:dr, and :tabsieve. The default, :auto, tries to choose the faster
-between :dr and :tabsieve. The other algorithms are slower in all cases. They are: :legendre,
-:lehmer, :meissel, :lmo, :sieve.  The algorithm :dr uses an efficient
-parallel Deleglise Rivat method. The algorithm :tabsieve uses a combination
-of tables and a sieve and is more efficient when x is not too much greater
-than a table entry. (Note: Below, 10^14+10^8 is not too much
-greater than 10^14.) For example
+The efficient algorithms (or methods) are :auto (the default), :dr,
+and :tabsieve. The default, :auto, tries to choose the faster between
+:dr and :tabsieve (but it is not perfect!). The other algorithms are
+slower in all cases. They are: :legendre, :lehmer, :meissel, :lmo,
+:sieve.  The algorithm :dr uses an efficient parallel Deleglise Rivat
+method. The algorithm :tabsieve uses a combination of tables and a
+sieve and is more efficient when x is not too much greater than a
+table entry. (Note: Below, 10^14+10^8 is not too much greater than
+10^14.) For example
 
 ```julia
 julia> @time primepi(10^14+10^10; alg = :tabsieve)
