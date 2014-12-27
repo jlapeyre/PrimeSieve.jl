@@ -54,14 +54,17 @@ end
 # Can't get access to Int128 routine, so we convert back and forth many times.
 pi_deleglise_rivat(x::Int128) = primepi(string(x))
 
-# :auto is not perfect, could use a little work
+# :auto is not perfect, fails often
+# Tables or interpolation, or a crude fit for both methods is a better way.
+# The two parameters are x and rem, the distance to the previous table value.
 function primepi(x; alg::Symbol = :auto)
     if alg == :auto
-        if (x < 7*10^11)
-           return countprimes(x)
+        if (x < 7*10^11)  # This is a fairly sharp crossover
+            return countprimes(x)
         else
             rem = piandrem(x)[3]
-            if rem <= 10^9
+            rem == 0 && return countprimes(x)
+            if rem <= 10^9 || x/rem >= 10^7  # this gets a lot of cases correctly.
                 return countprimes(x)
             else
                 return pi_deleglise_rivat(x)
@@ -71,7 +74,7 @@ function primepi(x; alg::Symbol = :auto)
         pi_deleglise_rivat(x)
     elseif alg == :tabsieve
         countprimes(x)    
-    elseif alg == :lehmer
+    elseif alg == :lehmer   # The remaining are of academic interest (... well all are, really)
         pi_lehmer(x)
     elseif alg == :meissel
         pi_meissel(x)  
@@ -82,12 +85,13 @@ function primepi(x; alg::Symbol = :auto)
     elseif alg == :sieve
         piprimesieve(x)
     else
-        error("Algorithm must be one of :auto, :deleglise_rivat (:dr), :legendre, " *
-               ":lehmer, :meissel, :lmo, :sieve, :tabsieve.")
+        error("Algorithm must be one of :auto, :deleglise_rivat (:dr), :tabsieve, :legendre, " *
+               ":lehmer, :meissel, :lmo, :sieve.")
     end
 end
 
 primepi_xmax() = int128(bytestring(ccall((:pi_xmax, libccountname), Ptr{Uint8}, ())))
+const PRIMEPI_XMAX = primepi_xmax()
 primepi_num_threads(n) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), convert(Int,n))
 primepi_num_threads() = ccall((:prime_get_num_threads,libccountname),Int,())
 prime_set_print_status(stat::Bool) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), stat ? 1 : 0)
