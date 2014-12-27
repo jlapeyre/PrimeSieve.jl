@@ -21,7 +21,7 @@ https://github.com/kimwalisch/primecount
 ### Data types
 
 The tables are encoded in Int128. The native type of the sieve (libprimesieve) is
-Uint64. The input/output type of the fastest primepi algorithm in libprimecount, the Deleglise-Rivat
+Uint64. The input/output type of the fastest primepi algorithm in libprimecount, the Deleglise Rivat
 algorithm is Int128. There is a risk of overflow when constructing and giving
 arguments to functions in this package. The easiest way to avoid this
 is to put arguments in quotes: eg ```countprimes("10^19",
@@ -71,7 +71,7 @@ primepi(x; alg = algorithm)
 The efficient algorithms (or methods) are :dr (the default) and
 :tabsieve.  The others are slower in all cases. They are: :legendre,
 :lehmer, :meissel, :lmo, :sieve.  The algorithm :dr uses an efficient
-parallel Delegise-Rivat method. The algorithm :tabsieve uses a combination
+parallel Deleglise Rivat method. The algorithm :tabsieve uses a combination
 of tables and a sieve and is more efficient when x is not too much greater
 than a table entry. For example
 
@@ -80,7 +80,7 @@ julia> @time primepi(10^14+10^10; alg = :tabsieve)
 elapsed time: 6.622672664 seconds (216 bytes allocated)
 3205251958942
 
-julia> @time primepi(10^14+10^10; alg = :dr)            # Deleglise-Rivat is faster
+julia> @time primepi(10^14+10^10; alg = :dr)            # Deleglise Rivat is faster
 elapsed time: 0.495413145 seconds (208 bytes allocated)
 3205251958942
 
