@@ -250,15 +250,15 @@ primesievesize()
 primesievesize(sz)
 ```
 
-### prime_sieve_num_threads
+### primesieve_num_threads
 
 Get, set the number of threads used in the parallel sieve. By default, the
 number of cores is used.
 
 Usage
 ```julia
-prime_sieve_num_threads()
-prime_sieve_num_threads(numthreads)
+primesieve_num_threads()
+primesieve_num_threads(numthreads)
 ```
 
 ### primepi_num_threads
