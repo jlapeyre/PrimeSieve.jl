@@ -68,13 +68,19 @@ function genprimes(b; alg::Symbol = :sieve)
     end
 end
 
-function genprimes(a,b; alg::Symbol = :sieve)
-    if alg == :next || b >= stoplimit
+function genprimes(a,b; alg::Symbol = :auto)
+    if alg == :auto
+        if b-a < 200  # this is crude; best depends on a and b, not just difference.
+            return genprimesb(a,b)
+        else
+            return genprimesa(a,b)
+        end
+    elseif alg == :next || b >= stoplimit
         return genprimesb(a,b)        
     elseif alg == :sieve
         return genprimesa(a,b)
     else
-        error("algorithm must be :sieve or :next")
+        error("algorithm must be one of :auto, :sieve, or :next")
     end
 end
 

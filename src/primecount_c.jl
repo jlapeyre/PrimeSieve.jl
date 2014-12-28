@@ -59,8 +59,9 @@ pi_deleglise_rivat(x::Int128) = primepi(string(x))
 # Tables or interpolation, or a crude fit for both methods is a better way.
 # The two parameters are x and rem, the distance to the previous table value.
 function primepi(x; alg::Symbol = :auto)
+    x < 2 && return zero(x)
     if alg == :auto
-        if (x < 7*10^11)  # This is a fairly sharp crossover
+        if (x < 7*10^11)  # This is a fairly sharp crossover here
             return countprimes(x)
         else
             rem = piandrem(x)[3]

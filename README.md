@@ -28,9 +28,6 @@ Some functions in this package
 * `nthprime(n)`   
 * `nprimes(n,start)`     generate array of n primes
 
-
-
-
 This package uses the following tables and libraries.
 
 ### Tables
@@ -70,7 +67,7 @@ Return an array of all primes between 1 and `stop`
 genprimes(start,stop; alg = algorithm)
 ```
 Generate primes using a specified algorithm. The algorithm must be
-either `:sieve` (the default) or `:next`.  Which algorithm is
+one of `:auto` (the default), `:sieve`, or `:next`.  Which algorithm is
 more efficient depends on the parameters. In general, `:sieve` is
 better for larger intervals, and `:next` is better for larger values
 of `start`. The keyword `:sieve` uses a very fast sieve (libprimesieve), and
@@ -96,7 +93,7 @@ primepi(x; alg = algorithm)
 
 The efficient algorithms (or methods) are :auto (the default), :dr,
 and :tabsieve. The default, :auto, tries to choose the faster between
-:dr and :tabsieve (but it is not perfect!). The other algorithms are
+:dr and :tabsieve (see Notes below). The other algorithms are
 slower in all cases. They are: :legendre, :lehmer, :meissel, :lmo,
 :sieve.  The algorithm :dr uses an efficient parallel Deleglise Rivat
 method. The algorithm :tabsieve uses a combination of tables and a
@@ -252,6 +249,15 @@ The argument is converted to Int64.
 
 The inverse Li function.
 The argument is converted to Int64.
+
+### randprime
+
+`randprime(a,b)` choose a random prime between `a` and `b`. All primes in the range
+are equally likely to be chosen.
+
+`randprime(b)` choose a random prime between 2 and `b`.
+
+## Sieve Parameters
 
 ### primesievesize
 
@@ -432,7 +438,6 @@ some indices in the tables are greater than `typemax(Uint64)`.  Routines that
 only use the sieve will be converted to `Uint64`, which is the data type that
 the sieve routines use.
 
-
 The largest stop value that may be given is `2^64 - 10 * 2^32`.
 The largest start value that may be given is `2^64 - 11 * 2^32`.
 The sieve works with the `Uint64` data type. But conversions are done depending
@@ -454,14 +459,25 @@ interface by the type of the `start` parameter.
 
 ### eltype(t::PrimeTable)
 
-Return element type of values in table
+Return element type of values in table.
 
-## Bugs
+### Notes
+
+The algorithms used by `:auto` in `genprimes` and `primepi` are
+simple and do not always choose the best method. They could be improved.
+However, the routines are still fast. In the worst case, `genprimes`
+is more than an order of magnitude faster than `Base.primes`.
+
+### Bugs
 
 Interrupting a call to the sieves usually does not cause a memory error.
 But, libprimesieve apparently has some static state, such that,
 after the interrupt, subsequent sieving runs much slower, and may not
 give correct results.
+
+Interrupting a call to libprimecount, results in a segfault. We could
+`disable_sigint`, but there appear to be memory leaks in libprimecount.
+Better to crash Julia than the whole system.
 
 <!--  LocalWords:  PrimeSieve lookup multi md libprimesieve OSX julia
  -->
