@@ -59,8 +59,8 @@ function next_prime_det(n, deltaprimes)
     n
 end
 
-# Probabalistic. Used for larger primes
-# in Maxima, a single miller_rabin test is done. Maybe this is faster, on average
+# Probabalistic. Used for larger primes.
+# In Maxima, a single miller_rabin test is done.
 # Choice of which gcd's to check could be more fine grained.
 # Using bigprimemultiple only seems to slow down the algorithm
 # Should try to preserve type here ?

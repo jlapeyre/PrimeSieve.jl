@@ -34,7 +34,7 @@ https://github.com/kimwalisch/primecount
 
 The tables are encoded in Int128. The native type of the sieve (libprimesieve) is
 Uint64. The input/output type of the fastest primepi algorithm in libprimecount, the Deleglise Rivat
-algorithm is Int128. There is a risk of overflow when constructing and giving
+algorithm, is Int128. There is a risk of overflow when constructing and giving
 arguments to functions in this package. The easiest way to avoid this
 is to put arguments in quotes: eg ```countprimes("10^19","10^19+100")```.
 Also available are ```@bigint``` and ```@int128``` from DeepConvert.
