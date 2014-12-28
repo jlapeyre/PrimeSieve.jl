@@ -8,4 +8,3 @@ function isadmtup(x)
     end
     false
 end
-    
