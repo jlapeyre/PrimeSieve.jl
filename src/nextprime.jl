@@ -59,13 +59,15 @@ function next_prime_det(n, deltaprimes)
     n
 end
 
+
+
 # Probabalistic. Used for larger primes.
 # In Maxima, a single miller_rabin test is done.
 # Choice of which gcd's to check could be more fine grained.
 # Using bigprimemultiple only seems to slow down the algorithm
 # Should try to preserve type here ?
 function next_prime_prob(n, deltaprimes)
-    n += deltaprimes[mod1(n , 210) + 1]
+    n += deltaprimes[mod(n,210)+1] # index is never  1 !!
     while true
         if
             gcd(n,955049953) == 1 &&
@@ -75,7 +77,7 @@ function next_prime_prob(n, deltaprimes)
             isprime(n)
             return n
         end
-        n += deltaprimes[mod1(n,210) + 1]
+        n += deltaprimes[mod(n,210)+1]
     end
 end
 
