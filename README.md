@@ -321,7 +321,9 @@ Run a test of the primepi algorithms
 
 ## Tables of prime pi function
 
-The tables work like this:
+Some of the above functions use tables, but this is completley hidden
+from the user. But it is also possible to access them directly.  The
+tables work like this:
 
 ```julia
 julia> @time countprimes(10^17 + 10^14 + 10^10)
