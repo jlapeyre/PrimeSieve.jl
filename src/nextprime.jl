@@ -18,7 +18,6 @@ const deltaprimes_next =
      3, 2, 1, 6, 5, 4, 3, 2, 1, 4, 3, 2, 1, 2, 1, 4, 3, 2, 1, 6, 5, 4, 3, 2, 1, 2, 1, 6, 5, 4, 3,
      2, 1, 4, 3, 2, 1, 2, 1, 4, 3, 2, 1, 2, 1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 2]
 
-
 const deltaprimes_prev = 
   [-1, -2, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -1, -2, -1, -2, -3, -4, -1, -2,
     -1, -2, -3, -4, -1, -2, -3, -4, -5, -6, -1, -2, -1, -2, -3, -4, -5, -6, -1, -2, -3,
@@ -60,24 +59,23 @@ function next_prime_det(n, deltaprimes)
 end
 
 
-
 # Probabalistic. Used for larger primes.
 # In Maxima, a single miller_rabin test is done.
 # Choice of which gcd's to check could be more fine grained.
 # Using bigprimemultiple only seems to slow down the algorithm
-# Should try to preserve type here ?
 function next_prime_prob(n, deltaprimes)
-    n += deltaprimes[mod(n,210)+1] # index is never  1 !!
+    T = typeof(n)  # all this converting does nothing, apparently. As expected.
+    n += deltaprimes[mod(n,convert(T,210))+one(T)]
     while true
         if
-            gcd(n,955049953) == 1 &&
-            gcd(n,162490421) == 1 &&
+            gcd(n,convert(T,955049953)) == one(T) &&
+            gcd(n,convert(T,162490421)) == one(T) &&
 #            gcd(n,bigprimemultiple) == 1 &&  # Maxima uses this
 #            miller_rabin(n)   # Maxima uses this
             isprime(n)
             return n
         end
-        n += deltaprimes[mod(n,210)+1]
+        n += deltaprimes[mod(n,convert(T,210))+one(T)]
     end
 end
 
@@ -101,7 +99,7 @@ function prevprime(n)
     next_prime_prob(n,deltaprimes_prev)
 end
 
-# nextprime1 and nextprime1
+# nextprime1 and prevprime1
 # These are usually slower:  1.5x, 3x, ...
 # But for BigInts they seem to be uniformly faster
 # code by Hans W Borchers https://github.com/hwborchers/Numbers.jl
@@ -180,12 +178,13 @@ function genprimesb(n1,n2)
 end
 
 genprimesb(n2) = genprimesb(1,n2)
-        
+
+# nearly twice as fast as countprimesc for  Int64
 function countprimesb(n1,n2)
     c = zero(n2)
     v = n1
     while true
-        v = nextprime(v)
+        v = nextprime(v) # careful, for bigints, this calls nextprime1
         v > n2 && break
         c += one(n2)
     end

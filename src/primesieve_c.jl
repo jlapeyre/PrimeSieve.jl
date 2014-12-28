@@ -69,7 +69,7 @@ function genprimes(b; alg::Symbol = :sieve)
 end
 
 function genprimes(a,b; alg::Symbol = :auto)
-    if alg == :auto
+    if alg == :auto && b < stoplimit
         if b-a < 200  # this is crude; best depends on a and b, not just difference.
             return genprimesb(a,b)
         else
