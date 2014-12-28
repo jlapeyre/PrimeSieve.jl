@@ -18,6 +18,12 @@ Pkg.clone("https://github.com/jlapeyre/PrimeSieve.jl")
 Pkg.build("PrimeSieve")
 ```
 
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+
 Some functions in this package
 
  function  | description
