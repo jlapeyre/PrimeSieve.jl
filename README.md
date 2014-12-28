@@ -18,6 +18,11 @@ Pkg.clone("https://github.com/jlapeyre/PrimeSieve.jl")
 Pkg.build("PrimeSieve")
 ```
 
+* item 1
+* item 2
+
+
+
 This package uses the following tables and libraries.
 
 ### Tables
