@@ -50,7 +50,7 @@ Uint64. The input/output type of the fastest primepi algorithm in libprimecount,
 algorithm, is Int128. There is a risk of overflow when constructing and giving
 arguments to functions in this package. The easiest way to avoid this
 is to put arguments in quotes: eg `countprimes("10^19","10^19+100")`.
-Also available are ```@bigint``` and ```@int128``` from DeepConvert.
+Also available are `@bigint` and `@int128` from DeepConvert.
 
 ## Functions
 
@@ -59,24 +59,24 @@ Also available are ```@bigint``` and ```@int128``` from DeepConvert.
 ```julia
 genprimes(start,stop)
 ```
-Return an array of all primes ```>= start``` and ```<= stop```.
+Return an array of all primes `>= start` and `<= stop`.
 
 ```julia
 genprimes(stop)
 ```
-Return an array of all primes between 1 and ```stop```
+Return an array of all primes between 1 and `stop`
 
 ```julia
 genprimes(start,stop; alg = algorithm)
 ```
 Generate primes using a specified algorithm. The algorithm must be
-either ```:sieve``` (the default) or ```:next```.  Which algorithm is
-more efficient depends on the parameters. In general, ```:sieve``` is
-better for larger intervals, and ```:next``` is better for larger values
-of ```start```. The keyword ```:sieve``` uses a very fast sieve (libprimesieve), and
-```:next``` uses the function ```nextprime```.
+either `:sieve` (the default) or `:next`.  Which algorithm is
+more efficient depends on the parameters. In general, `:sieve` is
+better for larger intervals, and `:next` is better for larger values
+of `start`. The keyword `:sieve` uses a very fast sieve (libprimesieve), and
+`:next` uses the function `nextprime`.
 
-If you exceed the upper limit for argument to the sieve, then ```:next```
+If you exceed the upper limit for argument to the sieve, then `:next`
 is chosen automatically.
 ```julia
 julia> @bigint genprimes(10^20, 10^20+1000)
@@ -84,7 +84,7 @@ julia> @bigint genprimes(10^20, 10^20+1000)
  100000000000000000039 ...
 ```
 
-This could also have been written ```genprimes(bi"10^20", bi"10^20+1000")```
+This could also have been written `genprimes(bi"10^20", bi"10^20+1000")`
 
 ### primepi
 
@@ -127,9 +127,9 @@ elapsed time: 0.08235147 seconds (216 bytes allocated)
 Count the number of primes (or
 [prime tuplets](http://en.wikipedia.org/wiki/Prime_k-tuple) in an interval. This
 looks up the largest value in the table that is smaller than the
-requested value and computes the remaining values. Note that ```primepi``` is
-logically equivalent to countprimes with ```start=1```. For ```start=1```,
-The function ```primepi``` is often much faster than, and is never slower than ```countprimes``` 
+requested value and computes the remaining values. Note that `primepi` is
+logically equivalent to countprimes with `start=1`. For `start=1`,
+The function `primepi` is often much faster than, and is never slower than `countprimes` 
 
 ```julia
 countprimes(stop)            # count the number of primes less than or equal to stop
@@ -145,8 +145,8 @@ one, that is for primes, but not tuplets.
 
 The optional keyword argument alg may be one of :tabsieve (the default),
 :next, :nexta, or :sieve (:sieve will always be slower than :tabsieve).
-As above, ```:tabsieve``` uses a combination of tables and a fast sieve.
-:next and :nexta are two different variants of ```next_prime```.
+As above, `:tabsieve` uses a combination of tables and a fast sieve.
+:next and :nexta are two different variants of `next_prime`.
 
 Examples
 ```julia
@@ -173,8 +173,8 @@ julia> @bigint countprimes(10^50, 10^50+1000)
 
 ### nextprime, prevprime
 
-```nextprime(n)``` returns the smallest prime greater than n.
-```prevprime(n)``` returns the largest prime less than n.
+`nextprime(n)` returns the smallest prime greater than n.
+`prevprime(n)` returns the largest prime less than n.
 
 Several algorithms are used. Finding the optimal one (of the
 available) is partially automated. nextprime1 and prevprime1 use an
@@ -182,13 +182,13 @@ alternate algorithm coded by H W Borcher.
 
 ### Iterators
 
-```someprimes(n2)``` All primes n, 2 <= n <= n2
+`someprimes(n2)` All primes n, 2 <= n <= n2
 
-```someprimes(n1,n2)``` All primes n, n1 <= n <= n2
+`someprimes(n1,n2)` All primes n, n1 <= n <= n2
 
-```allprimes(n1)``` All primes n, n > n1
+`allprimes(n1)` All primes n, n > n1
 
-```allprimes()``` All primes
+`allprimes()` All primes
 
 For example, here is the [primorial](http://en.wikipedia.org/wiki/Primorial) function defined using an iterator:
 
@@ -203,12 +203,12 @@ julia> @bigint primorial(100)
 Returns the nth prime using a fast algorithm from libprimecount.
 The argument is converted to Int64.
 
-```nthprime(n; alg = :sieve)``` uses the older algorithm from
+`nthprime(n; alg = :sieve)` uses the older algorithm from
 libprimesieve, which is much slower.
 
 ### nprimes
 
-Return an array of the first ```n``` primes ```>= start```.
+Return an array of the first `n` primes `>= start`.
 
 Usage
 ```julia
@@ -223,7 +223,7 @@ scountprimes([start],stop, tuplets=1)
 
 ### printprimes
 
-Print all primes (or prime n-tuplets) that are ```>= start``` and ```<= stop```
+Print all primes (or prime n-tuplets) that are `>= start` and `<= stop`
 
 Usage
 ```julia
@@ -256,7 +256,7 @@ The argument is converted to Int64.
 ### primesievesize
 
 Get, set the sieve size in kilobytes. (setting does not seem to work)
-```sz``` must satisfy  ```1 <= sz <= 2048```
+`sz` must satisfy  `1 <= sz <= 2048`
 
 Usage
 ```julia
@@ -288,7 +288,7 @@ primepi_num_threads(numthreads)
 
 ### primemaxstop
 
-Return the largest value (as a ```Uint64```) that can be passed as the parameter
+Return the largest value (as a `Uint64`) that can be passed as the parameter
 stop in the sieve.
 
 Usage
@@ -298,7 +298,7 @@ primemaxstop()
 
 ### primepi_xmax()
 
-Function that returns the largest allowed argument to ```primepi``` when using the :dr algorithm.
+Function that returns the largest allowed argument to `primepi` when using the :dr algorithm.
 
 ### primetest
 
@@ -330,9 +330,9 @@ julia> primelookup(10^17 + 10^14 + 10^10)
 (14,(2626111798288135,100100000000000000,10000000000))
 ```
 
-The 14th table was used. The value of prime pi for ```10^17+10^14```,
-```2626111798288135``` is in the table, and the primes in an
-interval of length ```10^10``` must be found with the sieves.
+The 14th table was used. The value of prime pi for `10^17+10^14`,
+`2626111798288135` is in the table, and the primes in an
+interval of length `10^10` must be found with the sieves.
 
 ### primetableinfo
 
@@ -371,7 +371,7 @@ table  incr    tab len  max x
 ### primelookup
 
 Look up a value of the prime pi function in the tables. This is only provided
-to aid in understanding the behavior of ```countprimes```.
+to aid in understanding the behavior of `countprimes`.
 
 Usage
 ```julia
@@ -383,14 +383,14 @@ A tuple of a single element and another tuple of three elements is returned:
 ```julia
 (j,(p,y,rem))
 ```
-* ```j``` is the number of the best table found
-* ```y``` is the largest index satisfying ```y<x``` found.
-* ```p``` is the value of prime pi at ```y```
-* ```rem``` is ```x-y```
+* `j` is the number of the best table found
+* `y` is the largest index satisfying `y<x` found.
+* `p` is the value of prime pi at `y`
+* `rem` is `x-y`
 
 ### primetables
 
-The array of type ```Array{PrimeTable,1}``` containing the prime tables.
+The array of type `Array{PrimeTable,1}` containing the prime tables.
 See tables.jl for the format.
 
 Example
@@ -405,7 +405,7 @@ The tables are loaded when the package is loaded.
 
 ## Other details
 
-For ```x>typemax(Int)```, you need to explicitly ask for a bigger data type.
+For `x>typemax(Int)`, you need to explicitly ask for a bigger data type.
 For instance,
 
 ```julia
@@ -428,17 +428,17 @@ julia> countprimes("10^19 + 10^9")
 ```
 
 Routines that use the tables will convert the arguments to Int128. This is because
-some indices in the tables are greater than ```typemax(Uint64)```.  Routines that
-only use the sieve will be converted to ```Uint64```, which is the data type that
+some indices in the tables are greater than `typemax(Uint64)`.  Routines that
+only use the sieve will be converted to `Uint64`, which is the data type that
 the sieve routines use.
 
 
-The largest stop value that may be given is ```2^64 - 10 * 2^32```.
-The largest start value that may be given is ```2^64 - 11 * 2^32```.
-The sieve works with the ```Uint64``` data type. But conversions are done depending
+The largest stop value that may be given is `2^64 - 10 * 2^32`.
+The largest start value that may be given is `2^64 - 11 * 2^32`.
+The sieve works with the `Uint64` data type. But conversions are done depending
 on the types of start, stop, and n.
 
-```countprimes``` returns ```Int128```, because it uses tables and sieves
+`countprimes` returns `Int128`, because it uses tables and sieves
 The other routines only support smaller data types.
 
 ### primetabletype()
@@ -450,7 +450,7 @@ be used together with the sieve.
 
 Return the native prime sieve type. This should be Uint64. libprimesieve
 returns the data in various integer formats. These are chosen by the Julia
-interface by the type of the ```start``` parameter.
+interface by the type of the `start` parameter.
 
 ### eltype(t::PrimeTable)
 
