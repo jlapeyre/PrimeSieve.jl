@@ -129,8 +129,10 @@ elapsed time: 0.08235147 seconds (216 bytes allocated)
 
 Factor an integer using libmsieve and libecm.
 
+Example:
+
 ```julia
-mfactor(n)
+mfactor("2^101-1")
 ```
 
 ### countprimes
