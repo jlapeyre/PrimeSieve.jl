@@ -1,13 +1,15 @@
 # PrimeSieve
 
-This package provides functions related to prime numbers,
-mostly for efficiently generating and counting primes.
+This package provides functions related to prime numbers and factoring,
+mostly for generating and counting primes and factoring integers. This package
+uses some of the fastest open-source libraries for these functions.
+The name `Primes` would be better, but that might cause collisions.
 
 See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.
 
-I am unaware of binaries of libprimesieve and libprimecount for Windows and OSX, so these
-are not installed automatically.
+I am unaware of binaries of libprimesieve and libprimecount for Windows and OSX, so there
+is no easy installation for these platforms.
 
 This is not a registered package, and it has a non-registered dependency. You can install it
 (at least on Unix) with
@@ -22,6 +24,7 @@ Some functions in this package
 
 * `genprimes(a,b)`               generate array of primes between `a` and `b`, inclusive
 * `genprimes(b)`               generate array of primes between 2 and `b`
+* `mfactor(n)`                factor integers up to about 100 decimal digits.
 * `primepi(n)`               the prime counting function: number of primes < n
 * `countprimes(a,b)`         number of primes between a and b
 * `nextprime(n)`, `prevprime(n)`   first prime greater (or smaller) than n
@@ -34,15 +37,14 @@ Some functions in this package
 
 This package uses the following tables and libraries.
 
-### Tables
+[T. Oliveira's tables of the prime counting function] (http://www.ieeta.pt/~tos/primes.html)
 
-http://www.ieeta.pt/~tos/primes.html
+Prime number sieve library [libprimesieve] (http://primesieve.org/) and
+prime counting function library [libprimecount](https://github.com/kimwalisch/primecount)
 
-### libprimesieve and libprimecount
+Integer factoring libraries [msieve](http://sourceforge.net/projects/msieve/) and
+[gmp-ecm](http://ecm.gforge.inria.fr/)
 
-http://primesieve.org/
-
-https://github.com/kimwalisch/primecount
 
 ### Data types
 
@@ -121,6 +123,14 @@ elapsed time: 0.505796298 seconds (208 bytes allocated)
 julia> @time primepi(10^14+10^8; alg = :tabsieve)       # Table and sieve is faster
 elapsed time: 0.08235147 seconds (216 bytes allocated)
 3204944853481
+```
+
+### mfactor
+
+Factor an integer using libmsieve and libecm.
+
+```julia
+mfactor(n)
 ```
 
 ### countprimes

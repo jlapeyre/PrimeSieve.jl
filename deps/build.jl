@@ -1,9 +1,13 @@
 using BinDeps
 
+# Find the directory with installed Julia libraries
 julialibpath = dirname(Sys.dlpath(dlopen("libgmp")))
+
+# Set link flags for Autotools external packages
+# This is only needed for ecm
 ENV["LDFLAGS"] = "-L$julialibpath"
-# Looks like BinDeps also set this
-# We copy gmp.h from Julia source tree to this location. Maybe Julia should also copy it to installation.
+# config.log shows that BinDeps also set the following as well.
+# We have copied gmp.h from Julia source tree to this location. Maybe Julia should also copy it to installation.
 ENV["CPPFLAGS"] = "-I../../usr/include"
 
 # The  -lgmp should not be neccessary, but it is.
