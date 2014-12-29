@@ -1,12 +1,14 @@
 using BinDeps
 
-# BinDeps.debug("PrimeSieve") causes stack overflow here
-# After build, and on cli, do:
-# using BinDeps; BinDeps.debug("PrimeSieve")
 julialibpath = dirname(Sys.dlpath(dlopen("libgmp")))
 ENV["LDFLAGS"] = "-L$julialibpath"
-# This should not be neccessary, but it is.
-ENV["LIBS"] = "-lgmp"
+# Looks like BinDeps also set this
+ENV["CPPFLAGS"] = "-I../../usr/include"
+
+# The  -lgmp should not be neccessary, but it is.
+# -lgmp occurs multiple times on link commands. -lm occurs five times per link command.
+# -Wl... makes the libecm use libgmp in the Julia installation.
+ENV["LIBS"] = "-lgmp -Wl,-rpath -Wl,$julialibpath"
 
 include("../src/compatibility.jl")
 
@@ -18,6 +20,8 @@ primecount = library_dependency("primecount", aliases = ["libprimecount"], depen
 cprimecount = library_dependency("cprimecount", aliases = ["libcprimecount"], depends = [primecount])
 smsieve = library_dependency("smsieve", aliases = ["libsmsieve"], depends = [gmpecm])
 
+const pkgdir = BinDeps.depsdir(cprimecount)
+
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.1.tar.gz"), primesieve)
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-1.4.tar.gz"), primecount)
 provides(Sources, URI("https://gforge.inria.fr/frs/download.php/file/32159/ecm-6.4.4.tar.gz"), gmpecm)
@@ -28,9 +32,7 @@ provides(BuildProcess, Autotools(libtarget = ".libs/libecm."*BinDeps.shlib_ext, 
 provides(BuildProcess, Autotools(libtarget = ".libs/libprimesieve."*BinDeps.shlib_ext), primesieve)
 provides(BuildProcess, Autotools(libtarget = ".libs/libprimecount."*BinDeps.shlib_ext), primecount)
 
-
-#cpcsrcdir = BinDeps.cpcsrcdir(cprimecount)
-cpcsrcdir = joinpath(BinDeps.depsdir(cprimecount),"src","cprimecount")
+const cpcsrcdir = joinpath(BinDeps.depsdir(cprimecount),"src","cprimecount")
 provides(SimpleBuild,
     (@build_steps begin
         @build_steps begin
