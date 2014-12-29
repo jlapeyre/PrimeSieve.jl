@@ -3,6 +3,7 @@ using BinDeps
 julialibpath = dirname(Sys.dlpath(dlopen("libgmp")))
 ENV["LDFLAGS"] = "-L$julialibpath"
 # Looks like BinDeps also set this
+# We copy gmp.h from Julia source tree to this location. Maybe Julia should also copy it to installation.
 ENV["CPPFLAGS"] = "-I../../usr/include"
 
 # The  -lgmp should not be neccessary, but it is.
