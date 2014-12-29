@@ -5,6 +5,8 @@ using BinDeps
 # using BinDeps; BinDeps.debug("PrimeSieve")
 julialibpath = dirname(Sys.dlpath(dlopen("libgmp")))
 ENV["LDFLAGS"] = "-L$julialibpath"
+# This should not be neccessary, but it is.
+ENV["LIBS"] = "-lgmp"
 
 include("../src/compatibility.jl")
 
