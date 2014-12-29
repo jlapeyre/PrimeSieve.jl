@@ -40,5 +40,6 @@ include("wrappers.jl")
 include("tuples.jl")
 include("primeit.jl")
 include("randprime.jl")
+include("msieve.jl")
 
 end # module PrimeSieve
