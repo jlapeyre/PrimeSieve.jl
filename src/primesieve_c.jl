@@ -41,11 +41,11 @@ function primescopy(res,n)
 end
 
 # return array of primes between start and stop
-genprimesa(start::ConvT, stop::ConvT) = genprimes(convu64(start),convu64(stop))
-genprimesa(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
-genprimesa(stop) = genprimes(one(typeof(stop)),stop)
+genprimes_sieve(start::ConvT, stop::ConvT) = genprimes(convu64(start),convu64(stop))
+genprimes_sieve(stop::ConvT) = genprimes(one(typeof(convu64(stop))),convu64(stop))
+genprimes_sieve(stop) = genprimes(one(typeof(stop)),stop)
 
-function genprimesa{T,V}(start::T,stop::V)
+function genprimes_sieve{T,V}(start::T,stop::V)
     checkstop(stop)
     n = Csize_t[0]
     res = try 
@@ -60,7 +60,7 @@ end
 
 function genprimes(b; alg::Symbol = :sieve)
     if alg == :sieve
-        return genprimesa(b)
+        return genprimes_sieve(b)
     elseif alg == :next
         return genprimesb(one(b),b)
     else
@@ -73,12 +73,12 @@ function genprimes(a,b; alg::Symbol = :auto)
         if b-a < 200  # this is crude; best depends on a and b, not just difference.
             return genprimesb(a,b)
         else
-            return genprimesa(a,b)
+            return genprimes_sieve(a,b)
         end
     elseif alg == :next || b >= stoplimit
         return genprimesb(a,b)        
     elseif alg == :sieve
-        return genprimesa(a,b)
+        return genprimes_sieve(a,b)
     else
         error("algorithm must be one of :auto, :sieve, or :next")
     end

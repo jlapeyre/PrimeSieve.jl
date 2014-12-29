@@ -1,4 +1,5 @@
-export nextprime, nextprime1, prevprime, prevprime1, genprimesb, countprimesb, countprimesc
+export nextprime, nextprime1, prevprime, prevprime1, genprimesb, genprimesc
+export countprimesb, countprimesc
 
 # Translated with small edits from ifactor.lisp by John Lapeyre (2014)
 # ifactor.lisp: Copyright: 2005-2008 Andrej Vodopivec, Volker van Nek
@@ -164,44 +165,38 @@ end
 nextprime(n::BigInt) = nextprime1(n)
 prevprime(n::BigInt) = prevprime1(n)
 
+# maybe we don't need genprimesc.
 # Sometimes more efficient than libprimesieve wrapper genprimes, and
 # has larger domain (eg BigInts, Int128)
-function genprimesb(n1,n2)
-    ret = Array(typeof(n2),0)
-    v = n1
-    while true
-        v = nextprime(v)
-        v > n2 && break
-        push!(ret,v)
+for (f,fc) in ((:genprimesb, :nextprime), (:genprimesc, :nextprime1))
+    @eval begin
+        function ($f)(n1,n2)
+            ret = Array(typeof(n2),0)
+            v = n1
+            while true
+                v = ($fc)(v)
+                v > n2 && break
+                push!(ret,v)
+            end
+            return ret    
+        end
+        ($f)(n2) = ($f)(1,n2)
     end
-    return ret    
 end
 
-genprimesb(n2) = genprimesb(1,n2)
-
-# nearly twice as fast as countprimesc for  Int64
-function countprimesb(n1,n2)
-    c = zero(n2)
-    v = n1
-    while true
-        v = nextprime(v) # careful, for bigints, this calls nextprime1
-        v > n2 && break
-        c += one(n2)
+# countprimesb nearly twice as fast as countprimesc for  Int64
+for (f,fc) in ((:countprimesb, :nextprime), (:countprimesc, :nextprime1))
+    @eval begin
+        function ($f)(n1,n2)
+            c = zero(n2)
+            v = n1
+            while true
+                v = ($fc)(v)
+                v > n2 && break
+                c += one(n2)
+            end
+            return c
+        end
+        ($f)(n2) = ($f)(1,n2)
     end
-    return c
 end
-
-countprimesb(n2) = countprimesb(1,n2)
-
-function countprimesc(n1,n2)
-    c = zero(n2)
-    v = n1
-    while true
-        v = nextprime1(v)
-        v > n2 && break
-        c += one(n2)
-    end
-    return c
-end
-
-countprimesc(n2) = countprimesc(1,n2)
