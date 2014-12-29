@@ -1,4 +1,4 @@
-# Primes
+# PrimeSieve
 
 This package provides functions related to prime numbers,
 mostly for efficiently generating and counting primes.
