@@ -4,7 +4,16 @@ const smsievelib =  "libsmsieve.so"
 
 # Send the string to msieve and return c struct msieve_obj
 # Actually only single threaded.
-runmsieve(n::String) = ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int), n, CPU_CORES)
+function runmsieve(n::String)
+    res = try
+        ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int), n, CPU_CORES)
+    catch
+        throw(InterruptException())
+    end
+    res == C_NULL && throw(InterruptException())
+    res
+end
+
 # Send ptr to msieve_obj and get ptr to struct factors
 getfactors(obj) = ccall((:get_factors_from_obj,smsievelib), Ptr{Void}, (Ptr{Void},), obj)
 # Sent ptr to struct factors and get number of factors
