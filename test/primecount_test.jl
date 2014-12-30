@@ -1,4 +1,8 @@
 @test typeof(primepi("10")) == Int128
 
 @test nextprime(0) == 2
+@test nextprime(2) == 3
+@test prevprime(3) == 2
+@test prevprime(2) == 0
+@test nextprime(prevprime(nextprime(@bigint 10^100))) == nextprime(@bigint 10^100)
 @test genprimes(10^6; alg = :sieve) == genprimes(10^6; alg = :next)
