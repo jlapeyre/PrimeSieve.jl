@@ -80,3 +80,15 @@ function mfactor(n::Integer)
     n > 0 || error("number to be factored must be positive")
     mfactor(string(n))
 end
+
+function mfactor{T<:Integer}(a::AbstractArray{T,1})
+    outa = Array(Any,0)
+    for x in a push!(outa,mfactor(x)) end
+    outa
+end
+
+function mfactor{T<:String}(a::AbstractArray{T,1})
+    outa = Array(Any,0)
+    for x in a push!(outa,mfactor(x)) end
+    outa
+end

@@ -132,7 +132,18 @@ Factor an integer using libmsieve and libecm.
 Example:
 
 ```julia
-mfactor("2^101-1")
+julia> @time mfactor("2^251-1")
+elapsed time: 29.709989827 seconds (13283880 bytes allocated)
+Dict{Int128,Int64} with 5 entries:
+  12070396178249893039969681 => 1
+  178230287214063289511      => 1
+  61676882198695257501367    => 1
+  503                        => 1
+  54217                      => 1
+```
+
+```julia
+mfactor( @bigint [ 2^100 + i for i in -5:5] )  # returns an array of factorizations.
 ```
 
 ### countprimes
