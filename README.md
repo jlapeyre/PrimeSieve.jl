@@ -100,7 +100,8 @@ primepi(x; alg = algorithm)
 The efficient algorithms (or methods) are :auto (the default), :dr,
 and :tabsieve. The default, :auto, tries to choose the faster between
 :dr and :tabsieve (see Notes below). The other algorithms are
-slower in all cases. They are: :legendre, :lehmer, :meissel, :lmo,
+slower in all cases. They are: [:legendre](http://mathworld.wolfram.com/LegendresFormula.html),
+[:lehmer](http://mathworld.wolfram.com/LehmersFormula.html), :meissel, :lmo,
 :sieve.  The algorithm :dr uses an efficient parallel Deleglise Rivat
 method. The algorithm :tabsieve uses a combination of tables and a
 sieve and is more efficient when x is not too much greater than a
