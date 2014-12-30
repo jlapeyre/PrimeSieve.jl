@@ -25,7 +25,7 @@ primecount = library_dependency("primecount", aliases = ["libprimecount"], depen
 cprimecount = library_dependency("cprimecount", aliases = ["libcprimecount"], depends = [primecount])
 smsieve = library_dependency("smsieve", aliases = ["libsmsieve"], depends = [gmpecm])
 
-const pkgdir = BinDeps.depsdir(cprimecount)
+#const pkgdir = BinDeps.depsdir(cprimecount)
 
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.1.tar.gz"), primesieve)
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-1.4.tar.gz"), primecount)
