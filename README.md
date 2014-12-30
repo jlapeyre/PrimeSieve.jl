@@ -497,8 +497,6 @@ Interrupting a call to libprimecount, results in a segfault. We could
 `disable_sigint`, but there appear to be memory leaks in libprimecount.
 Better to crash Julia than the whole system.
 
-Interrupting calls to libmsieve causes Julia to exit.
-
 <!--  LocalWords:  PrimeSieve lookup multi md libprimesieve OSX julia
  -->
 <!--  LocalWords:  Primesieve countprimes primelookup th tuplets sz
