@@ -511,6 +511,9 @@ Interrupting a call to libprimecount, results in a segfault. We could
 `disable_sigint`, but there appear to be memory leaks in libprimecount.
 Better to crash Julia than the whole system.
 
+msieve interrupt handler is installed, then all c code uses it. We need
+to install and then uninstall it on every call.
+
 <!--  LocalWords:  PrimeSieve lookup multi md libprimesieve OSX julia
  -->
 <!--  LocalWords:  Primesieve countprimes primelookup th tuplets sz
