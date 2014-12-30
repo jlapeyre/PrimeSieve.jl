@@ -95,7 +95,8 @@ function nprimes{T}(n::T,start)
         ccall((:primesieve_generate_n_primes, libname),
                     Ptr{T}, (Uint64, Uint64, Int),
                     convert(Uint64,n),convert(Uint64,start),primetype(T))
-    catch
+    catch # every so often, loading fails with ERROR: invalid base 10 digit '@' in "100000000000000000000000@\0\0\0"
+
         throw(InterruptException())        
     end        
     primescopy(res,n)
