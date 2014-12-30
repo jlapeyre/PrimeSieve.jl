@@ -30,7 +30,7 @@ const pkgdir = BinDeps.depsdir(cprimecount)
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.1.tar.gz"), primesieve)
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-1.4.tar.gz"), primecount)
 provides(Sources, URI("https://gforge.inria.fr/frs/download.php/file/32159/ecm-6.4.4.tar.gz"), gmpecm)
-provides(Sources, URI("https://github.com/jlapeyre/msieve-shared/archive/v0.0.2.tar.gz"), smsieve,unpacked_dir="msieve-shared-0.0.2")
+provides(Sources, URI("https://github.com/jlapeyre/msieve-shared/archive/v0.0.3.tar.gz"), smsieve,unpacked_dir="msieve-shared-0.0.3")
 
 provides(BuildProcess, Autotools(libtarget = ".libs/libecm."*BinDeps.shlib_ext, configure_options = String["--enable-shared", "--enable-openmp","--with-gmp-lib=$julialibpath"
                                  ]), gmpecm)
@@ -48,7 +48,7 @@ provides(SimpleBuild,
     end),cprimecount, os = :Unix)
 
 
-smsrcdir = joinpath(BinDeps.depsdir(cprimecount),"src","msieve-shared-0.0.2")
+smsrcdir = joinpath(BinDeps.depsdir(cprimecount),"src","msieve-shared-0.0.3")
 
 provides(SimpleBuild,
          (@build_steps begin
