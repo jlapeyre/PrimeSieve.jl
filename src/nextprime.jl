@@ -38,7 +38,7 @@ const small_primes = primes(100000)
 function makebigprimemultiple ()
     a = primes(2897);
     n = BigInt(1)
-    for i in 17:length(a)
+    @inbounds for i in 17:length(a)
         n *= a[i]
     end
     n
@@ -48,13 +48,13 @@ const bigprimemultiple = makebigprimemultiple()
 
 # Deterministic. Only works up to a limit (see below)
 function next_prime_det(n, deltaprimes)
-    n += deltaprimes[mod(n,210) + 1]
+    @inbounds n += deltaprimes[mod(n,210) + 1]
     while true
-        for p in small_primes
+        @inbounds for p in small_primes
             mod(n,p) == 0 && break
             p*p >= n  && return n
         end
-        n += deltaprimes[mod(n,210) + 1]
+        @inbounds n += deltaprimes[mod(n,210) + 1]
     end
     n
 end
@@ -66,7 +66,7 @@ end
 # Using bigprimemultiple only seems to slow down the algorithm
 function next_prime_prob(n, deltaprimes)
     T = typeof(n)  # all this converting does nothing, apparently. As expected.
-    n += deltaprimes[mod(n,convert(T,210))+one(T)]
+    @inbounds n += deltaprimes[mod(n,convert(T,210))+one(T)]
     while true
         if
             gcd(n,convert(T,955049953)) == one(T) &&
@@ -76,7 +76,7 @@ function next_prime_prob(n, deltaprimes)
             isprime(n)
             return n
         end
-        n += deltaprimes[mod(n,convert(T,210))+one(T)]
+        @inbounds n += deltaprimes[mod(n,convert(T,210))+one(T)]
     end
 end
 

@@ -57,7 +57,7 @@ function factor_strings_to_integers(sfactors::Array{String})
     T = typeof(n1)
     arr = Array(T,m)
     arr[m] = n1
-    for i in 1:m-1
+    @inbounds for i in 1:m-1
         arr[i] = parseint(T,sfactors[i])
     end
     arr    
@@ -71,7 +71,7 @@ function mfactor(n::String)
     arr = mfactorl(n)
     T = eltype(arr)
     d = (T=>Int)[]
-    for i in arr d[i] = get(d,i,0) + 1 end
+    @inbounds for i in arr d[i] = get(d,i,0) + 1 end
     d
 end
 

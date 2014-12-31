@@ -31,7 +31,7 @@ end
 # x falls on or between incrments and look up value for x
 function piandrem{T<:Real}(x::T)
     j = 0
-    for i in 1:length(primetables) x <= primetables[i].maxn && (j = i; break) end
+    @inbounds for i in 1:length(primetables) x <= primetables[i].maxn && (j = i; break) end
     j == 0 && error("x is too large!")
     piandrem(primetables[j],x)
 end
@@ -39,7 +39,7 @@ end
 function primelookup(x)
     x = conv128(x)
     j = 0
-    for i in 1:length(primetables) x < primetables[i].maxn && (j = i ; break) end
+    @inbounds for i in 1:length(primetables) x < primetables[i].maxn && (j = i ; break) end
     j == 0 && error("x is too large!")
    (j,piandrem(primetables[j],x))
 end
