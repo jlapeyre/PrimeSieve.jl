@@ -497,6 +497,9 @@ Return element type of values in table.
 
 ### apopcount
 
+This is a only curiosity. It is supposed to be an optimized C (C++) function,
+but doing the same thing in a Julia loop is faster:
+
 `apopcount(arr)` gives the number of 1's in the binary representation of
 the array `arr`. The length of the array is truncated to a multiple of 8.
 
@@ -518,6 +521,12 @@ elapsed time: 19.551563844 seconds (6399988112 bytes allocated, 14.41% gc time)
 
 julia> @time apopcount(aa)
 elapsed time: 0.140950344 seconds (96 bytes allocated)
+6400000000
+
+julia> lpopcount(x) = ( s = 0; for i in 1:length(x) s += count_ones(x[i]) end; s)
+
+julia> @time lpopcount(aa)
+elapsed time: 0.106306266 seconds (96 bytes allocated)  # Julia version is faster !
 6400000000
 ```
 
