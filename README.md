@@ -500,6 +500,10 @@ Return element type of values in table.
 `apopcount(arr)` gives the number of 1's in the binary representation of
 the array `arr`. The length of the array is truncated to a multiple of 8.
 
+Note that this treats the contents of the array as a bits type. In
+particular, if `arr` is not an array of bits type, then the number of 1's
+in the pointers in the array are counted.
+
 The algorithm is by [Cédric Lauradoux](http://planete.inrialpes.fr/~lauradou/)
 
 ### Notes
