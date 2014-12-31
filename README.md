@@ -504,6 +504,23 @@ Note that this treats the contents of the array as a bits type. In
 particular, if `arr` is not an array of bits type, then the number of 1's
 in the pointers in the array are counted.
 
+Example:
+
+```julia
+julia> @time aa = Array(Uint64,100000000);
+elapsed time: 0.020967882 seconds (800016536 bytes allocated, 93.62% gc time)
+
+julia> v = typemax(Uint64)
+0xffffffffffffffff
+
+julia> @time for i in 1:length(aa) aa[i] = v end;
+elapsed time: 19.551563844 seconds (6399988112 bytes allocated, 14.41% gc time)
+
+julia> @time apopcount(aa)
+elapsed time: 0.140950344 seconds (96 bytes allocated)
+6400000000
+```
+
 The algorithm is by [Cédric Lauradoux](http://planete.inrialpes.fr/~lauradou/)
 
 ### Notes
