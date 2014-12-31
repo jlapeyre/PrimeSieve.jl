@@ -509,11 +509,10 @@ in the pointers in the array are counted.
 
 In the comments, Kim Walisch says this about the algorithm,
 
-  This algorithm counts the number of 1 bits (population count) in
-  an array using 64-bit tree merging. To the best of my knowledge
-  this is the fastest integer arithmetic bit population count
-  algorithm, it uses only 8 operations for 8 bytes on 64-bit CPUs
-
+> This algorithm counts the number of 1 bits (population count) in
+> an array using 64-bit tree merging. To the best of my knowledge
+> this is the fastest integer arithmetic bit population count
+> algorithm, it uses only 8 operations for 8 bytes on 64-bit CPUs
 
 Example:
 
