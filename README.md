@@ -517,14 +517,8 @@ In the comments, Kim Walisch says this about the algorithm,
 Example:
 
 ```julia
-julia> @time aa = Array(Uint64,100000000);
-elapsed time: 0.020967882 seconds (800016536 bytes allocated, 93.62% gc time)
-
-julia> v = typemax(Uint64)
-0xffffffffffffffff
-
-julia> @time for i in 1:length(aa) aa[i] = v end;  # slow because not in a function
-elapsed time: 19.551563844 seconds (6399988112 bytes allocated, 14.41% gc time)
+julia> aa = Array(Uint64,100000000);
+julia> fill!(aa,typemax(Uint64));
 
 julia> @time apopcount(aa)
 elapsed time: 0.140950344 seconds (96 bytes allocated)  # test shows overhead is negligible
