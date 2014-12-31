@@ -513,7 +513,7 @@ elapsed time: 0.020967882 seconds (800016536 bytes allocated, 93.62% gc time)
 julia> v = typemax(Uint64)
 0xffffffffffffffff
 
-julia> @time for i in 1:length(aa) aa[i] = v end;
+julia> @time for i in 1:length(aa) aa[i] = v end;  # slow because not in a function
 elapsed time: 19.551563844 seconds (6399988112 bytes allocated, 14.41% gc time)
 
 julia> @time apopcount(aa)
