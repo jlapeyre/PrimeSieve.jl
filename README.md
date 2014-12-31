@@ -493,6 +493,15 @@ interface by the type of the `start` parameter.
 
 Return element type of values in table.
 
+## Other functions
+
+### apopcount
+
+`apopcount(arr)` gives the number of 1's in the binary representation of
+the array `arr`. The length of the array is truncated to a multiple of 8.
+
+The algorithm is by [Cédric Lauradoux](http://perso.citi.insa-lyon.fr/claurado/hamming.html)
+
 ### Notes
 
 The algorithms used by `:auto` in `genprimes` and `primepi` are

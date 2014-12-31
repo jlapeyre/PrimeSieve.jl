@@ -1,4 +1,5 @@
 #include "primecount.hpp"
+#include "primesieve.hpp"
 #include <stdio.h>
 #include <signal.h>
 
@@ -21,8 +22,9 @@ namespace primecount {
 }
 */
 
-
-
+namespace primesieve {
+  uint64_t popcount(const uint64_t* array, uint64_t size);
+}
 
 extern "C"
 {
@@ -111,6 +113,11 @@ extern "C"
     return m.c_str();
   }
 
+
+  uint64_t primesieve_popcount(const uint64_t* array, uint64_t size) {
+    return primesieve::popcount(array,size);
+  }
+  
   // Not in libprimecount API
   /*
   primecount::int128_t pi_deleglise_rivat128(primecount::int128_t x) {
