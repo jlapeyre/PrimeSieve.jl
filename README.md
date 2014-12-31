@@ -498,7 +498,7 @@ Return element type of values in table.
 ### apopcount
 
 This is a only curiosity. It is supposed to be an optimized C (C++) function,
-but doing the same thing in a Julia loop is faster:
+but doing the same thing in a Julia loop is much faster.
 
 `apopcount(arr)` gives the number of 1's in the binary representation of
 the array `arr`. The length of the array is truncated to a multiple of 8.
@@ -506,6 +506,14 @@ the array `arr`. The length of the array is truncated to a multiple of 8.
 Note that this treats the contents of the array as a bits type. In
 particular, if `arr` is not an array of bits type, then the number of 1's
 in the pointers in the array are counted.
+
+In the comments, Kim Walisch says this about the algorithm,
+
+  This algorithm counts the number of 1 bits (population count) in
+  an array using 64-bit tree merging. To the best of my knowledge
+  this is the fastest integer arithmetic bit population count
+  algorithm, it uses only 8 operations for 8 bytes on 64-bit CPUs
+
 
 Example:
 
@@ -520,7 +528,7 @@ julia> @time for i in 1:length(aa) aa[i] = v end;  # slow because not in a funct
 elapsed time: 19.551563844 seconds (6399988112 bytes allocated, 14.41% gc time)
 
 julia> @time apopcount(aa)
-elapsed time: 0.140950344 seconds (96 bytes allocated)
+elapsed time: 0.140950344 seconds (96 bytes allocated)  # test shows overhead is negligible
 6400000000
 
 julia> lpopcount(x) = ( s = 0; for i in 1:length(x) s += count_ones(x[i]) end; s)
