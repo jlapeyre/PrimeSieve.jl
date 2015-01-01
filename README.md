@@ -145,11 +145,11 @@ Dict{Int128,Int64} with 5 entries:
   54217                      => 1
 ```
 
-`mfactor(n; logfile = "filename.log")` writes information to a log file.
-
 `mfactor(n; ecm = true)` uses ecm to search for factors larger than 15 digits, rather than less than 15 digits.
 
 `mfactor(n; deadline = m)` aborts the factoring after `m` minutes.
+
+`mfactor(n; logfile = "filename.log")` writes information to a log file.
 
 `mfactor(n; info = true)` prints log information to the terminal.
 
