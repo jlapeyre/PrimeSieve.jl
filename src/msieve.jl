@@ -11,7 +11,6 @@ type Msieveopts
 end
 
 # Send the string to msieve and return c struct msieve_obj
-#function runmsieve(n::String, d::Integer, logfile, deepecm)
 function runmsieve(opts::Msieveopts)
     n = opts.n
     d = opts.deadline
@@ -35,14 +34,14 @@ function runmsieve(opts::Msieveopts)
     res
 end
 
-# Send ptr to msieve_obj and get ptr to struct factors
+# Send ptr to msieve_obj and get ptr to struct factors.
 getfactors(obj) = ccall((:get_factors_from_obj,smsievelib), Ptr{Void}, (Ptr{Void},), obj)
-# Sent ptr to struct factors and get number of factors
+# Sent ptr to struct factors and get number of factors.
 get_num_factors(factors) = ccall((:get_num_factors,smsievelib), Int, (Ptr{Void},), factors)
 msieve_free(obj) =  ccall((:msieve_obj_free_2,smsievelib), Void, (Ptr{Void},), obj)
 
-# Send ptr to struct factor and get string rep of one factor
-# ptr to next struct factor, correponding to next factor, is returned.
+# Send ptr to struct factor and get string rep of one factor.
+# A ptr to next struct factor, correponding to next factor, is returned.
 function get_one_factor_value(factor)
     a = Array(Uint8,500) # max num digits input to msieve is 300
     nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{Uint8},Int),
@@ -65,8 +64,7 @@ end
 # Send n as string to msieve, return all factors as array of strings
 function runallmsieve(opts::Msieveopts)
     obj = runmsieve(opts)
-    thefactors = getfactors(obj)
-    sfactors = get_all_factor_values(thefactors)
+    sfactors = get_all_factor_values(getfactors(obj))
     msieve_free(obj)
     sfactors
 end
@@ -98,8 +96,7 @@ end
 
 function mfactor(x::Union(String,Integer); deadline::Integer = 0, logfile::String = "", ecm::Bool = false,
                  info::Bool = false)
-    opts = Msieveopts(string(x),deadline,logfile,ecm,info)
-    mfactor(opts)
+    mfactor(Msieveopts(string(x),deadline,logfile,ecm,info))
 end
 
 for (thetype) in ( :String, :Integer ) 
