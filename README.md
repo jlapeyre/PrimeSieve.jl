@@ -145,7 +145,8 @@ Dict{Int128,Int64} with 5 entries:
   54217                      => 1
 ```
 
-`mfactor(n; ecm = true)` uses ecm to search for factors larger than 15 digits, rather than less than 15 digits.
+`mfactor(n; ecm = true)` uses [ecm](http://en.wikipedia.org/wiki/Lenstra_elliptic_curve_factorization)
+to search for factors larger than 15 digits, rather than less than 15 digits.
 
 `mfactor(n; deadline = m)` aborts the factoring after `m` minutes.
 
