@@ -215,6 +215,12 @@ int factor_integer(char *buf, uint32 flags,
 	char *int_start, *last;
 	msieve_factor *factor;
 
+        if (logfile_name == NULL ) {
+          printf("No logfile\n");
+        }
+        else {
+          printf("logfile %s\n", logfile_name);
+        }
 	/* point to the start of the integer or expression;
 	   if the start point indicates no integer is present,
 	   don't try to factor it :) */
@@ -296,6 +302,7 @@ int factor_integer(char *buf, uint32 flags,
         return(1);
 }
 
+// This needs to be updated like the unix version.
 #ifdef WIN32
 DWORD WINAPI countdown_thread(LPVOID pminutes) {
 	DWORD minutes = *(DWORD *)pminutes;
@@ -334,11 +341,11 @@ void *countdown_thread(void *indeadline_st) {
 
 /*--------------------------------------------------------------------*/
 int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
-                      countdown_unit_t deadline) {
+                      countdown_unit_t deadline, char *logfile_name) {
 	char buf[500];
 	uint32 seed1, seed2;
         char *savefile_name = NULL;
-	char *logfile_name = NULL;
+        //	char *logfile_name = NULL;
         //	char *infile_name = "worktodo.ini";
 	char *nfs_fbfile_name = NULL;
 	uint32 flags;
@@ -378,10 +385,17 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
 	}
 #endif
 
+
 	flags = MSIEVE_FLAG_USE_LOGFILE;
 
-        flags &= ~(MSIEVE_FLAG_USE_LOGFILE |
-                   MSIEVE_FLAG_LOG_TO_STDOUT);
+        if ( logfile_name == NULL ) {
+        // Quiet
+          flags &= ~(MSIEVE_FLAG_USE_LOGFILE |
+                     MSIEVE_FLAG_LOG_TO_STDOUT);
+        }
+        else {
+          flags = MSIEVE_FLAG_USE_LOGFILE;
+        }
 
         
         //	i = 1;
@@ -437,10 +451,11 @@ void msieve_obj_free_2 (msieve_obj *obj) {
     msieve_obj_free(obj1);
 }
 
-msieve_obj * factor_from_string(char *inum, int num_threads, countdown_unit_t indeadline) {
+msieve_obj * factor_from_string(char *inum, int num_threads, countdown_unit_t indeadline,
+                                char *logfile) {
   msieve_obj *obj = NULL;
   countdown_unit_t deadline = indeadline;
-  int retval = getfactor_integer(inum, &obj, num_threads,deadline);
+  int retval = getfactor_integer(inum, &obj, num_threads,deadline,logfile);
   if (retval == 0) obj = NULL;
   return obj;
 }
