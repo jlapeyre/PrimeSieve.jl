@@ -62,7 +62,7 @@ provides(SimpleBuild,
              GetSources(smsieve)
              @build_steps begin
                  ChangeDirectory(smsrcdir)
-                 `cp ../localmsieve/Makefile .`
+                 `cp ../localmsieve/Makefile ../localmsieve/msieveshared.c .`
                  `make ECM=1  msieveshared`
                  `cp libsmsieve.so ../../usr/lib/libsmsieve.so`
              end

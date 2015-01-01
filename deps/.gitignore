@@ -3,5 +3,7 @@ downloads/
 localsrc/
 src/primecount-1.4
 src/primesieve-5.4.1
+src/msieve-shared-0.0.*/
+src/ecm-6.4.*/
 usr/
 deps.jl
