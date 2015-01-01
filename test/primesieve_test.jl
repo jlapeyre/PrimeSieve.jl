@@ -25,7 +25,7 @@ c = 100000
 @test typeof(primelookup("2^63")) == (Int64,(Int128,Int128,Int128))
 
 @test apopcount(zeros(10)) == 0
-@test apopcount([])
+@test apopcount([]) == 0
 @test apopcount([typemax(Uint64)]) == 64
 @test apopcount([convert(Uint64,true)]) == 1
 @test apopcount([true]) == 0
