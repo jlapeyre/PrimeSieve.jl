@@ -3,16 +3,19 @@ export mfactor
 const smsievelib =  "libsmsieve.so"
 
 # Send the string to msieve and return c struct msieve_obj
-# Actually only single threaded.
-function runmsieve(n::String)
+function runmsieve(n::String, d::Integer)
+    numcores = 1
     res = try
-        ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int), n, CPU_CORES)
+        ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int),
+              n, numcores, d)
     catch
-        throw(InterruptException())
+        error("factor_from_string failed")
     end
     res == C_NULL && throw(InterruptException())
     res
 end
+
+runmsieve(n::String) = runmsieve(n,0)
 
 # Send ptr to msieve_obj and get ptr to struct factors
 getfactors(obj) = ccall((:get_factors_from_obj,smsievelib), Ptr{Void}, (Ptr{Void},), obj)
@@ -42,8 +45,8 @@ function get_all_factor_values(factor)
 end
 
 # Send n as string to msieve, return all factors as array of strings
-function runallmsieve(n::String)
-    obj = runmsieve(n)
+function runallmsieve(n::String, deadline::Integer)
+    obj = runmsieve(n,deadline)
     thefactors = getfactors(obj)
     sfactors = get_all_factor_values(thefactors)
     msieve_free(obj)
@@ -64,11 +67,11 @@ function factor_strings_to_integers(sfactors::Array{String})
 end
 
 # Send string to msieve. Return factors as list of Integers.
-mfactorl(n::String) = factor_strings_to_integers(runallmsieve(n))
+mfactorl(n::String, deadline::Integer) = factor_strings_to_integers(runallmsieve(n,deadline))
 
 # Send string to msieve. Return factors in Dict, like Base.factor
-function mfactor(n::String)
-    arr = mfactorl(n)
+function mfactor(n::String, deadline::Integer)
+    arr = mfactorl(n,deadline)
     T = eltype(arr)
     d = (T=>Int)[]
     @inbounds for i in arr d[i] = get(d,i,0) + 1 end
@@ -76,19 +79,21 @@ function mfactor(n::String)
 end
 
 # Input Integer. Use msieve and return factors in Dict, like Base.factor
-function mfactor(n::Integer)
+function mfactor(n::Integer, deadline::Integer)
     n > 0 || error("number to be factored must be positive")
-    mfactor(string(n))
+    mfactor(string(n), deadline)
 end
 
-function mfactor{T<:Integer}(a::AbstractArray{T,1})
+function mfactor{T<:Integer}(a::AbstractArray{T,1}, deadline::Integer)
     outa = Array(Any,0)
-    for x in a push!(outa,mfactor(x)) end
+    for x in a push!(outa,mfactor(x,deadline)) end
     outa
 end
 
-function mfactor{T<:String}(a::AbstractArray{T,1})
+function mfactor{T<:String}(a::AbstractArray{T,1}, deadline::Integer)
     outa = Array(Any,0)
-    for x in a push!(outa,mfactor(x)) end
+    for x in a push!(outa,mfactor(x,deadline)) end
     outa
 end
+
+mfactor(x; deadline::Integer = 0) = mfactor(x,deadline)

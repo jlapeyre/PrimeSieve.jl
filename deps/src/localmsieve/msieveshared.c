@@ -15,6 +15,23 @@ errors.
 #include <mpi.h>
 #endif
 
+
+// The countdown things only work in unix now. The
+// Windows code will have to be modified.
+// The original code had one countdown. But to call from
+// Julia, we need to have one per thread.
+typedef int countdown_unit_t;
+
+typedef struct msieve_deadline {
+  countdown_unit_t deadline;
+  int cancel;
+} msieve_deadline_t;
+
+void msieve_deadline_init(msieve_deadline_t *d) {
+  d->deadline = 0;
+  d->cancel = 0;
+}
+
 msieve_obj *g_curr_factorization = NULL;
 
 /*--------------------------------------------------------------------*/
@@ -196,7 +213,6 @@ int factor_integer(char *buf, uint32 flags,
                     msieve_obj **saveobj){
 	
 	char *int_start, *last;
-        //	msieve_obj *obj;
 	msieve_factor *factor;
 
 	/* point to the start of the integer or expression;
@@ -288,25 +304,37 @@ DWORD WINAPI countdown_thread(LPVOID pminutes) {
 		minutes = 0;            /* infinite */
 
 	Sleep(minutes * 60000);
-	raise(SIGINT);
+        raise(SIGINT);        
 	return 0;
 }
 
 #else
-void *countdown_thread(void *pminutes) {
-	uint32 minutes = *(uint32 *)pminutes;
-
-	if (minutes > 0xffffffff / 60)
-		minutes = 0xffffffff / 60;   /* infinite */
-
-	sleep(minutes * 60);
-	raise(SIGINT);
-	return NULL;
+void *countdown_thread(void *indeadline_st) {
+  msieve_deadline_t *deadline_st = (msieve_deadline_t *) indeadline_st;
+  countdown_unit_t minutes = deadline_st->deadline;
+  printf("Starting countdown: %d minutes\n",minutes);
+  //  printf("Cancel is %d \n",deadline_st->cancel);
+  sleep(minutes * 60);
+  if (! deadline_st->cancel ) {
+    printf("Interrupting factorization.\n");
+    raise(SIGINT);
+  }
+  else {
+    printf("Factoring interruption cancelled.\n");
+  }
+  fflush(stdout);
+  if ( deadline_st != NULL ) {
+    free(deadline_st);
+    deadline_st = NULL;
+  }
+  return NULL;
 }
+
 #endif
 
 /*--------------------------------------------------------------------*/
-int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads) {
+int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
+                      countdown_unit_t deadline) {
 	char buf[500];
 	uint32 seed1, seed2;
         char *savefile_name = NULL;
@@ -316,7 +344,7 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads) {
 	uint32 flags;
         //	char manual_mode = 0;
         //	int i;
-        int32 deadline = 0;
+        //        int32 deadline = 0;
 	uint32 max_relations = 0;
 	enum cpu_type cpu;
 	uint32 cache_size1; 
@@ -365,20 +393,21 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads) {
         
         get_random_seeds(&seed1, &seed2);
 
+        msieve_deadline_t *deadline_st = NULL;
 	if (deadline) {
+          deadline_st = (msieve_deadline_t *)malloc(sizeof(msieve_deadline_t));
+          msieve_deadline_init(deadline_st);
 #if defined(WIN32) || defined(_WIN64)
 		DWORD thread_id;
 		CreateThread(NULL, 0, countdown_thread, 
 				&deadline, 0, &thread_id);
 #else
 		pthread_t thread_id;
+                deadline_st->deadline = deadline;
 		pthread_create(&thread_id, NULL, 
-				countdown_thread, &deadline);
+				countdown_thread, deadline_st);
 #endif
 	}
-        
-        //        if (isdigit(buf[0]) || buf[0] == '(' ) {
-          //          msieve_obj *saveobj;
         int retval =  factor_integer(buf, flags, savefile_name, 
 				logfile_name, nfs_fbfile_name,
 				&seed1, &seed2,
@@ -386,7 +415,11 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads) {
 				cpu, cache_size1, cache_size2,
 				num_threads, which_gpu,
                          nfs_args, obj);
-          //        }
+	if (deadline) {
+          if ( deadline_st != NULL ) {
+            deadline_st->cancel = 1;
+          }
+        }
         signal(SIGINT, oldsighandler); // restore old interrupt handler
 #ifdef HAVE_MPI
 	MPI_Finalize();
@@ -404,9 +437,10 @@ void msieve_obj_free_2 (msieve_obj *obj) {
     msieve_obj_free(obj1);
 }
 
-msieve_obj * factor_from_string(char *inum, int num_threads) {
+msieve_obj * factor_from_string(char *inum, int num_threads, countdown_unit_t indeadline) {
   msieve_obj *obj = NULL;
-  int retval = getfactor_integer(inum, &obj, num_threads);
+  countdown_unit_t deadline = indeadline;
+  int retval = getfactor_integer(inum, &obj, num_threads,deadline);
   if (retval == 0) obj = NULL;
   return obj;
 }
@@ -429,17 +463,3 @@ msieve_factor * get_one_factor_value(msieve_factor *factor, char *outstring, int
   strncpy(outstring, factor->number, max);
   return factor->next;
 }
-
-
-/*
-int main(int argc, char **argv) {
-  //  char **output_factor_strings = NULL;
-  //  output_factor_strings = (char **) malloc(sizeof(void *));
-  char buf1[500];
-  msieve_obj *obj = NULL;
-  strncpy(buf1, argv[1], sizeof(buf1));
-  if (argc == 2 ) getfactor_integer(buf1, obj);
-  msieve_obj_free_2(obj);
-  return 0;
-}
-*/
