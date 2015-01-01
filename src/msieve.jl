@@ -2,8 +2,20 @@ export mfactor
 
 const smsievelib =  "libsmsieve.so"
 
+type Msieveopts
+    n::String
+    deadline::Int
+    logfile::String
+    deepecm::Bool
+end
+
 # Send the string to msieve and return c struct msieve_obj
-function runmsieve(n::String, d::Integer, logfile, deepecm)
+#function runmsieve(n::String, d::Integer, logfile, deepecm)
+function runmsieve(opts::Msieveopts)
+    n = opts.n
+    d = opts.deadline
+    logfile = opts.logfile
+    deepecm = opts.deepecm
     numcores = 1
     ecmflag = deepecm ? 1 : 0
     res = try
@@ -20,8 +32,6 @@ function runmsieve(n::String, d::Integer, logfile, deepecm)
     res == C_NULL && throw(InterruptException())
     res
 end
-
-runmsieve(n::String) = runmsieve(n,0)
 
 # Send ptr to msieve_obj and get ptr to struct factors
 getfactors(obj) = ccall((:get_factors_from_obj,smsievelib), Ptr{Void}, (Ptr{Void},), obj)
@@ -51,8 +61,8 @@ function get_all_factor_values(factor)
 end
 
 # Send n as string to msieve, return all factors as array of strings
-function runallmsieve(n::String, deadline::Integer, logfile,ecm)
-    obj = runmsieve(n,deadline, logfile,ecm)
+function runallmsieve(opts::Msieveopts)
+    obj = runmsieve(opts)
     thefactors = getfactors(obj)
     sfactors = get_all_factor_values(thefactors)
     msieve_free(obj)
@@ -73,33 +83,28 @@ function factor_strings_to_integers(sfactors::Array{String})
 end
 
 # Send string to msieve. Return factors as list of Integers.
-mfactorl(n::String, deadline::Integer,logfile,ecm) = factor_strings_to_integers(runallmsieve(n,deadline,logfile,ecm))
+mfactorl(opts::Msieveopts) = factor_strings_to_integers(runallmsieve(opts))
 
 # Send string to msieve. Return factors in Dict, like Base.factor
-function mfactor(n::String, deadline::Integer,logfile,ecm)
-    arr = mfactorl(n,deadline,logfile,ecm)
+function mfactor(opts::Msieveopts)
+    arr = mfactorl(opts)
     T = eltype(arr)
     d = (T=>Int)[]
     @inbounds for i in arr d[i] = get(d,i,0) + 1 end
     d
 end
 
-# Input Integer. Use msieve and return factors in Dict, like Base.factor
-function mfactor(n::Integer, deadline::Integer,logfile,ecm)
-    n > 0 || error("number to be factored must be positive")
-    mfactor(string(n), deadline,logfile,ecm)
+function mfactor(x::Union(String,Integer); deadline::Integer = 0, logfile::String = "", ecm::Bool = false)
+    opts = Msieveopts(string(x),deadline,logfile,ecm)
+    mfactor(opts)
 end
 
-function mfactor{T<:Integer}(a::AbstractArray{T,1}, deadline::Integer,logfile,ecm)
-    outa = Array(Any,0)
-    for x in a push!(outa,mfactor(x,deadline,logfile,ecm)) end
-    outa
-end
-
-function mfactor{T<:String}(a::AbstractArray{T,1}, deadline::Integer,logfile,ecm)
-    outa = Array(Any,0)
-    for x in a push!(outa,mfactor(x,deadline,logfile,ecm)) end
-    outa
-end
-
-mfactor(x; deadline::Integer = 0, logfile::String = "", ecm::Bool = false) = mfactor(x,deadline,logfile,ecm)
+# Seems to be a bug in Julia ? This call to mfactor gives an error when reading this file
+# function mfactor{T<:String}(a::AbstractArray{T,1}; dl::Integer=0, logfile::String = "", ecm::Bool = false)
+#     outa = Array(Any,0)
+#     for x in a
+#         res = mfactor(x; dl, logfile, ecm)        
+#         push!(outa,res)
+#     end
+#     outa
+# end
