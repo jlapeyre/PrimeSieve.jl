@@ -47,7 +47,7 @@ end
 # Look up prime pi in table, compute remaining primes
 function _countprimes(stop)
     (count,i,rem) = piandrem(int128(stop))
-    return (rem == Zero) ? convert(Int128,count) :
+    return rem == Zero ? convert(Int128,count) :
     convert(Int128,count+ntcountprimes(i,i+rem))
 end
 

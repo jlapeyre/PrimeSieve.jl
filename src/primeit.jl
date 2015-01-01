@@ -16,14 +16,7 @@ allprimes() = PrimeInfIt(2)
 
 Base.start(pri::PrimeIt) = pri.n1
 Base.start(pri::PrimeInfIt) = pri.n1
-
-function Base.next(pri::PrimeIt, state)
-    (state, nextprime(state))
-end
-
-function Base.next(pri::PrimeInfIt, state)
-    (state, nextprime(state))
-end
-
+Base.next(pri::PrimeIt, state)  = (state, nextprime(state))
+Base.next(pri::PrimeInfIt, state) = (state, nextprime(state))
 Base.done(pri::PrimeIt, state) = state > pri.n2
 Base.done(pri::PrimeInfIt, state) = false
