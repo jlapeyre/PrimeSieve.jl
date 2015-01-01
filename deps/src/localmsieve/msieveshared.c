@@ -336,7 +336,7 @@ void *countdown_thread(void *indeadline_st) {
 /*--------------------------------------------------------------------*/
 int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
                       countdown_unit_t deadline, char *logfile_name,
-                      int deepecm) {
+                      int deepecm, int log_to_stdout) {
 	char buf[500];
 	uint32 seed1, seed2;
         char *savefile_name = NULL;
@@ -393,13 +393,10 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
         }
 
         if (deepecm) flags |= MSIEVE_FLAG_DEEP_ECM;
-        
-        //	i = 1;
-	buf[0] = 0;
+        if (log_to_stdout) flags |= MSIEVE_FLAG_LOG_TO_STDOUT;
 
-        {
-          strncpy(buf, inputstring, sizeof(buf));
-        }
+	buf[0] = 0;
+        strncpy(buf, inputstring, sizeof(buf));
         
         get_random_seeds(&seed1, &seed2);
 
@@ -448,10 +445,10 @@ void msieve_obj_free_2 (msieve_obj *obj) {
 }
 
 msieve_obj * factor_from_string(char *inum, int num_threads, countdown_unit_t indeadline,
-                                char *logfile, int deepecm) {
+                                char *logfile, int deepecm, int log_to_stdout) {
   msieve_obj *obj = NULL;
   countdown_unit_t deadline = indeadline;
-  int retval = getfactor_integer(inum, &obj, num_threads,deadline,logfile,deepecm);
+  int retval = getfactor_integer(inum, &obj, num_threads,deadline,logfile,deepecm,log_to_stdout);
   if (retval == 0) obj = NULL;
   return obj;
 }

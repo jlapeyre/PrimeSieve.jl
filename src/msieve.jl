@@ -7,6 +7,7 @@ type Msieveopts
     deadline::Int
     logfile::String
     deepecm::Bool
+    info::Bool    
 end
 
 # Send the string to msieve and return c struct msieve_obj
@@ -18,13 +19,14 @@ function runmsieve(opts::Msieveopts)
     deepecm = opts.deepecm
     numcores = 1
     ecmflag = deepecm ? 1 : 0
+    infoflag = opts.info ? 1 : 0    
     res = try
         if (logfile == "")
-            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int,Ptr{Uint8},Int),
-                  n, numcores, d, C_NULL, ecmflag)
+            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int,Ptr{Uint8},Int,Int),
+                  n, numcores, d, C_NULL, ecmflag, infoflag)
         else
-            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int,Ptr{Uint8},Int),
-                  n, numcores, d, logfile, ecmflag)
+            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int,Ptr{Uint8},Int, Int),
+                  n, numcores, d, logfile, ecmflag, infoflag)
         end
     catch
         error("factor_from_string failed")
@@ -94,17 +96,22 @@ function mfactor(opts::Msieveopts)
     d
 end
 
-function mfactor(x::Union(String,Integer); deadline::Integer = 0, logfile::String = "", ecm::Bool = false)
-    opts = Msieveopts(string(x),deadline,logfile,ecm)
+function mfactor(x::Union(String,Integer); deadline::Integer = 0, logfile::String = "", ecm::Bool = false,
+                 info::Bool = false)
+    opts = Msieveopts(string(x),deadline,logfile,ecm,info)
     mfactor(opts)
 end
 
-# Seems to be a bug in Julia ? This call to mfactor gives an error when reading this file
-# function mfactor{T<:String}(a::AbstractArray{T,1}; dl::Integer=0, logfile::String = "", ecm::Bool = false)
-#     outa = Array(Any,0)
-#     for x in a
-#         res = mfactor(x; dl, logfile, ecm)        
-#         push!(outa,res)
-#     end
-#     outa
-# end
+for (thetype) in ( :String, :Integer ) 
+    @eval begin
+        function mfactor{T<:$thetype}(a::AbstractArray{T,1}; dl::Integer=0, logfile::String = "",
+                                      ecm::Bool = false, info::Bool = false)
+            outa = Array(Any,0)
+            for x in a
+                res = mfactor(x; deadline=dl, logfile=logfile, ecm=ecm, info=info)
+                push!(outa,res)
+            end
+            outa
+        end
+    end
+end
