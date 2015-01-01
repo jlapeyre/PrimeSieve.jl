@@ -215,12 +215,6 @@ int factor_integer(char *buf, uint32 flags,
 	char *int_start, *last;
 	msieve_factor *factor;
 
-        if (logfile_name == NULL ) {
-          printf("No logfile\n");
-        }
-        else {
-          printf("logfile %s\n", logfile_name);
-        }
 	/* point to the start of the integer or expression;
 	   if the start point indicates no integer is present,
 	   don't try to factor it :) */
@@ -341,7 +335,8 @@ void *countdown_thread(void *indeadline_st) {
 
 /*--------------------------------------------------------------------*/
 int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
-                      countdown_unit_t deadline, char *logfile_name) {
+                      countdown_unit_t deadline, char *logfile_name,
+                      int deepecm) {
 	char buf[500];
 	uint32 seed1, seed2;
         char *savefile_name = NULL;
@@ -385,8 +380,8 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
 	}
 #endif
 
-
-	flags = MSIEVE_FLAG_USE_LOGFILE;
+        //	flags = MSIEVE_FLAG_USE_LOGFILE;
+	flags = 0;
 
         if ( logfile_name == NULL ) {
         // Quiet
@@ -397,6 +392,7 @@ int getfactor_integer(char *inputstring, msieve_obj **obj, int innum_threads,
           flags = MSIEVE_FLAG_USE_LOGFILE;
         }
 
+        if (deepecm) flags |= MSIEVE_FLAG_DEEP_ECM;
         
         //	i = 1;
 	buf[0] = 0;
@@ -452,10 +448,10 @@ void msieve_obj_free_2 (msieve_obj *obj) {
 }
 
 msieve_obj * factor_from_string(char *inum, int num_threads, countdown_unit_t indeadline,
-                                char *logfile) {
+                                char *logfile, int deepecm) {
   msieve_obj *obj = NULL;
   countdown_unit_t deadline = indeadline;
-  int retval = getfactor_integer(inum, &obj, num_threads,deadline,logfile);
+  int retval = getfactor_integer(inum, &obj, num_threads,deadline,logfile,deepecm);
   if (retval == 0) obj = NULL;
   return obj;
 }
