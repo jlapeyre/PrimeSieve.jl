@@ -130,7 +130,7 @@ elapsed time: 0.08235147 seconds (216 bytes allocated)
 
 ### mfactor
 
-Factor an integer using libmsieve and libecm.
+Factor an integer.
 
 Example:
 
@@ -156,6 +156,8 @@ Dict{Int128,Int64} with 5 entries:
 ```julia
 mfactor( @bigint [ 2^100 + i for i in -5:5] )  # returns an array of factorizations.
 ```
+
+`mfactor` calls libmsieve and libecm.
 
 ### countprimes
 
