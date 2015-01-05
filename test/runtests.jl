@@ -1,6 +1,7 @@
 using PrimeSieve
 using Base.Test
 
+include("gaussian_test.jl")
 include("msieve_test.jl")
 include("tuples_test.jl")
 include("primecount_test.jl")

@@ -298,6 +298,10 @@ are equally likely to be chosen.
 
 `randprime(b)` choose a random prime between 2 and `b`.
 
+### isprime(z)
+
+Returns `true` if the Gaussian integer `z` is prime.
+
 ## Sieve Parameters
 
 ### primesievesize
