@@ -165,6 +165,12 @@ end
 nextprime(n::BigInt) = nextprime1(n)
 prevprime(n::BigInt) = prevprime1(n)
 
+
+nextprime(n,k) = (p = n; for i in 1:k p = nextprime(p) end; p)
+prevprime(n,k) = (p = n; for i in 1:k p = prevprime(p) end; p)
+nextprime1(n,k) = (p = n; for i in 1:k p = nextprime1(p) end; p)
+prevprime1(n,k) = (p = n; for i in 1:k p = prevprime1(p) end; p)
+
 # maybe we don't need genprimesc.
 # Sometimes more efficient than libprimesieve wrapper genprimes, and
 # has larger domain (eg BigInts, Int128)

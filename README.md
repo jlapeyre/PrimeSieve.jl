@@ -212,7 +212,12 @@ julia> @bigint countprimes(10^50, 10^50+1000)
 ### nextprime, prevprime
 
 `nextprime(n)` returns the smallest prime greater than n.
+
 `prevprime(n)` returns the largest prime less than n.
+
+`nextprime(n,k)` returns the kth prime following n.
+
+`prevprime(n,k)` returns the kth prime preceeding n.
 
 Several algorithms are used. Finding the optimal one (of the
 available) is partially automated. nextprime1 and prevprime1 use an
