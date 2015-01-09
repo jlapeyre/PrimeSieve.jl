@@ -1,4 +1,5 @@
 using DeepConvert
+using Compat
 
 module PrimeSieve
 
