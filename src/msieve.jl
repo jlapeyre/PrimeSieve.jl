@@ -89,7 +89,7 @@ mfactorl(opts::Msieveopts) = factor_strings_to_integers(runallmsieve(opts))
 function mfactor(opts::Msieveopts)
     arr = mfactorl(opts)
     T = eltype(arr)
-    d = (T=>Int)[]
+    d = Dict{T,Int}()
     @inbounds for i in arr d[i] = get(d,i,0) + 1 end
     d
 end
