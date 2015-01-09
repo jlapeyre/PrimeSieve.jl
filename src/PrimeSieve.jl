@@ -1,6 +1,4 @@
 using DeepConvert
-using Compat
-
 module PrimeSieve
 
 import DeepConvert: @mkdeepconvert
@@ -33,7 +31,6 @@ export primesievesize, primetest, primesieve_num_threads
 macro i128_str(s) conv128(s) end
 
 #include("deepconvert.jl")
-include("compatibility.jl")
 include("nextprime.jl")
 include("primesieve_c.jl")
 include("primecount_c.jl")
