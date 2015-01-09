@@ -16,8 +16,6 @@ ENV["CPPFLAGS"] = "-I../../usr/include"
 # The Makefile writes -lgmp multiple times in link commands. -lm occurs five times per link command.)
 ENV["LIBS"] = "-lgmp -Wl,-rpath -Wl,$julialibpath"
 
-include("../src/compatibility.jl")
-
 @BinDeps.setup
 
 gmpecm = library_dependency("gmpecm", aliases = ["libecm"])
