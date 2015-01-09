@@ -161,8 +161,18 @@ function prevprime1(n::Integer)
     return p
 end
 
-# These are nearly a factor of 2 faster for BigInt
-nextprime(n::BigInt) = nextprime1(n)
+# nextprime1 is nearly a factor of 2 faster for BigInt
+# than the code above.
+# nextprime(n::BigInt) = nextprime1(n)
+
+# Try using this. Test shows speed equal to speed of nextprime1
+function nextprime(n::BigInt)
+    z = BigInt()
+    ccall((:__gmpz_nextprime, :libgmp), Void,
+          (Ptr{BigInt}, Ptr{BigInt}), &z, &n)
+    return z
+end
+
 prevprime(n::BigInt) = prevprime1(n)
 
 

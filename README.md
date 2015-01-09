@@ -34,6 +34,8 @@ Some functions in this package
 * `allprimes()`    all primes
 * `nthprime(n)`   the nth prime
 * `nprimes(n,start)`   generate array of the first n primes > start
+* `isprime(z)`  primality test for Gaussian integers
+* `randprime(a,b)` random prime between `a` and `b`
 
 This package uses the following tables and libraries.
 
@@ -305,7 +307,8 @@ are equally likely to be chosen.
 
 ### isprime(z)
 
-Returns `true` if the Gaussian integer `z` is prime.
+Returns `true` if the
+[Gaussian integer](http://en.wikipedia.org/wiki/Gaussian_integer) `z` is prime.
 
 ## Sieve Parameters
 

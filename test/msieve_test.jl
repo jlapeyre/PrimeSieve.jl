@@ -4,4 +4,7 @@ using Compat
 
 @test mfactor(10) ==  @compat Dict( 2 => 1, 5 => 1 )
 
-
+# Test that mfactor gives same result as native Julia code
+let a = 2^20 -1
+    @test mfactor(a) == factor(a)
+end
