@@ -29,12 +29,17 @@ for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
         # end
         ($f){T<:Real}(n::T) = ccall(($c, libccountname), Int64, (Int64,), convert(Int64,n))
         ($f){T<:String}(n::T) = ($f)(conv128(n))
+        Base.@vectorize_1arg Real $f
+        Base.@vectorize_1arg String $f        
     end
 end
+
+
 
 function legendrephi(x,a)
     ccall((:prime_phi, libccountname), Int64, (Int64, Int64), convert(Int64,x), convert(Int64,a))
 end
+Base.@vectorize_2arg Integer legendrephi
 
 function nthprime(x; alg::Symbol = :count)
     if alg == :count
@@ -44,6 +49,7 @@ function nthprime(x; alg::Symbol = :count)
     else error("algorithm must be one of :count, :sieve")
     end
 end
+Base.@vectorize_1arg Integer nthprime
 
 # libprimecount has a member function converts a string to Int128, but we probably handle more cases this way
 function primepi{T<:String}(s::T)
@@ -94,7 +100,7 @@ function primepi(x; alg::Symbol = :auto)
     end
 end
 
-# vectorize fails when running
+# using macro will work, too
 #Base.@vectorize_1arg Integer primepi
 function primepi(arr::AbstractArray; alg::Symbol = :auto)
     arrout = similar(arr)

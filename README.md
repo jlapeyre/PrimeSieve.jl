@@ -59,6 +59,8 @@ Also available are `@bigint` and `@int128` from DeepConvert.
 
 ## Functions
 
+Most of the following functions are vectorized.
+
 ### genprimes
 
 ```julia
