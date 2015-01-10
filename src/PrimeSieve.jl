@@ -42,5 +42,6 @@ include("randprime.jl")
 include("msieve.jl")
 include("primesieve_c_extra.jl")
 include("gaussian.jl")
+include("jacobi.jl")
 
 end # module PrimeSieve

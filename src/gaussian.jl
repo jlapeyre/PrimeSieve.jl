@@ -7,3 +7,5 @@ function isprime{T<:Integer}(z::Complex{T})
     y == 0 && isprime(x) && x % 4 == 3 && return true
     isprime(abs2(z))
 end
+
+Base.@vectorize_1arg Complex isprime

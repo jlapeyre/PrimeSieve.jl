@@ -305,6 +305,11 @@ are equally likely to be chosen.
 
 `randprime(b)` choose a random prime between 2 and `b`.
 
+`randprime(a,b; lim=n)` find a maximum of `n` random composite numbers
+before giving up.
+
+`randprime(a,b,n1,n2,...)` return a n1xn2x... array of random primes
+
 ### isprime(z)
 
 Returns `true` if the
