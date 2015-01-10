@@ -28,4 +28,3 @@ function jacobisymbol(a::Union(Signed,Unsigned),n::Union(Signed,Unsigned))
 end
 
 Base.@vectorize_2arg Union(Signed,Unsigned) jacobisymbol
-

@@ -46,16 +46,28 @@ end
 
 # Look up prime pi in table, compute remaining primes
 function _countprimes(stop)
+    stop < 10 && return  convert(Int128,ntcountprimes(stop))
     (count,i,rem) = piandrem(int128(stop))
     return rem == Zero ? convert(Int128,count) :
     convert(Int128,count+ntcountprimes(i,i+rem))
 end
 
 function _countprimes(start,stop)
-    (count1,i1,rem1) = piandrem(int128(start))
-    (count2,i2,rem2) = piandrem(int128(stop))
-    n1 = rem1 == Zero ? Zero : ntcountprimes(i1,i1+rem1)
-    n2 = rem2 == Zero ? Zero : ntcountprimes(i2,i2+rem2)
+    local n1,n2,count1,count2
+    if start < 10
+        n1 = ntcountprimes(start)
+        count1 = zero(n1)
+    else
+        (count1,i1,rem1) = piandrem(int128(start))        
+        n1 = rem1 == Zero ? Zero : ntcountprimes(i1,i1+rem1)
+    end
+    if stop < 10
+        n2 = ntcountprimes(stop)
+        count2 = zero(n2)
+    else
+        (count2,i2,rem2) = piandrem(int128(stop))
+        n2 = rem2 == Zero ? Zero : ntcountprimes(i2,i2+rem2)
+    end
     convert(Int128, count2 - count1 + n2 - n1)
 end    
 

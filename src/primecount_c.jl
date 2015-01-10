@@ -52,6 +52,8 @@ function primepi{T<:String}(s::T)
     int128(bytestring(ccall((:pi_string,libccountname),Ptr{Uint8},(Ptr{Uint8},),s1)))
 end
 
+Base.@vectorize_1arg String primepi
+
 # Can't get access to Int128 routine, so we convert back and forth many times.
 pi_deleglise_rivat(x::Int128) = primepi(string(x))
 
@@ -91,6 +93,15 @@ function primepi(x; alg::Symbol = :auto)
                ":lehmer, :meissel, :lmo, :sieve.")
     end
 end
+
+# vectorize fails when running
+#Base.@vectorize_1arg Integer primepi
+function primepi(arr::AbstractArray; alg::Symbol = :auto)
+    arrout = similar(arr)
+    for i in 1:length(arr) arrout[i] = primepi(arr[i]; alg=alg) end
+    arrout
+end
+
 
 #register_sigint() = ccall((:cprimecount_register_sigint, libccountname), Void, ())
 
