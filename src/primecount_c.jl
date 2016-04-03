@@ -111,7 +111,7 @@ end
 
 #register_sigint() = ccall((:cprimecount_register_sigint, libccountname), Void, ())
 
-# These are broken. This syntax worked at one point.
+# Sun Apr  3 18:21:07 CEST 2016:  These two are broken. This syntax worked at one point. Julia has changed
 #primepi_xmax() = parse(Int128, bytestring(ccall((:pi_xmax, libccountname), Ptr{UInt8}, ())))
 #const PRIMEPI_XMAX = primepi_xmax()
 

@@ -5,6 +5,9 @@ mostly for generating and counting primes and factoring integers. This package
 uses some of the fastest open-source libraries for these functions.
 The name `Primes` would be better, but that might cause collisions.
 
+Note: Apr 3, 2016.  Julia has changed since this was written. (in particular `ccall` and `convert`) So `mfactor` no longer works.
+Most of the rest seems to work.
+
 See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.
 
