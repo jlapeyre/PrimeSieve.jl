@@ -15,9 +15,9 @@ const Zero = zero(Int128)
 length(t::PrimeTable) = length(t.data)
 getindex(t::PrimeTable,i) = (t.data)[i]
 eltype(t::PrimeTable) = eltype(t.data)
-getindex(t::Array{PrimeTable}, i,j) = t[i][j]
+getindex(t::Array{PrimeTable}, i::Int,j::Int) = t[i][j]
 primetabletype() = eltype(primetables[1])
-primesievetype() = Uint64
+primesievetype() = UInt64
 
 #  Return a list (pi-tab, min, rem), where `pi-tab' is
 #  the value of prime pi function at argument `min',
@@ -47,7 +47,7 @@ end
 # Look up prime pi in table, compute remaining primes
 function _countprimes(stop)
     stop < 10 && return  convert(Int128,ntcountprimes(stop))
-    (count,i,rem) = piandrem(int128(stop))
+    (count,i,rem) = piandrem(Int128(stop))
     return rem == Zero ? convert(Int128,count) :
     convert(Int128,count+ntcountprimes(i,i+rem))
 end
@@ -58,14 +58,14 @@ function _countprimes(start,stop)
         n1 = ntcountprimes(start)
         count1 = zero(n1)
     else
-        (count1,i1,rem1) = piandrem(int128(start))        
+        (count1,i1,rem1) = piandrem(Int128(start))        
         n1 = rem1 == Zero ? Zero : ntcountprimes(i1,i1+rem1)
     end
     if stop < 10
         n2 = ntcountprimes(stop)
         count2 = zero(n2)
     else
-        (count2,i2,rem2) = piandrem(int128(stop))
+        (count2,i2,rem2) = piandrem(Int128(stop))
         n2 = rem2 == Zero ? Zero : ntcountprimes(i2,i2+rem2)
     end
     convert(Int128, count2 - count1 + n2 - n1)
@@ -104,7 +104,7 @@ end
 function loadprimetables()
     bintables = _readbintables()
     tables = Array(PrimeTable,length(bintables))
-    base = int128(10)
+    base = Int128(10)
     for i in 1:length(bintables)
         data = bintables[i]
         expn = i

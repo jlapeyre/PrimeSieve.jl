@@ -28,9 +28,9 @@ for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
         #     return convert(T,res)
         # end
         ($f){T<:Real}(n::T) = ccall(($c, libccountname), Int64, (Int64,), convert(Int64,n))
-        ($f){T<:String}(n::T) = ($f)(conv128(n))
+        ($f){T<:AbstractString}(n::T) = ($f)(conv128(n))
         Base.@vectorize_1arg Real $f
-        Base.@vectorize_1arg String $f        
+        Base.@vectorize_1arg AbstractString $f        
     end
 end
 
@@ -52,13 +52,13 @@ end
 Base.@vectorize_1arg Integer nthprime
 
 # libprimecount has a member function converts a string to Int128, but we probably handle more cases this way
-function primepi{T<:String}(s::T)
+function primepi{T<:AbstractString}(s::T)
     n1 = conv128(s)
     s1 = string(n1)
-    int128(bytestring(ccall((:pi_string,libccountname),Ptr{Uint8},(Ptr{Uint8},),s1)))
+    parse(Int128, bytestring(ccall((:pi_string,libccountname),Ptr{UInt8},(Ptr{UInt8},),s1)))
 end
 
-Base.@vectorize_1arg String primepi
+Base.@vectorize_1arg AbstractString primepi
 
 # Can't get access to Int128 routine, so we convert back and forth many times.
 pi_deleglise_rivat(x::Int128) = primepi(string(x))
@@ -111,8 +111,10 @@ end
 
 #register_sigint() = ccall((:cprimecount_register_sigint, libccountname), Void, ())
 
-primepi_xmax() = int128(bytestring(ccall((:pi_xmax, libccountname), Ptr{Uint8}, ())))
-const PRIMEPI_XMAX = primepi_xmax()
+# These are broken. This syntax worked at one point.
+#primepi_xmax() = parse(Int128, bytestring(ccall((:pi_xmax, libccountname), Ptr{UInt8}, ())))
+#const PRIMEPI_XMAX = primepi_xmax()
+
 primepi_num_threads(n) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), convert(Int,n))
 primepi_num_threads() = ccall((:prime_get_num_threads,libccountname),Int,())
 prime_set_print_status(stat::Bool) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), stat ? 1 : 0)

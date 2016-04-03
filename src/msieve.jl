@@ -3,9 +3,9 @@ export mfactor
 const smsievelib =  "libsmsieve.so"
 
 type Msieveopts
-    n::String
+    n::AbstractString
     deadline::Int
-    logfile::String
+    logfile::AbstractString
     deepecm::Bool
     info::Bool    
 end
@@ -21,10 +21,10 @@ function runmsieve(opts::Msieveopts)
     infoflag = opts.info ? 1 : 0    
     res = try
         if (logfile == "")
-            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int,Ptr{Uint8},Int,Int),
+            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{UInt8},Int,Int,Ptr{UInt8},Int,Int),
                   n, numcores, d, C_NULL, ecmflag, infoflag)
         else
-            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{Uint8},Int,Int,Ptr{Uint8},Int, Int),
+            ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{UInt8},Int,Int,Ptr{UInt8},Int, Int),
                   n, numcores, d, logfile, ecmflag, infoflag)
         end
     catch
@@ -43,15 +43,15 @@ msieve_free(obj) =  ccall((:msieve_obj_free_2,smsievelib), Void, (Ptr{Void},), o
 # Send ptr to struct factor and get string rep of one factor.
 # A ptr to next struct factor, correponding to next factor, is returned.
 function get_one_factor_value(factor)
-    a = Array(Uint8,500) # max num digits input to msieve is 300
-    nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{Uint8},Int),
+    a = Array(UInt8,500) # max num digits input to msieve is 300
+    nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{UInt8},Int),
                        factor,a,length(a))
-    return(nextfactor,bytestring(convert(Ptr{Uint8},a)))
+    return(nextfactor,bytestring(convert(Ptr{UInt8},a)))
 end
 
 # Send ptr to first struct factor. Return all factors as array of strings 
 function get_all_factor_values(factor)
-    allf = Array(String,0)
+    allf = Array(AbstractString,0)
     nfactor = factor
     n = get_num_factors(factor)
     for i in 1:n
@@ -70,7 +70,7 @@ function runallmsieve(opts::Msieveopts)
 end
 
 # input factors as Array of strings. Output Array of Integers (Usually of type Int)
-function factor_strings_to_integers(sfactors::Array{String})
+function factor_strings_to_integers(sfactors::Array{AbstractString})
     m = length(sfactors)
     n1 = eval(parse(sfactors[m]))
     T = typeof(n1)
@@ -94,14 +94,14 @@ function mfactor(opts::Msieveopts)
     d
 end
 
-function mfactor(x::Union(String,Integer); deadline::Integer = 0, logfile::String = "", ecm::Bool = false,
+function mfactor(x::Union{AbstractString,Integer}; deadline::Integer = 0, logfile::AbstractString = "", ecm::Bool = false,
                  info::Bool = false)
     mfactor(Msieveopts(string(x),deadline,logfile,ecm,info))
 end
 
-for (thetype) in ( :String, :Integer ) 
+for (thetype) in ( :AbstractString, :Integer ) 
     @eval begin
-        function mfactor{T<:$thetype}(a::AbstractArray{T,1}; dl::Integer=0, logfile::String = "",
+        function mfactor{T<:$thetype}(a::AbstractArray{T,1}; dl::Integer=0, logfile::AbstractString = "",
                                       ecm::Bool = false, info::Bool = false)
             outa = Array(Any,0)
             for x in a

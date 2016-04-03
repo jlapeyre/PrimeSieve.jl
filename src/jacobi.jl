@@ -8,7 +8,7 @@
 export jacobisymbol
 
 macro flip!(n) :($(esc(n)) = -$(esc(n))) end
-function jacobisymbol(a::Union(Signed,Unsigned),n::Union(Signed,Unsigned))
+function jacobisymbol(a::Union{Signed,Unsigned},n::Union{Signed,Unsigned})
     if n <= 0 || iseven(n) throw(DomainError()) end    
     j = 1
     if n < 0
@@ -27,4 +27,4 @@ function jacobisymbol(a::Union(Signed,Unsigned),n::Union(Signed,Unsigned))
     return n == 1 ? j : 0
 end
 
-Base.@vectorize_2arg Union(Signed,Unsigned) jacobisymbol
+Base.@vectorize_2arg Union{Signed,Unsigned} jacobisymbol

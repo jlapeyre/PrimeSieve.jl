@@ -1,7 +1,7 @@
 using BinDeps
 
 # Find the directory with installed Julia libraries
-julialibpath = dirname(Sys.dlpath(dlopen("libgmp")))
+julialibpath = dirname(Libdl.dlpath(Libdl.dlopen("libgmp")))
 
 # Set link flags for Autotools external packages
 # This is only needed for the ecm package

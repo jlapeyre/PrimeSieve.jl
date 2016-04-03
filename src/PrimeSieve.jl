@@ -22,12 +22,12 @@ export primesievesize, primetest, primesieve_num_threads
 
 ##
 
-# Convert numbers to Int128 or Uint64, hopefully the subexpressions
+# Convert numbers to Int128 or UInt64, hopefully the subexpressions
 # have not overflowed.  Eg. 10^19.
 # Unquoted expressions pass through
-@mkdeepconvert(conv128,int128)
-@mkdeepconvert(convu64,uint64)
-@mkdeepconvert(convint,int64)
+@mkdeepconvert(conv128,Int128)
+@mkdeepconvert(convu64,UInt64)
+@mkdeepconvert(convint,Int64)
 macro i128_str(s) conv128(s) end
 
 #include("deepconvert.jl")

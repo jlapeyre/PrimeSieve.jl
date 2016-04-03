@@ -1,4 +1,4 @@
-typealias ConvT Union(Expr,String)
+typealias ConvT Union{Expr,AbstractString}
 
 const stoplimit = convu64( :(2^64 - 2^32 * 10) )
 const startlimit = convu64( :(2^64 - 2^32 * 11) )
@@ -50,8 +50,8 @@ function genprimes_sieve{T,V}(start::T,stop::V)
     n = Csize_t[0]
     res = try 
         ccall((:primesieve_generate_primes, libname),
-                Ptr{T}, (Uint64, Uint64, Ptr{Csize_t}, Int),
-                convert(Uint64,start),convert(Uint64,stop),n,primetype(T))
+                Ptr{T}, (UInt64, UInt64, Ptr{Csize_t}, Int),
+                convert(UInt64,start),convert(UInt64,stop),n,primetype(T))
     catch
         throw(InterruptException())
     end      
@@ -87,14 +87,14 @@ end
 nprimes(n::ConvT,start::ConvT) = nprimes(convu64(n),convu64(start))
 nprimes(n,start::ConvT) = nprimes(n,convu64(start))
 nprimes(n::ConvT,start) = nprimes(convu64(n),start)
-nprimes(n::ConvT) = nprimes(convu64(n),one(Uint64))
+nprimes(n::ConvT) = nprimes(convu64(n),one(UInt64))
 # return array of the first n primes >= start
 function nprimes{T}(n::T,start)
     checkstop(start) # not sure what he means here    
     res = try
         ccall((:primesieve_generate_n_primes, libname),
-                    Ptr{T}, (Uint64, Uint64, Int),
-                    convert(Uint64,n),convert(Uint64,start),primetype(T))
+                    Ptr{T}, (UInt64, UInt64, Int),
+                    convert(UInt64,n),convert(UInt64,start),primetype(T))
     catch # every so often, loading fails with ERROR: invalid base 10 digit '@' in "100000000000000000000000@\0\0\0"
 
         throw(InterruptException())        
@@ -112,8 +112,8 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprimea),
             checkstart(start)
             res = try
                 ccall(( $cname, libname),
-                         Ptr{Uint64}, (Int64, Uint64),
-                      convert(Int64,n),convert(Uint64,start))
+                         Ptr{UInt64}, (Int64, UInt64),
+                      convert(Int64,n),convert(UInt64,start))
             catch
                 throw(InterruptException())
             end
@@ -145,8 +145,8 @@ for (cname,jname) in (
             reset_primesieve_num_threads()
             res = try
                 ccall(($cname,libname),
-                        Ptr{Uint64}, (Uint64, Uint64),
-                      convert(Uint64,start), convert(Uint64,stop))
+                        Ptr{UInt64}, (UInt64, UInt64),
+                      convert(UInt64,start), convert(UInt64,stop))
             catch
                 throw(InterruptException())
             end                
@@ -171,8 +171,8 @@ for (cname,jname) in (
             (start,stop) = promote(start,stop)
             try
                 ccall(($cname,libname),
-                      Void, (Uint64, Uint64),
-                      convert(Uint64,start), convert(Uint64,stop))
+                      Void, (UInt64, UInt64),
+                      convert(UInt64,start), convert(UInt64,stop))
             catch
                 throw(InterruptException())
             end                
@@ -206,4 +206,4 @@ end
 
 primesieve_num_threads() = ccall((:primesieve_get_num_threads, libname), Int, ())
 primetest() = ccall((:primesieve_test, libname), Void, ())
-primemaxstop() = ccall((:primesieve_get_max_stop, libname), Uint, ())
+primemaxstop() = ccall((:primesieve_get_max_stop, libname), UInt, ())

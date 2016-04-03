@@ -9,6 +9,6 @@ export apopcount
 # http://perso.citi.insa-lyon.fr/claurado/hamming.html
 function apopcount(a::Array)
     sz = div(sizeof(a),8)
-    ret = ccall((:primesieve_popcount,libccountname), Uint64, (Ptr{Void}, Uint64), a, sz)
+    ret = ccall((:primesieve_popcount,libccountname), UInt64, (Ptr{Void}, UInt64), a, sz)
     convert(Int,ret)
 end

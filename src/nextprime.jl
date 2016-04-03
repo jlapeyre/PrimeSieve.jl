@@ -35,7 +35,7 @@ const deltaprimes_prev =
 const small_primes = primes(100000)
 
 #product of primes in [59..2897]
-function makebigprimemultiple ()
+function makebigprimemultiple()
     a = primes(2897);
     n = BigInt(1)
     @inbounds for i in 17:length(a)
