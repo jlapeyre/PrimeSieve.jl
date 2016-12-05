@@ -1,8 +1,13 @@
-using Primes
+## This must come before the "module" (until we find out why)
 using DeepConvert
+
 module PrimeSieve
 
-import DeepConvert: @mkdeepconvert
+using Compat
+using Primes
+
+
+import DeepConvert: @mkdeepconvert, @bigint
 
 include("../deps/deps.jl")
 import Base: convert, ccall
