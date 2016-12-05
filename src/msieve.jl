@@ -12,7 +12,7 @@ end
 
 # Send the string to msieve and return c struct msieve_obj
 function runmsieve(opts::Msieveopts)
-    n = opts.n
+    n = opts.n  # n is a string
     d = opts.deadline
     logfile = opts.logfile
     deepecm = opts.deepecm
@@ -21,10 +21,10 @@ function runmsieve(opts::Msieveopts)
     infoflag = opts.info ? 1 : 0    
     res = try
         if (logfile == "")
-            println("factoring string ")
+            println("factoring string, '$n' ")
             ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{UInt8},Int,Int,Ptr{UInt8},Int,Int),
                   n, numcores, d, C_NULL, ecmflag, infoflag)
-            println("done factoring string ")
+#            println("done factoring string ")
         else
             ccall((:factor_from_string,smsievelib), Ptr{Void}, (Ptr{UInt8},Int,Int,Ptr{UInt8},Int, Int),
                   n, numcores, d, logfile, ecmflag, infoflag)
