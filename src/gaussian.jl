@@ -8,4 +8,4 @@ function isprime{T<:Integer}(z::Complex{T})
     isprime(abs2(z))
 end
 
-Base.@vectorize_1arg Complex isprime
+#Base.@vectorize_1arg Complex isprime
