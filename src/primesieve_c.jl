@@ -9,7 +9,7 @@ checkstart(val) = val <= startlimit ? true : error("start value ", val, " is gre
 # libprimesieve also uses all cores by default.
 # We store the number of threads because libprimecount will always set
 # it to 1 and manage threads itself.
-PRIMESIEVENUMTHREADS = CPU_CORES
+PRIMESIEVENUMTHREADS = Sys.CPU_CORES
 
 # Returned primes have this data type
 const SHORT_PRIMES = 0
