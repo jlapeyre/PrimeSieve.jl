@@ -124,7 +124,7 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprimea),
             end
             convert(T,res)
         end
-        ($jname)(start) = ($jname)(one(typeof(start)),start)        
+#        ($jname)(start) = ($jname)(one(typeof(start)),start)       # wtf ?
         ($jname)(n) = ($jname)(n,1)
     end
 end
