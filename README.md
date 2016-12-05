@@ -1,12 +1,16 @@
 # PrimeSieve
 
+* Prime number and factoring functions *
+
 This package provides functions related to prime numbers and factoring,
 mostly for generating and counting primes and factoring integers. This package
 uses some of the fastest open-source libraries for these functions.
 The name `Primes` would be better, but that might cause collisions.
 
-Note: Apr 3, 2016.  Julia has changed since this was written. (in particular `ccall` and `convert`) So `mfactor` no longer works.
-Most of the rest seems to work.
+Note: Dec 5, 2016.  Bitrot rests for no man.  Quite a bit still works, but quite a bit not.
+Broken tests are commented out, so tests suite should pass. If you want to fix something and
+make a PR, please do. The most challenging problem is the C wrapper to make `libsmsieve.so`
+from a standalone program no longer works for all inputs.
 
 See [LICENSE.md](../master/LICENSE.md) for links to the authors of the tables and the libraries
 used in this package.

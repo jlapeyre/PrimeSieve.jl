@@ -29,8 +29,8 @@ for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
         # end
         ($f){T<:Real}(n::T) = ccall(($c, libccountname), Int64, (Int64,), convert(Int64,n))
         ($f){T<:AbstractString}(n::T) = ($f)(conv128(n))
-        Base.@vectorize_1arg Real $f
-        Base.@vectorize_1arg AbstractString $f        
+        # Base.@vectorize_1arg Real $f
+        # Base.@vectorize_1arg AbstractString $f        
     end
 end
 
@@ -39,7 +39,7 @@ end
 function legendrephi(x,a)
     ccall((:prime_phi, libccountname), Int64, (Int64, Int64), convert(Int64,x), convert(Int64,a))
 end
-Base.@vectorize_2arg Integer legendrephi
+#Base.@vectorize_2arg Integer legendrephi
 
 function nthprime(x; alg::Symbol = :count)
     if alg == :count
@@ -49,7 +49,7 @@ function nthprime(x; alg::Symbol = :count)
     else error("algorithm must be one of :count, :sieve")
     end
 end
-Base.@vectorize_1arg Integer nthprime
+#Base.@vectorize_1arg Integer nthprime
 
 # libprimecount has a member function converts a string to Int128, but we probably handle more cases this way
 function primepi{T<:AbstractString}(s::T)
@@ -58,7 +58,7 @@ function primepi{T<:AbstractString}(s::T)
     parse(Int128, bytestring(ccall((:pi_string,libccountname),Ptr{UInt8},(Ptr{UInt8},),s1)))
 end
 
-Base.@vectorize_1arg AbstractString primepi
+#Base.@vectorize_1arg AbstractString primepi
 
 # Can't get access to Int128 routine, so we convert back and forth many times.
 pi_deleglise_rivat(x::Int128) = primepi(string(x))

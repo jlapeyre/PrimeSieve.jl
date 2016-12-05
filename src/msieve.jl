@@ -12,7 +12,7 @@ end
 
 # Send the string to msieve and return c struct msieve_obj
 function runmsieve(opts::Msieveopts)
-    n = opts.n
+    n = opts.n  # n is a string
     d = opts.deadline
     logfile = opts.logfile
     deepecm = opts.deepecm
@@ -43,10 +43,11 @@ msieve_free(obj) =  ccall((:msieve_obj_free_2,smsievelib), Void, (Ptr{Void},), o
 # Send ptr to struct factor and get string rep of one factor.
 # A ptr to next struct factor, correponding to next factor, is returned.
 function get_one_factor_value(factor)
-    a = Array(UInt8,500) # max num digits input to msieve is 300
+    factorstring = Array{UInt8}(500) # max num digits input to msieve is 300    
     nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{UInt8},Int),
-                       factor,a,length(a))
-    return(nextfactor,bytestring(convert(Ptr{UInt8},a)))
+                       factor,factorstring,length(factorstring))
+    factorstring[end] = 0
+    return(nextfactor,unsafe_string(pointer(factorstring)))
 end
 
 # Send ptr to first struct factor. Return all factors as array of strings 
@@ -72,12 +73,12 @@ end
 # input factors as Array of strings. Output Array of Integers (Usually of type Int)
 function factor_strings_to_integers(sfactors::Array{AbstractString})
     m = length(sfactors)
-    n1 = eval(parse(sfactors[m]))
+    n1 = eval(parse(BigInt,sfactors[m]))  ## why eval ?
     T = typeof(n1)
     arr = Array(T,m)
     arr[m] = n1
-    @inbounds for i in 1:m-1
-        arr[i] = parseint(T,sfactors[i])
+    for i in 1:m-1
+        arr[i] = parse(T,sfactors[i])
     end
     arr    
 end
@@ -90,7 +91,7 @@ function mfactor(opts::Msieveopts)
     arr = mfactorl(opts)
     T = eltype(arr)
     d = Dict{T,Int}()
-    @inbounds for i in arr d[i] = get(d,i,0) + 1 end
+    for i in arr d[i] = get(d,i,0) + 1 end
     d
 end
 
