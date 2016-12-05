@@ -8,9 +8,7 @@
 @test prevprime(3) == 2
 @test prevprime(2) == 0
 @test nextprime(prevprime(nextprime(@bigint 10^100))) == nextprime(@bigint 10^100)
-
-## FIXME: broke from bitrot
-##@test genprimes(10^6; alg = :sieve) == genprimes(10^6; alg = :next)
+@test genprimes(10^6; alg = :sieve) == genprimes(10^6; alg = :next)
 
 @test nextprime(2^20) == nextprime(BigInt(2^20))
 @test prevprime(2^20) == prevprime(BigInt(2^20))
