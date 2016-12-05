@@ -21,12 +21,17 @@ const ULONG_PRIMES = 5
 const LONGLONG_PRIMES = 6
 const ULONGLONG_PRIMES = 7
 
+const seentype = Dict{DataType,Bool}()
+
 for (ctype,typecode) in ((:Cshort, :SHORT_PRIMES),(:Cushort, :USHORT_PRIMES),
                          (:Cint, :INT_PRIMES),(:Cuint, :UINT_PRIMES),
                          (:Clong, :LONG_PRIMES),(:Culong, :ULONG_PRIMES),
                          (:Clonglong, :LONGLONG_PRIMES),(:Culonglong, :ULONGLONG_PRIMES))
-    @eval begin
-        primetype(::Type{$ctype}) = $typecode
+    if  ! haskey(seentype,eval(ctype))
+        @eval begin
+            primetype(::Type{$ctype}) = $typecode
+        end
+        seentype[eval(ctype)] = true
     end
 end
 
@@ -101,7 +106,7 @@ function nprimes{T}(n::T,start)
     end        
     primescopy(res,n)
 end
-nprimes(start) = nprimes(one(typeof(start)),start)        
+#nprimes(start) = nprimes(one(typeof(start)),start)   ## makes no sens
 nprimes(n) = nprimes(n,one(typeof(n)))
 
 # return the nth prime
