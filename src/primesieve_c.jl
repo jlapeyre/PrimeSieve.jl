@@ -39,7 +39,8 @@ const libname = "libprimesieve.so.4"
 
 # Copy the returned array, and free C array
 function primescopy(res,n)
-    retv = pointer_to_array(res,n,false)
+#    retv = pointer_to_array(res,n,false)
+    retv = unsafe_wrap(Array,res,n,false)    
     nretv = copy(retv)
     ccall((:primesieve_free, libname), Void, (Ptr{Void},), res)
     nretv
