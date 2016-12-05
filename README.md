@@ -1,6 +1,6 @@
 # PrimeSieve
 
-* Prime number and factoring functions *
+*Prime number and factoring functions*
 
 This package provides functions related to prime numbers and factoring,
 mostly for generating and counting primes and factoring integers. This package
