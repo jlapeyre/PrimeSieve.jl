@@ -52,7 +52,7 @@ end
 
 # Send ptr to first struct factor. Return all factors as array of strings 
 function get_all_factor_values(factor)
-    allf = Array(AbstractString,0)
+    allf = Array{AbstractString}(0)
     nfactor = factor
     n = get_num_factors(factor)
     for i in 1:n
@@ -75,7 +75,7 @@ function factor_strings_to_integers(sfactors::Array{AbstractString})
     m = length(sfactors)
     n1 = eval(parse(BigInt,sfactors[m]))  ## why eval ?
     T = typeof(n1)
-    arr = Array(T,m)
+    arr = Array{T}(m)
     arr[m] = n1
     for i in 1:m-1
         arr[i] = parse(T,sfactors[i])
@@ -104,7 +104,7 @@ for (thetype) in ( :AbstractString, :Integer )
     @eval begin
         function mfactor{T<:$thetype}(a::AbstractArray{T,1}; dl::Integer=0, logfile::AbstractString = "",
                                       ecm::Bool = false, info::Bool = false)
-            outa = Array(Any,0)
+            outa = Array{Any}(0)
             for x in a
                 res = mfactor(x; deadline=dl, logfile=logfile, ecm=ecm, info=info)
                 push!(outa,res)

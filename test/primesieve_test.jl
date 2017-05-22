@@ -18,7 +18,8 @@ c = 100000
 @test countprimes(b) == ntcountprimes(b)
 @test typeof(genprimes("10")[1]) == UInt64
 @test countprimes(a,b) == ntcountprimes(a,b)
-@test genprimes(c) == Base.primes(c)
+# Don't want to import or require primes, I suppose
+#@test genprimes(c) == Base.primes(c)
 @test typeof(nprimes("10")[1]) == UInt64
 @test ntcountprimes("10^9") == 50847534
 

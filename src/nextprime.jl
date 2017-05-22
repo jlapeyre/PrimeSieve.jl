@@ -132,7 +132,7 @@ end
 ## Find prime number preceeding n
 function prevprime1(n::Integer)
     if n <= 2
-        return Array(typeof(n), 0)
+        return Array{typeof(n)}(0)
     elseif n <= 3
         return 2
     end
@@ -186,7 +186,7 @@ prevprime1(n,k) = (p = n; for i in 1:k p = prevprime1(p) end; p)
 for (f,fc) in ((:genprimesb, :nextprime), (:genprimesc, :nextprime1))
     @eval begin
         function ($f)(n1,n2)
-            ret = Array(typeof(n2),0)
+            ret = Array{typeof(n2)}(0)
             v = n1
             while true
                 v = ($fc)(v)

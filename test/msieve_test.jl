@@ -7,5 +7,6 @@ using Compat
 
 @test mfactor(10) ==  @compat Dict( 2 => 1, 5 => 1 )
 
-@test mfactor(2^20 - 1) == factor(2^20 - 1)
+@test mfactor(2^20 - 1) == @compat Dict(31=>1,3=>1,11=>1,5=>2,41=>1)
 
+ 

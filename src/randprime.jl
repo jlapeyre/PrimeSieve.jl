@@ -18,7 +18,7 @@ randprime(a,b; lim::Int=RPLIM) = _randprime(a,b,lim)
 randprime(b; lim::Int=RPLIM) = _randprime(convert(typeof(b),2),b,lim)
 
 function randprime(a,b,dims...;lim::Int=RPLIM)
-    arr = Array(typeof(a),dims...)
+    arr = Array{typeof(a)}(dims...)
     @inbounds for i in 1:length(arr) arr[i] = _randprime(a,b,lim) end
     arr
 end

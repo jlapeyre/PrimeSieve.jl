@@ -10,7 +10,11 @@ using Primes
 import DeepConvert: @mkdeepconvert, @bigint
 
 include("../deps/deps.jl")
-import Base: convert, ccall
+import Base: convert
+
+if isdefined(Base, :ccall)
+    import Base: ccall
+end
 
 export genprimes, nprimes
 export snthprimea
@@ -24,7 +28,7 @@ export printprimes4
 export printprimes5
 export printprimes6
 
-export primesievesize, primetest, primesieve_num_threads
+export primesievesize, primetest, primesieve_num_threads, isprime
 
 ##
 

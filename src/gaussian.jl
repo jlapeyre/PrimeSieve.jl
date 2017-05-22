@@ -1,4 +1,12 @@
-import Base: isprime
+# if VERSION <= v"0.5.0-"
+#     import Base: isprime
+# end
+
+if isdefined(Base, :isprime)
+    import Base: isprime
+else
+    import Primes: isprime
+end
 
 # Gaussian primes
 function isprime{T<:Integer}(z::Complex{T})

@@ -88,11 +88,11 @@ function _readbintables()
     buf = zeros(Int,1)
     read!(mystream,buf)
     numtables = buf[1]
-    bintables = Array(Array{Int128,1},0)
+    bintables = Array{Array{Int128,1}}(0)
     for itab in 1:numtables
         read!(mystream,buf)
         numprimes = buf[1]
-        a = Array(Int128,numprimes)
+        a = Array{Int128}(numprimes)
         read!(mystream,a)
         push!(bintables,a)
     end
@@ -103,7 +103,7 @@ end
 # Read binary tables and make table data structures.
 function loadprimetables()
     bintables = _readbintables()
-    tables = Array(PrimeTable,length(bintables))
+    tables = Array{PrimeTable}(length(bintables))
     base = Int128(10)
     for i in 1:length(bintables)
         data = bintables[i]

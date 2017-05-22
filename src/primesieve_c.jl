@@ -1,4 +1,4 @@
-typealias ConvT Union{Expr,AbstractString}
+const ConvT = Union{Expr,AbstractString}
 
 const stoplimit = convu64( :(2^64 - 2^32 * 10) )
 const startlimit = convu64( :(2^64 - 2^32 * 11) )
